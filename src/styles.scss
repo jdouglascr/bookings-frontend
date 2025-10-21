@@ -1,0 +1,107 @@
+// COLORES DEL PROYECTO
+:root {
+  // Colores Principales
+  --color-primary: #ffffff;
+  --color-secondary: #292629;
+  // Colores de Estado
+  --color-success: #28a745;
+  --color-error: #e25b5b;
+  --color-warning: #ffc107;
+
+  // Colores Complementarios
+  --color-primary-bg: #f9f9fb;
+  --color-primary-soft: #f4f4f4;
+  --color-secondary-hover: #1a1a1a;
+  --color-secondary-shadow: rgba(41, 38, 41, 0.1);
+
+  // Colores Fijos
+  --gray-border: #e9ecef;
+  --gray-border-dark: #dee2e6;
+  --gray-text-light: #adb5bd;
+  --gray-text-medium: #6c757d;
+  --gray-text-dark: #495057;
+  --gray-text-darker: #141f39;
+  --gray-text-contact: #1a284a;
+  --gray-text-titles: #0d1426;
+}
+
+// Estilos Globales
+html {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+body,
+html {
+  font-family: 'Nunito Sans', sans-serif;
+  background-color: var(--color-primary-bg);
+  color: var(--gray-text-darker);
+  height: 100%;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+// Success Snackbar
+.success-snackbar {
+  .mdc-snackbar__surface {
+    background-color: var(--color-success) !important;
+    color: var(--color-primary) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .mat-mdc-snack-bar-label {
+    font-weight: 500 !important;
+    font-size: 14px !important;
+  }
+
+  .mat-mdc-snack-bar-action {
+    color: var(--color-primary) !important;
+    font-weight: 600 !important;
+
+    &:hover {
+      background-color: transparent !important;
+    }
+
+    .mat-mdc-button-persistent-ripple,
+    .mat-ripple {
+      display: none !important;
+    }
+  }
+}
+
+// Error Snackbar
+.error-snackbar {
+  .mdc-snackbar__surface {
+    background-color: var(--color-error) !important;
+    color: var(--color-primary) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .mat-mdc-snack-bar-label {
+    font-weight: 500 !important;
+    font-size: 14px !important;
+  }
+
+  .mat-mdc-snack-bar-action {
+    color: var(--color-primary) !important;
+    font-weight: 600 !important;
+
+    &:hover {
+      background-color: transparent !important;
+    }
+
+    .mat-mdc-button-persistent-ripple,
+    .mat-ripple {
+      display: none !important;
+    }
+  }
+}

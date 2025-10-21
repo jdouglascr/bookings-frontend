@@ -1,0 +1,160 @@
+.login-bg {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url('/banner.png') center/cover no-repeat;
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  .login-card {
+    position: relative;
+    width: 360px;
+    padding: 2rem;
+    text-align: center;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    color: white;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+
+    h2 {
+      margin-bottom: 1.5rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    button.login-btn {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      background: transparent;
+      color: #fff;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+
+      &:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(6px);
+        transform: translateY(-2px);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      ::ng-deep mat-spinner {
+        display: inline-block;
+
+        circle {
+          stroke: white !important;
+        }
+      }
+    }
+  }
+}
+
+::ng-deep .login-card {
+  .mat-mdc-form-field {
+    .mat-mdc-form-field-error {
+      font-size: 11px !important;
+      font-weight: 400 !important;
+      line-height: 1.2 !important;
+      color: #ffcccc !important;
+      display: block !important;
+      letter-spacing: 0.3px !important;
+      margin-top: 2px !important;
+      text-align: left !important;
+    }
+
+    &.mat-form-field-invalid {
+      .mdc-text-field--filled {
+        background-color: rgba(255, 255, 255, 0.12) !important;
+      }
+
+      .mdc-line-ripple::after {
+        border-bottom-color: #ff6b6b !important;
+      }
+
+      .mat-mdc-floating-label {
+        color: #ffcccc !important;
+      }
+    }
+  }
+
+  .mat-mdc-form-field-appearance-fill {
+    .mat-mdc-text-field-wrapper {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+    }
+
+    .mat-mdc-floating-label,
+    .mat-mdc-input-element {
+      color: white !important;
+    }
+
+    .mat-mdc-input-element::placeholder {
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .mdc-line-ripple::before {
+      border-bottom-color: rgba(255, 255, 255, 0.3) !important;
+    }
+
+    .mdc-line-ripple::after {
+      border-bottom-color: white !important;
+    }
+
+    .mat-icon {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    button[mat-icon-button] {
+      color: rgba(255, 255, 255, 0.7);
+
+      &:hover {
+        color: white;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .login-bg .login-card {
+    width: calc(100% - 2rem);
+    max-width: 360px;
+    padding: 1.5rem;
+
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    form {
+      gap: 0.25rem;
+    }
+
+    button.login-btn {
+      padding: 0.65rem;
+    }
+  }
+
+  ::ng-deep .login-card .mat-mdc-form-field .mat-mdc-form-field-error {
+    font-size: 10px !important;
+  }
+}

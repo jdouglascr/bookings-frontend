@@ -1,0 +1,100 @@
+<div class="contact-form">
+  <div class="contact-section">
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="firstName" autocomplete="given-name" />
+          @if (
+            contactForm.get('firstName')?.invalid &&
+            (contactForm.get('firstName')?.dirty || contactForm.get('firstName')?.touched)
+          ) {
+            <mat-error>
+              @if (contactForm.get('firstName')?.hasError('required')) {
+                El nombre es requerido
+              }
+              @if (contactForm.get('firstName')?.hasError('minlength')) {
+                Mínimo 2 caracteres
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Apellido</mat-label>
+          <input matInput formControlName="lastName" autocomplete="family-name" />
+          @if (
+            contactForm.get('lastName')?.invalid &&
+            (contactForm.get('lastName')?.dirty || contactForm.get('lastName')?.touched)
+          ) {
+            <mat-error>
+              @if (contactForm.get('lastName')?.hasError('required')) {
+                El apellido es requerido
+              }
+              @if (contactForm.get('lastName')?.hasError('minlength')) {
+                Mínimo 2 caracteres
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput formControlName="email" type="email" autocomplete="email" />
+          @if (
+            contactForm.get('email')?.invalid &&
+            (contactForm.get('email')?.dirty || contactForm.get('email')?.touched)
+          ) {
+            <mat-error>
+              @if (contactForm.get('email')?.hasError('required')) {
+                El correo es requerido
+              }
+              @if (contactForm.get('email')?.hasError('email')) {
+                Ingresa un correo válido
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Teléfono</mat-label>
+          @if (shouldShowPhonePrefix()) {
+            <span matPrefix class="phone-prefix">+56</span>
+          }
+          <input
+            matInput
+            formControlName="phone"
+            type="tel"
+            maxlength="9"
+            autocomplete="tel"
+            (focus)="onPhoneFocus()"
+            (blur)="onPhoneBlur()"
+            (keypress)="onKeyPress($event)"
+            (paste)="onPaste($event)"
+          />
+          @if (
+            contactForm.get('phone')?.invalid &&
+            (contactForm.get('phone')?.dirty || contactForm.get('phone')?.touched)
+          ) {
+            <mat-error>
+              @if (contactForm.get('phone')?.hasError('required')) {
+                El teléfono es requerido
+              } @else if (contactForm.get('phone')?.hasError('pattern')) {
+                El teléfono debe tener 9 dígitos
+              } @else if (contactForm.get('phone')?.hasError('minlength')) {
+                El teléfono debe tener 9 dígitos
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="form-notes">
+        <mat-icon>info_outline</mat-icon>
+        <p>Te enviaremos un correo de confirmación de tu reserva con todos los detalles.</p>
+      </div>
+    </form>
+  </div>
+</div>

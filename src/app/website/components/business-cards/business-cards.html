@@ -1,0 +1,48 @@
+<section class="business">
+  <mat-card class="business__info">
+    <h2>{{ businessName() }}</h2>
+    <p>{{ businessDescription() }}</p>
+
+    <div class="business__contact">
+      <div class="business__contact--item">
+        <mat-icon class="business__contact--itemIcon">place</mat-icon>
+        <span>{{ businessAddress() }}</span>
+      </div>
+      <div class="business__contact--item">
+        <mat-icon class="business__contact--itemIcon">phone</mat-icon>
+        <span>{{ businessPhone() }}</span>
+      </div>
+    </div>
+
+    <div class="business__social">
+      <a
+        class="business__social--overlay"
+        href="https://instagram.com/rulos.styl3"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <mat-icon class="business__social--icon" svgIcon="instagram"></mat-icon>
+      </a>
+      <a
+        class="business__social--overlay"
+        href="https://www.tiktok.com/@rulos_style"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <mat-icon class="business__social--icon" svgIcon="tiktok"></mat-icon>
+      </a>
+    </div>
+  </mat-card>
+
+  <mat-card class="business__schedule">
+    <h3>Horario</h3>
+    <ul>
+      @for (s of schedule(); track $index) {
+        <li>
+          <span>{{ s.day }}</span>
+          <span [class.closed]="s.hours === 'Cerrado'">{{ s.hours }}</span>
+        </li>
+      }
+    </ul>
+  </mat-card>
+</section>

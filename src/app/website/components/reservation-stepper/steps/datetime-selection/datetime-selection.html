@@ -1,0 +1,87 @@
+<div class="datetime-selection">
+  <!-- Calendar Section -->
+  <div class="calendar-section">
+    <div class="calendar-header">
+      <button
+        mat-icon-button
+        (click)="previousWeek()"
+        class="nav-button"
+        [disabled]="!canGoToPreviousWeek()"
+      >
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <h4 class="calendar-title">{{ calendarHeader() }}</h4>
+      <button
+        mat-icon-button
+        (click)="nextWeek()"
+        class="nav-button"
+        [disabled]="!canGoToNextWeek()"
+      >
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+
+    @if (selectedDateSignal()) {
+      <div class="selected-date-info">
+        <span class="selected-label">Reservando el:</span>
+        <span class="selected-date">{{ selectedDateString() }}</span>
+      </div>
+    }
+
+    <div class="calendar-grid">
+      <div class="weekdays">
+        @for (day of weekDays(); track $index) {
+          <div class="weekday">{{ day }}</div>
+        }
+      </div>
+
+      <div class="calendar-days">
+        @for (day of calendarDays(); track day.date) {
+          <div
+            class="calendar-day"
+            [class.today]="day.isToday"
+            [class.selected]="day.isSelected"
+            [class.available]="day.hasAvailability && !day.isUnavailable"
+            [class.unavailable]="day.isUnavailable"
+            [class.has-availability]="day.hasAvailability"
+            (click)="selectDate(day)"
+          >
+            <span class="day-number">{{ day.dayNumber }}</span>
+            @if (day.hasAvailability && !day.isUnavailable) {
+              <div class="availability-indicator"></div>
+            } @else if (day.isUnavailable && day.isCurrentMonth) {
+              <div class="unavailable-indicator"></div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Time Slots Section -->
+  @if (selectedDateSignal()) {
+    <div class="time-section">
+      @if (availableTimeSlots().length > 0) {
+        <div class="time-slots-grid">
+          @for (timeSlot of availableTimeSlots(); track timeSlot.id) {
+            <button
+              class="time-slot"
+              [class.selected]="selectedTimeSlotSignal()?.id === timeSlot.id"
+              [class.available]="timeSlot.available"
+              [class.unavailable]="!timeSlot.available"
+              [disabled]="!timeSlot.available"
+              (click)="selectTimeSlot(timeSlot)"
+            >
+              {{ timeSlot.time }}
+            </button>
+          }
+        </div>
+      } @else {
+        <div class="no-availability">
+          <mat-icon>folder_open</mat-icon>
+          <p>No hay disponibilidad para este día.</p>
+        </div>
+      }
+    </div>
+  }
+</div>

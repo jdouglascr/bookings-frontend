@@ -1,0 +1,122 @@
+<div class="admin-layout">
+  <!-- Mobile Overlay -->
+  @if (mobileMenuOpen()) {
+    <div
+      class="mobile-overlay"
+      role="button"
+      tabindex="0"
+      (click)="closeMobileMenu()"
+      (keydown.enter)="closeMobileMenu()"
+      (keydown.space)="closeMobileMenu()"
+      aria-label="Cerrar menú"
+    ></div>
+  }
+
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.mobile-open]="mobileMenuOpen()">
+    <!-- Logo -->
+    <div class="sidebar__header">
+      <div class="sidebar__logo">
+        <img src="logo.png" alt="Logo" />
+        <span>Rulos Style</span>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar__nav">
+      <p class="sidebar__nav-title">HERRAMIENTAS</p>
+
+      @for (item of menuItems(); track item.id) {
+        <button
+          mat-button
+          class="sidebar__nav-item"
+          [class.active]="activeSection() === item.id"
+          (click)="setActiveSection(item.id)"
+        >
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </button>
+      }
+
+      <p class="sidebar__nav-title">CUENTA</p>
+
+      @for (item of accountItems(); track item.id) {
+        <button mat-button class="sidebar__nav-item">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </button>
+      }
+    </nav>
+
+    <!-- Copyright -->
+    <div class="sidebar__footer">
+      <p>© 2025 Bookings — Developed by MariSoft</p>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <!-- Mobile Menu Button -->
+      <button mat-icon-button class="header__mobile-menu" (click)="toggleMobileMenu()">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <!-- Spacer -->
+      <div class="header__spacer"></div>
+
+      <!-- Actions -->
+      <div class="header__actions">
+        <!-- User Menu -->
+        <button mat-button class="header__user" [matMenuTriggerFor]="userMenu">
+          <div class="header__user-info">
+            <span class="header__user-name">{{ userEmail() }}</span>
+            <span class="header__user-role">{{ userRole() }}</span>
+          </div>
+          <mat-icon>expand_more</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>person</mat-icon>
+            <span>Mi perfil</span>
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Cerrar sesión</span>
+          </button>
+        </mat-menu>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <main class="content">
+      <!-- Breadcrumbs -->
+      <div class="breadcrumbs">
+        <a href="#" class="breadcrumbs__link">Inicio</a>
+        <mat-icon>chevron_right</mat-icon>
+        <span class="breadcrumbs__current">{{ getCurrentSectionLabel() }}</span>
+      </div>
+
+      <!-- Page Content -->
+      <div class="page">
+        <div class="page__header">
+          <div>
+            <h1 class="page__title">{{ getCurrentSectionLabel() }}</h1>
+            <p class="page__subtitle">Gestiona los servicios de tu negocio</p>
+          </div>
+          <button mat-flat-button color="primary" class="page__action">
+            <mat-icon>add</mat-icon>
+            Nuevo servicio
+          </button>
+        </div>
+
+        <mat-card class="empty-state">
+          <mat-icon>construction</mat-icon>
+          <h3>Sección en construcción</h3>
+          <p>Esta sección estará disponible próximamente</p>
+        </mat-card>
+      </div>
+    </main>
+  </div>
+</div>

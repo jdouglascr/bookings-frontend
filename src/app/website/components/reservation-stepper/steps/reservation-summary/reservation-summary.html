@@ -1,0 +1,115 @@
+<div class="reservation-summary">
+  <div class="summary-section">
+    <!-- Service Information -->
+    @if (stepData().service) {
+      <div class="summary-card service-card">
+        <div class="card-header">
+          <mat-icon class="header-icon">star</mat-icon>
+          <h4>Servicio seleccionado</h4>
+        </div>
+        <div class="card-content">
+          <div class="service-info">
+            <div class="service-name">{{ stepData().service?.name }}</div>
+            <div class="service-price">{{ stepData().service?.priceFormatted }}</div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Professional Information -->
+    @if (stepData().appointment) {
+      <div class="summary-card appointment-card">
+        <div class="card-header">
+          <mat-icon class="header-icon">person</mat-icon>
+          <h4>Profesional</h4>
+        </div>
+        <div class="card-content">
+          <div class="appointment-info">
+            <div class="appointment-image">
+              <img [src]="stepData().appointment?.imageUrl" [alt]="stepData().appointment?.name" />
+            </div>
+            <div class="appointment-details">
+              <div class="appointment-name">{{ stepData().appointment?.name }}</div>
+              <div class="appointment-description">{{ stepData().appointment?.description }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Date and Time Information -->
+    @if (stepData().selectedDate && stepData().selectedTimeSlot) {
+      <div class="summary-card datetime-card">
+        <div class="card-header">
+          <mat-icon class="header-icon">schedule</mat-icon>
+          <h4>Fecha y hora</h4>
+        </div>
+        <div class="card-content">
+          <div class="datetime-info">
+            <div class="date-display">
+              <mat-icon class="info-icon">calendar_today</mat-icon>
+              <span>{{ formatSelectedDate() }}</span>
+            </div>
+            <div class="time-display">
+              <mat-icon class="info-icon">access_time</mat-icon>
+              <span>{{ stepData().selectedTimeSlot?.time }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Contact Information -->
+    @if (stepData().contactInfo) {
+      <div class="summary-card contact-card">
+        <div class="card-header">
+          <mat-icon class="header-icon">contact_mail</mat-icon>
+          <h4>Información de contacto</h4>
+        </div>
+        <div class="card-content">
+          <div class="contact-info">
+            <div class="contact-row">
+              <mat-icon class="info-icon">person_outline</mat-icon>
+              <span
+                >{{ stepData().contactInfo?.firstName }}
+                {{ stepData().contactInfo?.lastName }}</span
+              >
+            </div>
+            <div class="contact-row">
+              <mat-icon class="info-icon">email</mat-icon>
+              <span>{{ stepData().contactInfo?.email }}</span>
+            </div>
+            <div class="contact-row">
+              <mat-icon class="info-icon">phone</mat-icon>
+              <span>+56 {{ formatPhoneNumber() }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Confirmation Notes -->
+    <div class="confirmation-notes">
+      <div class="notes-header">
+        <mat-icon class="notes-icon">info_outline</mat-icon>
+        <h5>Información importante</h5>
+      </div>
+      <div class="notes-content">
+        <div class="note-item">
+          <mat-icon class="bullet-icon">check_circle</mat-icon>
+          <p>Recibirás un correo de confirmación con todos los detalles de tu reserva.</p>
+        </div>
+        <div class="note-item">
+          <mat-icon class="bullet-icon">schedule</mat-icon>
+          <p>Por favor llega 5 minutos antes de tu cita programada.</p>
+        </div>
+        <div class="note-item">
+          <mat-icon class="bullet-icon">phone</mat-icon>
+          <p>
+            Si necesitas cancelar o reprogramar, llámanos con al menos 24 horas de anticipación.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

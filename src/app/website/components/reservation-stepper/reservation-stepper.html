@@ -1,0 +1,128 @@
+<div class="reservation-stepper">
+  <button
+    mat-icon-button
+    class="close-button"
+    (click)="closeDialog()"
+    [disabled]="isProcessingBooking()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <header class="stepper-header">
+    <div class="steps-container">
+      @for (step of steps; track $index) {
+        <div class="step-wrapper">
+          <div
+            class="step-item"
+            [class.completed]="$index < currentStepIndex()"
+            [class.active]="$index === currentStepIndex()"
+            [class.inactive]="$index > currentStepIndex()"
+          >
+            <div
+              class="step-circle"
+              [class.completed]="$index < currentStepIndex()"
+              [class.active]="$index === currentStepIndex()"
+              [class.inactive]="$index > currentStepIndex()"
+            >
+              @if ($index < currentStepIndex()) {
+                <mat-icon>check</mat-icon>
+              } @else {
+                <mat-icon>{{ step.icon }}</mat-icon>
+              }
+            </div>
+            <div class="step-label">{{ step.title }}</div>
+          </div>
+          @if ($index < steps.length - 1) {
+            <div class="step-connector" [class.completed]="$index < currentStepIndex()"></div>
+          }
+        </div>
+      }
+    </div>
+  </header>
+
+  <main class="stepper-content">
+    <div
+      class="step-container"
+      [class.appointment-step]="currentStepIndex() === 0"
+      [class.datetime-step]="currentStepIndex() === 1"
+      [class.form-step]="currentStepIndex() === 2"
+    >
+      <div class="step-content">
+        <h3>{{ currentStep().title }}</h3>
+        <p>{{ currentStep().subtitle }}</p>
+
+        @switch (currentStepIndex()) {
+          @case (0) {
+            <app-appointment-selection
+              [selectedAppointment]="stepData().appointment || null"
+              (appointmentSelected)="onAppointmentSelected($event)"
+            />
+          }
+          @case (1) {
+            <app-datetime-selection
+              [selectedDate]="stepData().selectedDate || null"
+              [selectedTimeSlot]="stepData().selectedTimeSlot || null"
+              [selectedAppointmentId]="stepData().appointment?.id || 0"
+              (datetimeSelected)="onDatetimeSelected($event)"
+              (dateChanged)="onDateChanged($event)"
+            />
+          }
+          @case (2) {
+            <app-contact-form
+              [selectedContactInfo]="stepData().contactInfo || null"
+              (contactInfoChanged)="onContactInfoChanged($event)"
+              (formValidityChanged)="onContactFormValidityChanged($event)"
+            />
+          }
+          @case (3) {
+            <app-reservation-summary [stepData]="stepData()" />
+          }
+        }
+      </div>
+    </div>
+  </main>
+
+  <footer class="stepper-footer">
+    @if (currentStepIndex() > 0) {
+      <button
+        mat-stroked-button
+        class="btn-back"
+        (click)="previousStep()"
+        [disabled]="isProcessingBooking()"
+      >
+        Atrás
+      </button>
+    } @else {
+      <div></div>
+    }
+
+    @if (currentStepIndex() < steps.length - 1) {
+      <button
+        mat-raised-button
+        color="primary"
+        class="btn-primary"
+        [disabled]="!canProceedToNextStep() || isProcessingBooking()"
+        (click)="nextStep()"
+      >
+        Siguiente
+      </button>
+    } @else {
+      <button
+        mat-raised-button
+        color="primary"
+        class="btn-confirm"
+        [disabled]="isProcessingBooking()"
+        (click)="confirmBooking()"
+      >
+        @if (isProcessingBooking()) {
+          <span class="loading-text">
+            <span class="spinner"></span>
+            Procesando...
+          </span>
+        } @else {
+          Reservar
+        }
+      </button>
+    }
+  </footer>
+</div>

@@ -1,0 +1,33 @@
+<section class="offer">
+  <h2 class="offer__title">Explora nuestras opciones y reserva al instante</h2>
+  <mat-tab-group>
+    @for (category of categories(); track category.id) {
+      <mat-tab [label]="category.name">
+        <div class="services">
+          @for (service of category.services; track service.id) {
+            <mat-card class="services__card" (click)="onSelectService(service)">
+              <div class="services__content">
+                <img
+                  class="services__content--image"
+                  mat-card-image
+                  [src]="service.logoUrl"
+                  [alt]="'foto ' + service.name"
+                />
+                <div class="services__info">
+                  <h3 class="services__info--title">{{ service.name }}</h3>
+                  <p class="services__info--description">{{ service.description }}</p>
+                </div>
+                <div class="services__details">
+                  <span class="services__details--duration"
+                    ><mat-icon>schedule</mat-icon> {{ service.durationFormatted }}</span
+                  >
+                  <span class="services__details--price">{{ service.priceFormatted }}</span>
+                </div>
+              </div>
+            </mat-card>
+          }
+        </div>
+      </mat-tab>
+    }
+  </mat-tab-group>
+</section>

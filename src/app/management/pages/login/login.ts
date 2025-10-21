@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, effect } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -31,7 +31,7 @@ export class Login {
   private snackBar = inject(MatSnackBar);
   private fb = inject(FormBuilder);
 
-  hidePassword = true;
+  hidePassword = signal(true);
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -40,13 +40,24 @@ export class Login {
 
   isLoading = this.authService.isLoading;
 
+  constructor() {
+    effect(() => {
+      const loading = this.isLoading();
+      if (loading) {
+        this.loginForm.disable({ emitEvent: false });
+      } else {
+        this.loginForm.enable({ emitEvent: false });
+      }
+    });
+  }
+
   get showPasswordToggle(): boolean {
     const passwordControl = this.loginForm.get('password');
     return !!passwordControl && passwordControl.value.length > 0;
   }
 
   togglePasswordVisibility() {
-    this.hidePassword = !this.hidePassword;
+    this.hidePassword.update((v) => !v);
   }
 
   onSubmit() {

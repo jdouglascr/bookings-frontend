@@ -79,6 +79,34 @@
   background-color: var(--color-primary-bg);
 }
 
+// Skeleton
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 20%, #f0f0f0 40%, #f0f0f0 100%);
+  background-size: 1000px 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.skeleton-logo {
+  height: 150px;
+  width: 150px;
+  border-radius: 12px;
+}
+
+.skeleton-banner {
+  width: 100%;
+  height: 220px;
+  border-radius: 0;
+}
+
 // Responsive
 @media (max-width: 1024px) {
   .main {
@@ -117,7 +145,16 @@
     }
   }
 
+  .skeleton-logo {
+    height: 100px;
+    width: 100px;
+  }
+
   .banner {
+    height: 160px;
+  }
+
+  .skeleton-banner {
     height: 160px;
   }
 

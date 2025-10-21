@@ -8,7 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { AuthService, ErrorResponse } from '../../../core/services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { ErrorResponse } from '../../../models/shared-api.models';
 
 @Component({
   selector: 'app-login',

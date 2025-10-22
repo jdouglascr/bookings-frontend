@@ -1,26 +1,3 @@
-// Business Information
-export interface BusinessInfo {
-  id: number;
-  name: string;
-  description: string;
-  address: string;
-  phone: string; // Formato: "+56912345678"
-  email: string;
-  facebookUrl?: string;
-  instagramUrl?: string;
-  tiktokUrl?: string;
-  logoUrl: string;
-  bannerUrl: string;
-  businessHours: BusinessHour[];
-  isActive: boolean;
-}
-
-export interface BusinessHour {
-  dayOfWeek: string; // 'Lunes', 'Martes', etc.
-  hours: string; // '09:00 - 19:00' o 'Cerrado'
-  isOpen: boolean;
-}
-
 // Categories & Services
 export interface Category {
   id: number;
@@ -135,9 +112,10 @@ export interface Booking {
 
 // Step Data for Reservation Flow
 export interface StepData {
-  appointment?: Appointment;
   service?: Service;
-  selectedDate?: string; // ISO date string
+  serviceId?: number;
+  appointment?: Appointment;
+  selectedDate?: string;
   selectedTimeSlot?: TimeSlot;
   contactInfo?: ContactInfo;
 }

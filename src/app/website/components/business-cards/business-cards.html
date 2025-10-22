@@ -1,48 +1,87 @@
 <section class="business">
+  <!-- Tarjeta de Información del Negocio -->
   <mat-card class="business__info">
-    <h2>{{ businessName() }}</h2>
-    <p>{{ businessDescription() }}</p>
+    @if (businessService.isLoading()) {
+      <!-- Skeleton Loader -->
+      <div class="skeleton-loader">
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-text"></div>
+        <div class="skeleton skeleton-text"></div>
+        <div class="skeleton skeleton-text short"></div>
 
-    <div class="business__contact">
-      <div class="business__contact--item">
-        <mat-icon class="business__contact--itemIcon">place</mat-icon>
-        <span>{{ businessAddress() }}</span>
-      </div>
-      <div class="business__contact--item">
-        <mat-icon class="business__contact--itemIcon">phone</mat-icon>
-        <span>{{ businessPhone() }}</span>
-      </div>
-    </div>
+        <div class="business__contact" style="margin-top: 16px">
+          <div class="skeleton skeleton-contact-item"></div>
+          <div class="skeleton skeleton-contact-item"></div>
+        </div>
 
-    <div class="business__social">
-      <a
-        class="business__social--overlay"
-        href="https://instagram.com/rulos.styl3"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <mat-icon class="business__social--icon" svgIcon="instagram"></mat-icon>
-      </a>
-      <a
-        class="business__social--overlay"
-        href="https://www.tiktok.com/@rulos_style"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <mat-icon class="business__social--icon" svgIcon="tiktok"></mat-icon>
-      </a>
-    </div>
+        <div class="business__social" style="margin-top: 16px">
+          <div class="skeleton skeleton-circle"></div>
+          <div class="skeleton skeleton-circle"></div>
+        </div>
+      </div>
+    } @else if (businessService.business()) {
+      <!-- Contenido Real -->
+      <h2>{{ businessService.business()!.name }}</h2>
+      <p>{{ businessService.business()!.description }}</p>
+
+      <div class="business__contact">
+        <div class="business__contact--item">
+          <mat-icon class="business__contact--itemIcon">place</mat-icon>
+          <span>{{ businessService.business()!.address }}</span>
+        </div>
+        <div class="business__contact--item">
+          <mat-icon class="business__contact--itemIcon">phone</mat-icon>
+          <span>{{ businessService.business()!.phone }}</span>
+        </div>
+      </div>
+
+      <div class="business__social">
+        @if (businessService.business()!.instagramUrl) {
+          <a
+            class="business__social--overlay"
+            [href]="businessService.business()!.instagramUrl!"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <mat-icon class="business__social--icon" svgIcon="instagram"></mat-icon>
+          </a>
+        }
+        @if (businessService.business()!.tiktokUrl) {
+          <a
+            class="business__social--overlay"
+            [href]="businessService.business()!.tiktokUrl!"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <mat-icon class="business__social--icon" svgIcon="tiktok"></mat-icon>
+          </a>
+        }
+      </div>
+    }
   </mat-card>
 
+  <!-- Tarjeta de Horarios -->
   <mat-card class="business__schedule">
     <h3>Horario</h3>
-    <ul>
-      @for (s of schedule(); track $index) {
-        <li>
-          <span>{{ s.day }}</span>
-          <span [class.closed]="s.hours === 'Cerrado'">{{ s.hours }}</span>
-        </li>
-      }
-    </ul>
+    @if (businessService.isLoading()) {
+      <!-- Skeleton Loader -->
+      <ul>
+        @for (i of [1, 2, 3, 4, 5, 6, 7]; track i) {
+          <li>
+            <div class="skeleton skeleton-schedule-item"></div>
+          </li>
+        }
+      </ul>
+    } @else if (businessService.business()) {
+      <!-- Contenido Real -->
+      <ul>
+        @for (schedule of businessService.business()!.schedule; track $index) {
+          <li>
+            <span>{{ schedule.day }}</span>
+            <span [class.closed]="!schedule.isOpen">{{ schedule.hours }}</span>
+          </li>
+        }
+      </ul>
+    }
   </mat-card>
 </section>

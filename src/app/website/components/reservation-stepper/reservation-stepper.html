@@ -55,6 +55,7 @@
           @case (0) {
             <app-appointment-selection
               [selectedAppointment]="stepData().appointment || null"
+              [selectedServiceId]="stepData().serviceId || 0"
               (appointmentSelected)="onAppointmentSelected($event)"
             />
           }

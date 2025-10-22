@@ -3,42 +3,14 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-  message: string;
-}
-
-export interface RefreshTokenRequest {
-  refreshToken: string;
-}
-
-export interface RefreshTokenResponse {
-  accessToken: string;
-  refreshToken: string;
-}
-
-export interface ErrorResponse {
-  status: number;
-  message: string;
-  errors: object;
-  timestamp: string;
-}
-
-export interface DecodedToken {
-  sub: string;
-  role: string;
-  userId: number;
-  type: string;
-  iat: number;
-  exp: number;
-}
+import {
+  DecodedToken,
+  LoginRequest,
+  LoginResponse,
+  RefreshTokenResponse,
+} from '../../models/auth-api.models';
+import { ErrorResponse } from '../../models/shared-api.models';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +19,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = `${environment.apiUrl}/auth`;
 
   private _isAuthenticated = signal<boolean>(false);
   private _currentUser = signal<DecodedToken | null>(null);

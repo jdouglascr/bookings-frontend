@@ -1,22 +1,49 @@
 <div class="appointment-selection">
-  <div class="appointments-grid">
-    @for (appointment of appointments(); track appointment.id) {
-      <div
-        class="appointment-card"
-        [class.selected]="selectedAppointment()?.id === appointment.id"
-        (click)="selectAppointment(appointment)"
-      >
-        <div class="appointment-image">
-          <img [src]="appointment.imageUrl" [alt]="appointment.name" />
+  @if (isLoading()) {
+    <!-- Skeleton Loader -->
+    <div class="appointments-grid">
+      @for (i of [1, 2, 3]; track i) {
+        <div class="appointment-card appointment-card--skeleton">
+          <div class="skeleton skeleton-image"></div>
+          <div class="appointment-info" style="flex: 1">
+            <div class="skeleton skeleton-title"></div>
+            <div class="skeleton skeleton-text"></div>
+          </div>
+          <div class="skeleton skeleton-indicator"></div>
         </div>
-        <div class="appointment-info">
-          <h4>{{ appointment.name }}</h4>
-          <p class="description">{{ appointment.description }}</p>
+      }
+    </div>
+  } @else if (appointments().length > 0) {
+    <!-- Contenido Real -->
+    <div class="appointments-grid">
+      @for (appointment of appointments(); track appointment.id) {
+        <div
+          class="appointment-card"
+          role="button"
+          tabindex="0"
+          [class.selected]="selectedAppointment()?.id === appointment.id"
+          (click)="selectAppointment(appointment)"
+          (keyup.enter)="selectAppointment(appointment)"
+          (keyup.space)="selectAppointment(appointment)"
+        >
+          <div class="appointment-image">
+            <img [src]="appointment.imageUrl" [alt]="appointment.name" />
+          </div>
+          <div class="appointment-info">
+            <h4>{{ appointment.name }}</h4>
+            <p class="description">{{ appointment.description }}</p>
+          </div>
+          <div class="selected-indicator">
+            <mat-icon>check_circle</mat-icon>
+          </div>
         </div>
-        <div class="selected-indicator">
-          <mat-icon>check_circle</mat-icon>
-        </div>
-      </div>
-    }
-  </div>
+      }
+    </div>
+  } @else {
+    <!-- Sin recursos disponibles -->
+    <div class="empty-state">
+      <mat-icon>person_off</mat-icon>
+      <p>No hay recursos disponibles para este servicio</p>
+    </div>
+  }
 </div>

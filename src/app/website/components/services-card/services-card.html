@@ -1,33 +1,68 @@
 <section class="offer">
   <h2 class="offer__title">Explora nuestras opciones y reserva al instante</h2>
-  <mat-tab-group>
-    @for (category of categories(); track category.id) {
-      <mat-tab [label]="category.name">
-        <div class="services">
-          @for (service of category.services; track service.id) {
-            <mat-card class="services__card" (click)="onSelectService(service)">
-              <div class="services__content">
-                <img
-                  class="services__content--image"
-                  mat-card-image
-                  [src]="service.logoUrl"
-                  [alt]="'foto ' + service.name"
-                />
-                <div class="services__info">
-                  <h3 class="services__info--title">{{ service.name }}</h3>
-                  <p class="services__info--description">{{ service.description }}</p>
+
+  @if (servicesService.isLoading()) {
+    <!-- Skeleton Loader -->
+    <div class="skeleton-tabs">
+      <div class="skeleton skeleton-tab-header"></div>
+      <div class="skeleton skeleton-tab-header"></div>
+      <div class="skeleton skeleton-tab-header"></div>
+    </div>
+
+    <div class="services" style="margin-top: 1rem; padding: 1rem">
+      @for (i of [1, 2, 3]; track i) {
+        <mat-card class="services__card services__card--skeleton">
+          <div class="services__content">
+            <div class="skeleton skeleton-circle-image"></div>
+            <div class="services__info" style="flex: 1">
+              <div class="skeleton skeleton-title"></div>
+              <div class="skeleton skeleton-text"></div>
+            </div>
+            <div class="services__details">
+              <div class="skeleton skeleton-duration"></div>
+              <div class="skeleton skeleton-price"></div>
+            </div>
+          </div>
+        </mat-card>
+      }
+    </div>
+  } @else if (servicesService.categories().length > 0) {
+    <!-- Contenido Real -->
+    <mat-tab-group>
+      @for (category of servicesService.categories(); track category.categoryId) {
+        <mat-tab [label]="category.categoryName">
+          <div class="services">
+            @for (service of category.services; track service.id) {
+              <mat-card class="services__card" (click)="onSelectService(service)">
+                <div class="services__content">
+                  <img
+                    class="services__content--image"
+                    mat-card-image
+                    [src]="service.logoUrl"
+                    [alt]="'foto ' + service.name"
+                  />
+                  <div class="services__info">
+                    <h3 class="services__info--title">{{ service.name }}</h3>
+                    <p class="services__info--description">{{ service.description }}</p>
+                  </div>
+                  <div class="services__details">
+                    <span class="services__details--duration">
+                      <mat-icon>schedule</mat-icon> {{ service.durationFormatted }}
+                    </span>
+                    <span class="services__details--price">{{ service.priceFormatted }}</span>
+                  </div>
                 </div>
-                <div class="services__details">
-                  <span class="services__details--duration"
-                    ><mat-icon>schedule</mat-icon> {{ service.durationFormatted }}</span
-                  >
-                  <span class="services__details--price">{{ service.priceFormatted }}</span>
-                </div>
-              </div>
-            </mat-card>
-          }
-        </div>
-      </mat-tab>
-    }
-  </mat-tab-group>
+              </mat-card>
+            }
+          </div>
+        </mat-tab>
+      }
+    </mat-tab-group>
+  } @else {
+    <!-- Sin servicios -->
+    <div class="empty-state">
+      <mat-icon>shopping_bag</mat-icon>
+      <p>No hay servicios disponibles</p>
+    </div>
+  }
 </section>

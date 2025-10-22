@@ -6,12 +6,30 @@
 
 <div class="logo-floating">
   <div class="logo-floating__container">
-    <img class="logo-floating__image" src="logo.png" alt="logo barbería" />
+    @if (businessService.isLoading()) {
+      <div class="skeleton skeleton-logo"></div>
+    } @else if (businessService.business()) {
+      <img
+        class="logo-floating__image"
+        [src]="businessService.business()!.logoUrl"
+        alt="logo barbería"
+        loading="lazy"
+      />
+    }
   </div>
 </div>
 
 <div class="banner">
-  <img class="banner__image" src="banner.png" alt="banner barbería" />
+  @if (businessService.isLoading()) {
+    <div class="skeleton skeleton-banner"></div>
+  } @else if (businessService.business()) {
+    <img
+      class="banner__image"
+      [src]="businessService.business()!.bannerUrl"
+      alt="banner barbería"
+      loading="lazy"
+    />
+  }
 </div>
 
 <div class="main">

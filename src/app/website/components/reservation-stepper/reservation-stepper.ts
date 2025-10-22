@@ -81,6 +81,7 @@ export class ReservationStepper {
   readonly currentStep = computed(() => this.steps[this.currentStepIndex()]);
   readonly stepData = signal<StepData>({
     service: this.data?.selectedService || undefined,
+    serviceId: this.data?.selectedService?.id || 0,
   });
 
   private readonly contactFormValid = signal(false);

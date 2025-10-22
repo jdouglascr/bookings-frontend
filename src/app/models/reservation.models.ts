@@ -112,9 +112,10 @@ export interface Booking {
 
 // Step Data for Reservation Flow
 export interface StepData {
-  appointment?: Appointment;
   service?: Service;
-  selectedDate?: string; // ISO date string
+  serviceId?: number;
+  appointment?: Appointment;
+  selectedDate?: string;
   selectedTimeSlot?: TimeSlot;
   contactInfo?: ContactInfo;
 }

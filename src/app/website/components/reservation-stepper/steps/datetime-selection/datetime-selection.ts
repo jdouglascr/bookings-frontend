@@ -5,7 +5,6 @@ import {
   AppointmentAvailability,
   TimeSlot,
   CalendarDay,
-  WeekSchedule,
 } from '../../../../../models/reservation.models';
 
 @Component({

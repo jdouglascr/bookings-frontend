@@ -33,13 +33,9 @@ export class AppointmentSelection implements OnInit {
   selectAppointment(resource: PublicResource) {
     const appointment: Appointment = {
       id: resource.id,
-      businessId: 1,
-      userId: 0,
       name: resource.name,
       description: resource.description,
       imageUrl: resource.imageUrl,
-      isActive: true,
-      availableServices: [],
     };
     this.appointmentSelected.emit(appointment);
   }

@@ -1,6 +1,5 @@
 <div class="appointment-selection">
   @if (isLoading()) {
-    <!-- Skeleton Loader -->
     <div class="appointments-grid">
       @for (i of [1, 2, 3]; track i) {
         <div class="appointment-card appointment-card--skeleton">
@@ -14,14 +13,15 @@
       }
     </div>
   } @else if (appointments().length > 0) {
-    <!-- Contenido Real -->
     <div class="appointments-grid">
-      @for (appointment of appointments(); track appointment.id) {
+      @for (appointment of appointments(); track appointment.resourceServiceId) {
         <div
           class="appointment-card"
           role="button"
           tabindex="0"
-          [class.selected]="selectedAppointment()?.id === appointment.id"
+          [class.selected]="
+            selectedAppointment()?.resourceServiceId === appointment.resourceServiceId
+          "
           (click)="selectAppointment(appointment)"
           (keyup.enter)="selectAppointment(appointment)"
           (keyup.space)="selectAppointment(appointment)"
@@ -40,7 +40,6 @@
       }
     </div>
   } @else {
-    <!-- Sin recursos disponibles -->
     <div class="empty-state">
       <mat-icon>person_off</mat-icon>
       <p>No hay recursos disponibles para este servicio</p>

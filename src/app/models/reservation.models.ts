@@ -1,4 +1,3 @@
-// MODELOS DE DOMINIO
 export interface Service {
   id: number;
   name: string;
@@ -11,7 +10,7 @@ export interface Service {
 }
 
 export interface Appointment {
-  id: number;
+  resourceServiceId: number;
   name: string;
   description: string;
   imageUrl: string;
@@ -37,7 +36,6 @@ export interface Booking {
   status: 'Pendiente' | 'Confirmada' | 'Completada' | 'Cancelada';
 }
 
-// MODELOS DE UI/FORMULARIOS
 export interface ContactInfo {
   firstName: string;
   lastName: string;
@@ -55,7 +53,6 @@ export interface StepData {
   customer?: Customer;
 }
 
-// MODELOS DE CALENDARIO
 export interface TimeSlot {
   id: string;
   appointmentId: number;
@@ -93,7 +90,6 @@ export interface AppointmentAvailability {
   weekSchedule: WeekSchedule[];
 }
 
-// MODELOS DE RESPUESTA COMPLETA
 export interface BookingConfirmation {
   success: boolean;
   customer: Customer;

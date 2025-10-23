@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { PublicResource } from '../../models/resources-api.models';
+import { PublicResource } from '../../models/booking-api.models';
 import { environment } from '../../../environments/environment';
 
 @Injectable({

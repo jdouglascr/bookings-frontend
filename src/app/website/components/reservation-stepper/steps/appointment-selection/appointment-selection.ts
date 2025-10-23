@@ -3,7 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ResourcesService } from '../../../../../core/services/resources.service';
-import { PublicResource } from '../../../../../models/resources-api.models';
+import { PublicResource } from '../../../../../models/booking-api.models';
 import { Appointment } from '../../../../../models/reservation.models';
 
 @Component({
@@ -32,7 +32,7 @@ export class AppointmentSelection implements OnInit {
 
   selectAppointment(resource: PublicResource) {
     const appointment: Appointment = {
-      id: resource.id,
+      resourceServiceId: resource.resourceServiceId,
       name: resource.name,
       description: resource.description,
       imageUrl: resource.imageUrl,

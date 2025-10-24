@@ -8,7 +8,6 @@ import { BusinessService } from '../../../core/services/business.service';
 
 @Component({
   selector: 'app-website-layout',
-  standalone: true,
   imports: [MatIconModule, BusinessCards, ServicesCard, MatButtonModule, RouterLink],
   templateUrl: './website-layout.html',
   styleUrl: './website-layout.scss',

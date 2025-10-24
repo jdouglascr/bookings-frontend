@@ -30,27 +30,40 @@
         <button
           mat-button
           class="sidebar__nav-item"
-          [class.active]="activeSection() === item.id"
-          (click)="setActiveSection(item.id)"
+          [class.active]="isActive(item.route)"
+          [class.disabled]="!item.isEnabled"
+          (click)="navigateToIfEnabled(item)"
         >
           <mat-icon>{{ item.icon }}</mat-icon>
           <span>{{ item.label }}</span>
+          @if (!item.isEnabled) {
+            <span class="coming-soon-badge">Próximamente</span>
+          }
         </button>
       }
 
-      <p class="sidebar__nav-title">CUENTA</p>
+      <p class="sidebar__nav-title">CONFIGURACIÓN</p>
 
       @for (item of accountItems(); track item.id) {
-        <button mat-button class="sidebar__nav-item">
+        <button
+          mat-button
+          class="sidebar__nav-item"
+          [class.active]="isActive(item.route)"
+          [class.disabled]="!item.isEnabled"
+          (click)="navigateToIfEnabled(item)"
+        >
           <mat-icon>{{ item.icon }}</mat-icon>
           <span>{{ item.label }}</span>
+          @if (!item.isEnabled) {
+            <span class="coming-soon-badge">Próximamente</span>
+          }
         </button>
       }
     </nav>
 
     <!-- Copyright -->
     <div class="sidebar__footer">
-      <p>© 2025 Bookings — Developed by MariSoft</p>
+      <p>© 2025 Bookings – Developed by MariSoft</p>
     </div>
   </aside>
 
@@ -77,10 +90,6 @@
           <mat-icon>expand_more</mat-icon>
         </button>
         <mat-menu #userMenu="matMenu">
-          <button mat-menu-item>
-            <mat-icon>person</mat-icon>
-            <span>Mi perfil</span>
-          </button>
           <button mat-menu-item (click)="logout()">
             <mat-icon>logout</mat-icon>
             <span>Cerrar sesión</span>
@@ -91,32 +100,7 @@
 
     <!-- Content Area -->
     <main class="content">
-      <!-- Breadcrumbs -->
-      <div class="breadcrumbs">
-        <a href="#" class="breadcrumbs__link">Inicio</a>
-        <mat-icon>chevron_right</mat-icon>
-        <span class="breadcrumbs__current">{{ getCurrentSectionLabel() }}</span>
-      </div>
-
-      <!-- Page Content -->
-      <div class="page">
-        <div class="page__header">
-          <div>
-            <h1 class="page__title">{{ getCurrentSectionLabel() }}</h1>
-            <p class="page__subtitle">Gestiona los servicios de tu negocio</p>
-          </div>
-          <button mat-flat-button color="primary" class="page__action">
-            <mat-icon>add</mat-icon>
-            Nuevo servicio
-          </button>
-        </div>
-
-        <mat-card class="empty-state">
-          <mat-icon>construction</mat-icon>
-          <h3>Sección en construcción</h3>
-          <p>Esta sección estará disponible próximamente</p>
-        </mat-card>
-      </div>
+      <router-outlet />
     </main>
   </div>
 </div>

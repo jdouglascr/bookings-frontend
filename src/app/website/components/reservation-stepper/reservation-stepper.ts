@@ -9,13 +9,15 @@ import {
   TimeSlot,
   Service,
   ContactInfo,
-  Booking,
-  Customer,
 } from '../../../models/reservation.models';
 import { AppointmentSelection } from './steps/appointment-selection/appointment-selection';
 import { DatetimeSelection } from './steps/datetime-selection/datetime-selection';
 import { ContactForm } from './steps/contact-form/contact-form';
 import { ReservationSummary } from './steps/reservation-summary/reservation-summary';
+import { CustomerService } from '../../../core/services/customer.service';
+import { BookingService } from '../../../core/services/booking.service';
+import { PublicBookingCreateRequest } from '../../../models/booking-api.models';
+import { catchError, switchMap, of } from 'rxjs';
 
 interface StepConfig {
   id: string;
@@ -46,6 +48,8 @@ interface DialogData {
 export class ReservationStepper {
   private readonly dialogRef = inject(MatDialogRef<ReservationStepper>);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly customerService = inject(CustomerService);
+  private readonly bookingService = inject(BookingService);
   readonly data = inject(MAT_DIALOG_DATA, { optional: true }) as DialogData | null;
 
   @ViewChild(DatetimeSelection) datetimeSelection?: DatetimeSelection;
@@ -139,7 +143,7 @@ export class ReservationStepper {
     }));
 
     const currentData = this.stepData();
-    if (currentData.appointment?.id !== appointment.id) {
+    if (currentData.appointment?.resourceServiceId !== appointment.resourceServiceId) {
       this.stepData.update((data) => ({
         ...data,
         selectedDate: undefined,
@@ -186,65 +190,83 @@ export class ReservationStepper {
       !data.selectedTimeSlot ||
       !data.contactInfo
     ) {
-      console.error('Faltan datos para completar la reserva');
+      this.snackBar.open('❌ Faltan datos para completar la reserva', 'Cerrar', {
+        duration: 4000,
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom',
+        panelClass: ['error-snackbar'],
+      });
       return;
     }
 
     this.isProcessingBooking.set(true);
     this.dialogRef.disableClose = true;
 
-    const startTime = data.selectedTimeSlot.time;
-    const endTime = this.calculateEndTime(startTime, data.service.durationMin);
+    const startDatetime = this.buildDatetime(data.selectedDate, data.selectedTimeSlot.time);
+    const endDatetime = this.calculateEndDatetime(startDatetime, data.service.durationMin);
 
-    const customer: Customer = {
-      id: 1,
-      id_business: 1,
-      first_name: data.contactInfo.firstName,
-      last_name: data.contactInfo.lastName,
-      email: data.contactInfo.email,
-      phone: data.contactInfo.phone,
-    };
+    this.customerService
+      .upsertCustomer(data.contactInfo)
+      .pipe(
+        switchMap((customerResponse) => {
+          const customer = this.customerService.mapToCustomer(customerResponse);
 
-    const booking: Booking = {
-      id: 1,
-      id_customer: customer.id!,
-      id_appointment_service: 1,
-      date: data.selectedDate,
-      start_time: startTime + ':00',
-      end_time: endTime + ':00',
-      price: data.service.price,
-      status: 'pending',
-    };
+          const bookingRequest: PublicBookingCreateRequest = {
+            customerId: customer.id!,
+            resourceServiceId: data.appointment!.resourceServiceId,
+            startDatetime: startDatetime,
+            endDatetime: endDatetime,
+            price: data.service!.price,
+            notes: `Reserva de ${data.service!.name}`,
+          };
 
-    setTimeout(() => {
-      console.log('='.repeat(60));
-      console.log('RESERVA CREADA EXITOSAMENTE');
-      console.log('='.repeat(60));
-      console.log('\n📋 DATOS DEL CLIENTE:');
-      console.log(JSON.stringify(customer, null, 2));
-      console.log('\n📅 DATOS DE LA RESERVA:');
-      console.log(JSON.stringify(booking, null, 2));
-      console.log('\n' + '='.repeat(60));
+          return this.bookingService.createBooking(bookingRequest);
+        }),
+        catchError((error) => {
+          console.error('Error al crear la reserva:', error);
+          this.isProcessingBooking.set(false);
+          this.dialogRef.disableClose = false;
 
-      this.dialogRef.close({ success: true, customer, booking });
+          this.snackBar.open(
+            '❌ Error al crear la reserva. Por favor intenta nuevamente.',
+            'Cerrar',
+            {
+              duration: 5000,
+              horizontalPosition: 'right',
+              verticalPosition: 'bottom',
+              panelClass: ['error-snackbar'],
+            },
+          );
 
-      this.snackBar.open('¡Reserva registrada exitosamente! ✓', 'Cerrar', {
-        duration: 5000,
-        horizontalPosition: 'right',
-        verticalPosition: 'bottom',
-        panelClass: ['success-snackbar'],
+          return of(null);
+        }),
+      )
+      .subscribe((bookingResponse) => {
+        if (bookingResponse) {
+          this.dialogRef.close({ success: true, booking: bookingResponse });
+
+          this.snackBar.open('✅ ¡Reserva registrada exitosamente!', 'Cerrar', {
+            duration: 5000,
+            horizontalPosition: 'right',
+            verticalPosition: 'bottom',
+            panelClass: ['success-snackbar'],
+          });
+        }
+
+        this.isProcessingBooking.set(false);
+        this.dialogRef.disableClose = false;
       });
-    }, 2000);
   }
 
-  private calculateEndTime(startTime: string, durationMin: number): string {
-    const [hours, minutes] = startTime.split(':').map(Number);
-    const startMinutes = hours * 60 + minutes;
-    const endMinutes = startMinutes + durationMin;
-    const endHours = Math.floor(endMinutes / 60);
-    const endMins = endMinutes % 60;
+  private buildDatetime(date: string, time: string): string {
+    return `${date}T${time}:00`;
+  }
 
-    return `${endHours.toString().padStart(2, '0')}:${endMins.toString().padStart(2, '0')}`;
+  private calculateEndDatetime(startDatetime: string, durationMin: number): string {
+    const start = new Date(startDatetime);
+    const end = new Date(start.getTime() + durationMin * 60000);
+
+    return end.toISOString().slice(0, 19);
   }
 
   closeDialog() {

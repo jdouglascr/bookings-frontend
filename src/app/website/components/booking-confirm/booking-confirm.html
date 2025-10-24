@@ -1,0 +1,60 @@
+<div class="booking-action-page">
+  <div class="booking-action-container">
+    @if (isLoading()) {
+      <!-- Skeleton Loader -->
+      <div class="skeleton-loader">
+        <div class="skeleton skeleton-icon"></div>
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-text"></div>
+        <div class="skeleton skeleton-button"></div>
+      </div>
+    } @else if (success()) {
+      <!-- Success State -->
+      <div class="success-content">
+        <div class="icon-container success">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <h1 class="title">¡Reserva Confirmada!</h1>
+        <p class="message">
+          Tu reserva ha sido confirmada exitosamente. Agradecemos tu confianza y te esperamos el día
+          de tu cita.
+        </p>
+        <div class="info-box">
+          <mat-icon class="info-icon">info_outline</mat-icon>
+          <div class="info-text">
+            <p>
+              <strong>Recuerda:</strong> Llega 5 minutos antes de tu cita programada. Si necesitas
+              hacer algún cambio, contáctanos con anticipación.
+            </p>
+          </div>
+        </div>
+        <button mat-raised-button color="primary" class="action-button" (click)="goToHome()">
+          Volver al inicio
+        </button>
+      </div>
+    } @else if (errorMessage()) {
+      <!-- Error State -->
+      <div class="error-content">
+        <div class="icon-container error">
+          <mat-icon>error_outline</mat-icon>
+        </div>
+        <h1 class="title">No se pudo confirmar</h1>
+        <p class="message">{{ errorMessage() }}</p>
+        <div class="error-details">
+          <p>
+            Si crees que esto es un error, por favor contáctanos directamente o intenta nuevamente
+            más tarde.
+          </p>
+        </div>
+        <div class="button-group">
+          <button mat-stroked-button class="action-button secondary" (click)="goToHome()">
+            Volver al inicio
+          </button>
+          <button mat-stroked-button class="action-button secondary" (click)="retry()">
+            Intentar nuevamente
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

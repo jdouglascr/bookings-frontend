@@ -5,7 +5,6 @@ import {
   AppointmentAvailability,
   TimeSlot,
   CalendarDay,
-  WeekSchedule,
 } from '../../../../../models/reservation.models';
 
 @Component({
@@ -22,7 +21,6 @@ export class DatetimeSelection implements OnInit {
   datetimeSelected = output<{ date: string; timeSlot: TimeSlot }>();
   dateChanged = output<{ date: string }>();
 
-  // Signal corregido con los días correctos bloqueados
   appointmentAvailability = signal<AppointmentAvailability>({
     appointmentId: 1,
     currentWeekHeader: '23 - 29, Septiembre 2024',
@@ -34,14 +32,14 @@ export class DatetimeSelection implements OnInit {
       {
         dayOfWeek: 'Domingo',
         shortName: 'Do',
-        dayNumber: 0, // Domingo = 0
-        isAvailable: false, // Domingo bloqueado
+        dayNumber: 0,
+        isAvailable: false,
         timeSlots: [],
       },
       {
         dayOfWeek: 'Lunes',
         shortName: 'Lu',
-        dayNumber: 1, // Lunes = 1
+        dayNumber: 1,
         isAvailable: true,
         timeSlots: [
           '09:00',
@@ -59,7 +57,7 @@ export class DatetimeSelection implements OnInit {
       {
         dayOfWeek: 'Martes',
         shortName: 'Ma',
-        dayNumber: 2, // Martes = 2
+        dayNumber: 2,
         isAvailable: true,
         timeSlots: [
           '09:00',
@@ -77,7 +75,7 @@ export class DatetimeSelection implements OnInit {
       {
         dayOfWeek: 'Miércoles',
         shortName: 'Mi',
-        dayNumber: 3, // Miércoles = 3
+        dayNumber: 3,
         isAvailable: true,
         timeSlots: [
           '09:00',
@@ -95,7 +93,7 @@ export class DatetimeSelection implements OnInit {
       {
         dayOfWeek: 'Jueves',
         shortName: 'Ju',
-        dayNumber: 4, // Jueves = 4
+        dayNumber: 4,
         isAvailable: true,
         timeSlots: [
           '09:00',
@@ -113,7 +111,7 @@ export class DatetimeSelection implements OnInit {
       {
         dayOfWeek: 'Viernes',
         shortName: 'Vi',
-        dayNumber: 5, // Viernes = 5
+        dayNumber: 5,
         isAvailable: true,
         timeSlots: [
           '09:00',
@@ -131,8 +129,8 @@ export class DatetimeSelection implements OnInit {
       {
         dayOfWeek: 'Sábado',
         shortName: 'Sa',
-        dayNumber: 6, // Sábado = 6
-        isAvailable: false, // Sábado bloqueado
+        dayNumber: 6,
+        isAvailable: false,
         timeSlots: [],
       },
     ],
@@ -142,11 +140,9 @@ export class DatetimeSelection implements OnInit {
   selectedDateSignal = signal<string | null>(null);
   selectedTimeSlotSignal = signal<TimeSlot | null>(null);
 
-  // Ordenar los días de lunes a domingo
   readonly weekDays = computed(() => {
     const schedule = this.appointmentAvailability().weekSchedule;
-    // Reordenar: empezar desde lunes (1) hasta domingo (0)
-    const orderedDays = [1, 2, 3, 4, 5, 6, 0]; // Lu, Ma, Mi, Ju, Vi, Sa, Do
+    const orderedDays = [1, 2, 3, 4, 5, 6, 0];
     return orderedDays.map((dayNum) => {
       const day = schedule.find((d) => d.dayNumber === dayNum);
       return day ? day.shortName : '';
@@ -185,7 +181,6 @@ export class DatetimeSelection implements OnInit {
     return timeSlot ? `${dateString} a las ${timeSlot.time}` : dateString;
   });
 
-  // Modificado para mostrar lunes a domingo
   readonly calendarDays = computed(() => {
     const startOfWeek = this.currentDate();
     const selectedDate = this.selectedDateSignal();
@@ -195,12 +190,9 @@ export class DatetimeSelection implements OnInit {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Generar 7 días empezando desde lunes
     for (let i = 0; i < 7; i++) {
       const currentDatePointer = new Date(startOfWeek);
       currentDatePointer.setDate(startOfWeek.getDate() + i);
-
-      // IMPORTANTE: Usar getDay() para consistencia con availableTimeSlots
       const dayOfWeek = currentDatePointer.getDay();
       const weekSchedule = availability.weekSchedule.find((ws) => ws.dayNumber === dayOfWeek);
       const dateString = this.formatDateToISO(currentDatePointer);
@@ -224,7 +216,6 @@ export class DatetimeSelection implements OnInit {
     const selectedDate = this.selectedDateSignal();
     if (!selectedDate) return [];
 
-    // IMPORTANTE: Usar UTC para evitar problemas de zona horaria
     const date = new Date(selectedDate + 'T00:00:00.000Z');
     const dayOfWeek = date.getUTCDay();
     const availability = this.appointmentAvailability();
@@ -258,13 +249,9 @@ export class DatetimeSelection implements OnInit {
     }
   }
 
-  // Modificado para calcular el lunes como inicio de semana
   private getCurrentWeekStart(): Date {
     const today = new Date();
     const dayOfWeek = today.getDay();
-
-    // Calcular cuántos días hay que restar para llegar al lunes
-    // Si es domingo (0), restar 6 días; si es lunes (1), restar 0; etc.
     const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
 
     const monday = new Date(today);
@@ -276,8 +263,6 @@ export class DatetimeSelection implements OnInit {
   private navigateToDateWeek(dateString: string): void {
     const targetDate = new Date(dateString + 'T00:00:00.000Z');
     const targetDayOfWeek = targetDate.getUTCDay();
-
-    // Calcular el lunes de la semana de la fecha objetivo
     const mondayOffset = targetDayOfWeek === 0 ? -6 : 1 - targetDayOfWeek;
     const mondayOfTargetWeek = new Date(targetDate);
     mondayOfTargetWeek.setUTCDate(targetDate.getUTCDate() + mondayOffset);
@@ -314,9 +299,6 @@ export class DatetimeSelection implements OnInit {
     const newDate = new Date(this.currentDate());
     newDate.setDate(newDate.getDate() + 7);
     this.currentDate.set(newDate);
-
-    // Aquí harías la llamada al backend para obtener los datos de la nueva semana
-    // this.loadWeekData(newDate);
   }
 
   previousWeek() {
@@ -325,9 +307,6 @@ export class DatetimeSelection implements OnInit {
     const newDate = new Date(this.currentDate());
     newDate.setDate(newDate.getDate() - 7);
     this.currentDate.set(newDate);
-
-    // Aquí harías la llamada al backend para obtener los datos de la nueva semana
-    // this.loadWeekData(newDate);
   }
 
   selectDate(day: CalendarDay) {

@@ -185,7 +185,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-height: 0; // Important for flex children
+    min-height: 0;
 
     h3 {
       font-size: 28px;
@@ -203,7 +203,6 @@
       flex-shrink: 0;
     }
 
-    // Content containers should be flexible and scrollable
     app-datetime-selection {
       flex: 1;
       display: flex;
@@ -353,7 +352,6 @@
     }
   }
 
-  // Animación del spinner
   @keyframes spin {
     from {
       transform: rotate(0deg);
@@ -363,7 +361,6 @@
     }
   }
 
-  // Animación del spinner
   @keyframes spin {
     from {
       transform: rotate(0deg);
@@ -373,7 +370,6 @@
     }
   }
 
-  // Estilos para el estado de carga del botón
   .btn-confirm {
     .loading-text {
       display: flex;
@@ -458,7 +454,6 @@
         margin-bottom: 20px;
       }
 
-      // Ensure datetime selection takes full width and height
       app-datetime-selection {
         width: 100%;
         max-width: 100%;

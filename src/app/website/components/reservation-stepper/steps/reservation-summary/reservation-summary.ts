@@ -11,7 +11,6 @@ import { StepData } from '../../../../../models/reservation.models';
 export class ReservationSummary {
   stepData = input.required<StepData>();
 
-  // Computed signal to format the selected date in a user-friendly format
   readonly formatSelectedDate = computed(() => {
     const selectedDate = this.stepData().selectedDate;
     if (!selectedDate) return '';
@@ -41,12 +40,10 @@ export class ReservationSummary {
     return `${dayName}, ${day} de ${month} de ${year}`;
   });
 
-  // Computed signal to format phone number with Chilean format
   readonly formatPhoneNumber = computed(() => {
     const phone = this.stepData().contactInfo?.phone;
     if (!phone) return '';
 
-    // Format Chilean phone number: XXX XXX XXX
     if (phone.length === 9) {
       return `${phone.slice(0, 1)} ${phone.slice(1, 5)} ${phone.slice(5)}`;
     }

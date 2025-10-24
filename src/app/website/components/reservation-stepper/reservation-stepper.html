@@ -63,7 +63,7 @@
             <app-datetime-selection
               [selectedDate]="stepData().selectedDate || null"
               [selectedTimeSlot]="stepData().selectedTimeSlot || null"
-              [selectedAppointmentId]="stepData().appointment?.id || 0"
+              [selectedAppointmentId]="stepData().appointment?.resourceServiceId || 0"
               (datetimeSelected)="onDatetimeSelected($event)"
               (dateChanged)="onDateChanged($event)"
             />

@@ -1,0 +1,114 @@
+<div class="services-page">
+  <div class="page__header">
+    <div class="page__header-content">
+      <h1 class="page__title">Categorías de servicios</h1>
+      <p class="page__subtitle">
+        Agrupa tus servicios dependiendo de sus características. Solo podrás eliminar una categoría
+        si no tienes servicios en ella.
+      </p>
+    </div>
+    <button mat-flat-button color="primary" class="page__action" (click)="openCategoryDialog()">
+      <mat-icon>add</mat-icon>
+      Crear nueva categoría
+    </button>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <mat-icon>hourglass_empty</mat-icon>
+      <p>Cargando servicios...</p>
+    </div>
+  } @else if (categoriesWithServices().length === 0) {
+    <mat-card class="empty-state">
+      <mat-icon>category</mat-icon>
+      <h3>No hay categorías</h3>
+      <p>Crea tu primera categoría para comenzar a organizar tus servicios</p>
+      <button mat-flat-button color="primary" (click)="openCategoryDialog()">
+        <mat-icon>add</mat-icon>
+        Crear categoría
+      </button>
+    </mat-card>
+  } @else {
+    <div class="categories-list">
+      @for (item of categoriesWithServices(); track item.category.id) {
+        <mat-card class="category-card">
+          <div class="category-header">
+            <div class="category-info">
+              <h2 class="category-name">{{ item.category.name }}</h2>
+              <span class="services-count">{{ item.servicesCount }} servicios</span>
+            </div>
+            <div class="category-actions">
+              <button mat-icon-button [matMenuTriggerFor]="categoryMenu" class="action-menu-btn">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #categoryMenu="matMenu">
+                <button mat-menu-item (click)="openCategoryDialog(item)">
+                  <mat-icon>edit</mat-icon>
+                  <span>Editar categoría</span>
+                </button>
+                <button mat-menu-item (click)="deleteCategory(item)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Eliminar categoría</span>
+                </button>
+              </mat-menu>
+            </div>
+          </div>
+
+          @if (item.services.length === 0) {
+            <div class="no-services">
+              <mat-icon>inbox</mat-icon>
+              <p>No hay servicios en esta categoría</p>
+              <button mat-stroked-button (click)="openServiceDialog(item.category.id)">
+                <mat-icon>add</mat-icon>
+                Crear servicio
+              </button>
+            </div>
+          } @else {
+            <div class="services-list">
+              @for (service of item.services; track service.id) {
+                <div class="service-item">
+                  <div class="service-icon">
+                    @if (service.logoUrl) {
+                      <img [src]="service.logoUrl" [alt]="service.name" />
+                    } @else {
+                      <mat-icon>image</mat-icon>
+                    }
+                  </div>
+                  <div class="service-details">
+                    <h3 class="service-name">{{ service.name }}</h3>
+                    <p class="service-description">{{ service.description }}</p>
+                  </div>
+                  <div class="service-actions">
+                    <button
+                      mat-icon-button
+                      matTooltip="Editar servicio"
+                      class="edit-btn"
+                      (click)="openServiceDialog(item.category.id, service.id)"
+                    >
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button
+                      mat-icon-button
+                      matTooltip="Eliminar servicio"
+                      class="delete-btn"
+                      (click)="deleteService(service.id, service.name)"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <div class="category-footer">
+              <button mat-stroked-button (click)="openServiceDialog(item.category.id)">
+                <mat-icon>add</mat-icon>
+                Crear servicio
+              </button>
+            </div>
+          }
+        </mat-card>
+      }
+    </div>
+  }
+</div>

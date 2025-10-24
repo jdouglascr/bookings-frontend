@@ -6,7 +6,6 @@ import { BusinessService } from '../../../core/services/business.service';
 
 @Component({
   selector: 'app-business-cards',
-  standalone: true,
   imports: [MatCardModule, MatIconModule],
   templateUrl: './business-cards.html',
   styleUrl: './business-cards.scss',

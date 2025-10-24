@@ -1,4 +1,5 @@
 import { Component, signal, computed, inject } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,11 +12,14 @@ interface MenuItem {
   id: string;
   label: string;
   icon: string;
+  route: string;
+  isEnabled: boolean;
 }
 
 @Component({
   selector: 'app-management-layout',
   imports: [
+    RouterOutlet,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
@@ -28,9 +32,9 @@ interface MenuItem {
 })
 export class ManagementLayout {
   private authService = inject(AuthService);
+  private router = inject(Router);
 
   mobileMenuOpen = signal(false);
-  activeSection = signal('calendario');
 
   businessName = signal('Rulos Style');
 
@@ -44,25 +48,59 @@ export class ManagementLayout {
   });
 
   menuItems = signal<MenuItem[]>([
-    { id: 'resumen', label: 'Resumen', icon: 'dashboard' },
-    { id: 'calendario', label: 'Calendario', icon: 'event' },
-    { id: 'servicios', label: 'Servicios', icon: 'shopping_bag' },
-    { id: 'agendas', label: 'Agendas', icon: 'schedule' },
-    { id: 'clientes', label: 'Clientes', icon: 'people' },
-    { id: 'análisis', label: 'Análisis', icon: 'analytics' },
-    { id: 'configuracion', label: 'Configuración', icon: 'settings' },
+    {
+      id: 'resumen',
+      label: 'Resumen',
+      icon: 'dashboard',
+      route: '/admin/dashboard',
+      isEnabled: false,
+    },
+    {
+      id: 'calendario',
+      label: 'Calendario',
+      icon: 'event',
+      route: '/admin/calendar',
+      isEnabled: false,
+    },
+    {
+      id: 'servicios',
+      label: 'Servicios',
+      icon: 'construction',
+      route: '/admin/services',
+      isEnabled: true,
+    },
+    {
+      id: 'agendas',
+      label: 'Agendas',
+      icon: 'schedule',
+      route: '/admin/schedules',
+      isEnabled: false,
+    },
+    {
+      id: 'clientes',
+      label: 'Clientes',
+      icon: 'people',
+      route: '/admin/customers',
+      isEnabled: false,
+    },
   ]);
 
   accountItems = signal<MenuItem[]>([
-    { id: 'negocio', label: 'Mi negocio', icon: 'business' },
-    { id: 'facturacion', label: 'Facturación', icon: 'receipt_long' },
-    { id: 'ayuda', label: 'Ayuda', icon: 'help' },
+    {
+      id: 'negocio',
+      label: 'Mi negocio',
+      icon: 'business',
+      route: '/admin/business',
+      isEnabled: false,
+    },
+    {
+      id: 'cuenta',
+      label: 'Mi cuenta',
+      icon: 'account_box',
+      route: '/admin/billing',
+      isEnabled: false,
+    },
   ]);
-
-  getCurrentSectionLabel = computed(() => {
-    const section = this.menuItems().find((item) => item.id === this.activeSection());
-    return section ? section.label : 'Inicio';
-  });
 
   toggleMobileMenu() {
     this.mobileMenuOpen.update((value) => !value);
@@ -72,9 +110,19 @@ export class ManagementLayout {
     this.mobileMenuOpen.set(false);
   }
 
-  setActiveSection(sectionId: string) {
-    this.activeSection.set(sectionId);
+  navigateTo(route: string) {
+    this.router.navigate([route]);
     this.closeMobileMenu();
+  }
+
+  isActive(route: string): boolean {
+    return this.router.url === route;
+  }
+
+  navigateToIfEnabled(item: MenuItem) {
+    if (item.isEnabled) {
+      this.navigateTo(item.route);
+    }
   }
 
   logout() {

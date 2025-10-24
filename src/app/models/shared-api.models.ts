@@ -4,3 +4,7 @@ export interface ErrorResponse {
   errors: object;
   timestamp: string;
 }
+
+export interface MessageResponse {
+  message: string;
+}

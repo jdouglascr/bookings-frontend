@@ -9,6 +9,18 @@ export const routes: Routes = [
     title: 'Rulos Style | Reservas',
   },
   {
+    path: 'booking/confirm/:token',
+    loadComponent: () =>
+      import('./website/components/booking-confirm/booking-confirm').then((m) => m.BookingConfirm),
+    title: 'Rulos Style | Confirmar Reserva',
+  },
+  {
+    path: 'booking/cancel/:token',
+    loadComponent: () =>
+      import('./website/components/booking-cancel/booking-cancel').then((m) => m.BookingCancel),
+    title: 'Rulos Style | Cancelar Reserva',
+  },
+  {
     path: 'login',
     loadComponent: () => import('./management/pages/login/login').then((m) => m.Login),
     title: 'Rulos Style | Inicio Sesión',

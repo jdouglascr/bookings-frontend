@@ -9,7 +9,6 @@ import { PublicService } from '../../../models/services-api.models';
 
 @Component({
   selector: 'app-services-card',
-  standalone: true,
   imports: [MatTabsModule, MatCardModule, MatIconModule],
   templateUrl: './services-card.html',
   styleUrl: './services-card.scss',

@@ -8,7 +8,6 @@ import { Appointment } from '../../../../../models/reservation.models';
 
 @Component({
   selector: 'app-appointment-selection',
-  standalone: true,
   imports: [MatCardModule, MatButtonModule, MatIconModule],
   templateUrl: './appointment-selection.html',
   styleUrl: './appointment-selection.scss',

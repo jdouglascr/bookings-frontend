@@ -301,7 +301,6 @@
 }
 
 // Responsive
-// Tablet específico (iPad Mini y similar)
 @media (min-width: 769px) and (max-width: 1024px) {
   .datetime-selection {
     gap: 20px;
@@ -341,7 +340,6 @@
   .time-section {
     padding: 16px;
     flex-shrink: 0;
-    // Remove fixed heights to allow content to determine size
   }
 
   .calendar-header .calendar-title {

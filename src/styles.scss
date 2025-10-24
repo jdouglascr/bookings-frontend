@@ -105,3 +105,14 @@ body {
     }
   }
 }
+
+// Estilos globales para select panels
+.mat-mdc-select-panel,
+.mdc-menu-surface {
+  background-color: var(--color-primary) !important;
+}
+
+.mat-mdc-option,
+.mdc-list-item {
+  background-color: var(--color-primary) !important;
+}

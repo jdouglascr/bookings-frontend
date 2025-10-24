@@ -32,8 +32,20 @@ export const routes: Routes = [
       import('./management/pages/management-layout/management-layout').then(
         (m) => m.ManagementLayout,
       ),
-    title: 'Rulos Style | Administración',
     canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'services',
+        pathMatch: 'full',
+      },
+      {
+        path: 'services',
+        loadComponent: () =>
+          import('./management/pages/service-page/service-page').then((m) => m.ServicePage),
+        title: 'Rulos Style | Servicios',
+      },
+    ],
   },
   {
     path: '**',

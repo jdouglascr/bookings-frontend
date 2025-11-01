@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ErrorResponse } from '../../../models/shared-api.models';
 
@@ -22,6 +22,7 @@ import { ErrorResponse } from '../../../models/shared-api.models';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     ReactiveFormsModule,
+    RouterLink,
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',

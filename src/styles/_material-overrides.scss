@@ -1,32 +1,20 @@
-// ===================================================================
-// ANGULAR MATERIAL 20 COMPONENT OVERRIDES
-// Compatible con Angular 20 + Angular Material 20
-// TODOS LOS TOKENS VALIDADOS Y CORREGIDOS
-// ===================================================================
-
 @use '@angular/material' as mat;
 
-// ===================================================================
-// FORM FIELD OVERRIDES (Inputs, Selects, Textareas)
-// ===================================================================
+// FORM FIELD OVERRIDES
 @mixin form-field-overrides() {
   @include mat.form-field-overrides(
     (
-      // Outline styles (para appearance="outline")
+      // Outline styles
       outlined-outline-color: var(--gray-border-dark),
       outlined-outline-width: 1.5px,
-
-      // Focus states
       outlined-focus-outline-color: var(--gray-text-darker),
       outlined-focus-outline-width: 2px,
-
-      // Hover states
       outlined-hover-outline-color: var(--gray-text-darker),
-      // Container
       outlined-container-shape: 12px,
+      // Container
       container-text-size: 15px,
       container-text-line-height: 1.2,
-
+      container-height: 56px,
       // Label
       outlined-label-text-size: 14px,
       outlined-label-text-color: var(--gray-text-medium),
@@ -38,109 +26,80 @@
       // Input text colors
       outlined-input-text-color: var(--gray-text-darker),
       outlined-input-text-placeholder-color: var(--gray-text-light),
-      // Leading/Trailing icons
+      // Icons
       leading-icon-color: var(--gray-text-medium),
       trailing-icon-color: var(--gray-text-medium)
     )
   );
 }
 
-// ===================================================================
 // SELECT OVERRIDES
-// ===================================================================
 @mixin select-overrides() {
   @include mat.select-overrides(
     (
-      // Trigger (el botón select)
       trigger-text-size: 15px,
       enabled-trigger-text-color: var(--gray-text-darker),
-      // Arrow
       enabled-arrow-color: var(--gray-text-medium),
       focused-arrow-color: var(--gray-text-darker),
-      // Panel (dropdown)
-      panel-background-color: var(--color-primary)
+      panel-background-color: var(--color-primary),
     )
   );
 }
 
-// ===================================================================
-// OPTION OVERRIDES (para mat-select y mat-autocomplete)
-// ===================================================================
+// OPTION OVERRIDES
 @mixin option-overrides() {
   @include mat.option-overrides(
     (
-      // Option text
       label-text-size: 15px,
       label-text-color: var(--gray-text-darker),
-      // Hover state
       hover-state-layer-color: var(--color-primary-soft),
-      // Selected state
       selected-state-label-text-color: var(--gray-text-darker),
       selected-state-layer-color: rgba(41, 38, 41, 0.08),
-      // Focus state
-      focus-state-layer-color: var(--color-primary-soft)
+      focus-state-layer-color: var(--color-primary-soft),
     )
   );
 }
 
-// ===================================================================
 // BUTTON OVERRIDES
-// ===================================================================
 @mixin button-overrides() {
   @include mat.button-overrides(
     (
-      // ===== FILLED BUTTONS (mat-flat-button, mat-raised-button) =====
+      // Filled buttons
       filled-container-shape: 10px,
       filled-container-color: var(--color-secondary),
       filled-label-text-color: var(--color-primary),
       filled-label-text-weight: 600,
-
-      // Estados de interacción (solo opacidades)
       filled-hover-state-layer-opacity: 0.08,
       filled-focus-state-layer-opacity: 0.12,
       filled-pressed-state-layer-opacity: 0.16,
-
-      // Estados deshabilitados
       filled-disabled-container-color: var(--gray-border-dark),
       filled-disabled-label-text-color: var(--gray-text-light),
-      // ===== TEXT BUTTONS (mat-button) =====
+      // Text buttons
       text-container-shape: 10px,
       text-label-text-color: var(--gray-text-darker),
       text-label-text-weight: 600,
-
-      // Estado layer color base
       text-state-layer-color: var(--gray-text-darker),
-      // Estados de interacción (solo opacidades)
       text-hover-state-layer-opacity: 0.04,
       text-focus-state-layer-opacity: 0.08,
       text-pressed-state-layer-opacity: 0.12,
-
-      // Estados deshabilitados
       text-disabled-label-text-color: var(--gray-text-light),
-      // ===== OUTLINED BUTTONS (mat-stroked-button) =====
+      // Outlined buttons
       outlined-container-shape: 10px,
       outlined-label-text-color: var(--gray-text-darker),
       outlined-label-text-weight: 600,
       outlined-outline-color: var(--gray-border-dark),
       outlined-outline-width: 1.5px,
-
-      // Estado layer color base
       outlined-state-layer-color: var(--gray-text-darker),
-      // Estados de interacción
       outlined-hover-state-layer-opacity: 0.04,
       outlined-focus-state-layer-opacity: 0.08,
       outlined-pressed-state-layer-opacity: 0.12,
-
-      // Estados deshabilitados
       outlined-disabled-label-text-color: var(--gray-text-light),
       outlined-disabled-outline-color: var(--gray-border)
     )
   );
 }
 
-// ===================================================================
 // DIALOG OVERRIDES
-// ===================================================================
 @mixin dialog-overrides() {
   @include mat.dialog-overrides(
     (
@@ -151,18 +110,13 @@
   );
 }
 
-// ===================================================================
-// ICON BUTTON OVERRIDES - CORREGIDO: container-shape (no state-layer-shape)
-// ===================================================================
+// ICON BUTTON OVERRIDES
 @mixin icon-button-overrides() {
   @include mat.icon-button-overrides(
     (
       container-shape: 8px,
-      // Correcto en Angular Material 20
       icon-color: var(--gray-text-medium),
-      // Estado layer color base
       state-layer-color: var(--gray-text-medium),
-      // Estados de interacción (opacidades)
       hover-state-layer-opacity: 0.08,
       focus-state-layer-opacity: 0.12,
       pressed-state-layer-opacity: 0.16,
@@ -170,14 +124,11 @@
   );
 }
 
-// ===================================================================
-// SNACKBAR OVERRIDES - CORREGIDO: container-shape (no button-container-shape)
-// ===================================================================
+// SNACKBAR OVERRIDES
 @mixin snackbar-overrides() {
   @include mat.snack-bar-overrides(
     (
       container-shape: 8px,
-      // Correcto en Angular Material 20
       container-color: var(--color-secondary),
       button-color: var(--color-primary),
       supporting-text-color: var(--color-primary),
@@ -185,9 +136,36 @@
   );
 }
 
-// ===================================================================
+// TABS OVERRIDES
+@mixin tabs-overrides() {
+  @include mat.tabs-overrides(
+    (
+      background-color: transparent,
+      foreground-color: var(--gray-text-darker),
+      divider-color: var(--gray-border),
+      divider-height: 2px,
+      inactive-label-text-color: var(--gray-text-medium),
+      inactive-focus-label-text-color: var(--gray-text-darker),
+      inactive-hover-label-text-color: var(--gray-text-darker),
+      active-label-text-color: var(--gray-text-darker),
+      active-focus-label-text-color: var(--gray-text-darker),
+      active-hover-label-text-color: var(--gray-text-darker),
+      active-ripple-color: var(--gray-text-darker),
+      inactive-ripple-color: var(--gray-text-medium),
+      active-indicator-color: var(--gray-text-darker),
+      active-indicator-height: 3px,
+      active-indicator-shape: 0,
+      active-hover-indicator-color: var(--gray-text-darker),
+      active-focus-indicator-color: var(--gray-text-darker),
+      label-text-size: 14px,
+      label-text-weight: 600,
+      label-text-font: 'Nunito Sans',
+      container-height: 48px,
+    )
+  );
+}
+
 // APLICAR TODOS LOS OVERRIDES
-// ===================================================================
 @mixin apply-all-material-overrides() {
   @include form-field-overrides();
   @include select-overrides();
@@ -196,4 +174,5 @@
   @include dialog-overrides();
   @include icon-button-overrides();
   @include snackbar-overrides();
+  @include tabs-overrides();
 }

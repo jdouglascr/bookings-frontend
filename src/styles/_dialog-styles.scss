@@ -1,0 +1,143 @@
+// HEADER DEL DIALOG
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 24px 16px 24px;
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-text-titles);
+    line-height: 1.2;
+  }
+
+  .close-btn {
+    flex-shrink: 0;
+    margin-left: 16px;
+  }
+}
+
+// CONTENT DEL DIALOG
+.dialog-content-wrapper {
+  padding: 0 24px 16px 24px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+// ACTIONS DEL DIALOG
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+
+// FORM SECTIONS
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &:not(:last-child) {
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--gray-border);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gray-text-titles);
+    margin: 0 0 8px 0;
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+// LOADING STATE
+.dialog-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 32px;
+  gap: 16px;
+  min-height: 200px;
+
+  .spinner {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: var(--gray-text-light);
+    animation: spin 1s linear infinite;
+  }
+
+  p {
+    margin: 0;
+    color: var(--gray-text-medium);
+    font-size: 0.875rem;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// SPINNER ANIMADO
+.material-spinner {
+  animation: spin 1s linear infinite;
+}
+
+// RESPONSIVE
+@media (max-width: 768px) {
+  .dialog-header {
+    padding: 20px 20px 16px 20px;
+
+    h2 {
+      font-size: 1.25rem;
+    }
+  }
+
+  .dialog-content-wrapper {
+    padding: 0 20px 16px 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .dialog-header {
+    padding: 16px 16px 12px 16px;
+
+    h2 {
+      font-size: 1.125rem;
+    }
+  }
+
+  .dialog-content-wrapper {
+    padding: 0 16px 12px 16px;
+  }
+
+  .dialog-actions {
+    gap: 8px;
+  }
+}

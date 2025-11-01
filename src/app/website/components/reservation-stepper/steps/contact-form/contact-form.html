@@ -66,13 +66,13 @@
           <input
             matInput
             formControlName="phone"
-            type="tel"
+            type="text"
+            inputmode="numeric"
             maxlength="9"
             autocomplete="tel"
+            (input)="onPhoneInput($event)"
             (focus)="onPhoneFocus()"
             (blur)="onPhoneBlur()"
-            (keypress)="onKeyPress($event)"
-            (paste)="onPaste($event)"
           />
           @if (
             contactForm.get('phone')?.invalid &&
@@ -81,9 +81,7 @@
             <mat-error>
               @if (contactForm.get('phone')?.hasError('required')) {
                 El teléfono es requerido
-              } @else if (contactForm.get('phone')?.hasError('pattern')) {
-                El teléfono debe tener 9 dígitos
-              } @else if (contactForm.get('phone')?.hasError('minlength')) {
+              } @else {
                 El teléfono debe tener 9 dígitos
               }
             </mat-error>

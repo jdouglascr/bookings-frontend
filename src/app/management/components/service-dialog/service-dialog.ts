@@ -39,6 +39,9 @@ export class ServiceDialog implements OnInit {
   isSaving = signal(false);
   isLoadingService = signal(false);
 
+  private readonly isPriceFocused = signal(false);
+  private readonly hasPriceValue = signal(false);
+
   categories = this.categoryService.categories;
 
   form: FormGroup;
@@ -48,9 +51,9 @@ export class ServiceDialog implements OnInit {
       categoryId: [this.data?.categoryId || null, [Validators.required]],
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(255)]],
       description: [''],
-      durationMin: [null, [Validators.required, Validators.min(1)]],
-      bufferTimeMin: [0, [Validators.min(0)]],
-      price: [null, [Validators.required, Validators.min(0)]],
+      durationMin: [null, [Validators.required, Validators.min(1), Validators.max(999999999)]],
+      bufferTimeMin: [0, [Validators.min(0), Validators.max(999999999)]],
+      price: [null, [Validators.required, Validators.min(1), Validators.max(999999999)]],
     });
   }
 
@@ -73,6 +76,7 @@ export class ServiceDialog implements OnInit {
           bufferTimeMin: service.bufferTimeMin,
           price: service.price,
         });
+        this.hasPriceValue.set(service.price !== null && service.price !== undefined);
         this.isLoadingService.set(false);
       },
       error: () => {
@@ -81,9 +85,35 @@ export class ServiceDialog implements OnInit {
     });
   }
 
-  formatPrice(event: any) {
-    const value = event.target.value.replace(/\D/g, '');
-    this.form.patchValue({ price: value ? parseInt(value) : null }, { emitEvent: false });
+  shouldShowPricePrefix(): boolean {
+    return this.isPriceFocused() || this.hasPriceValue();
+  }
+
+  onPriceFocus(): void {
+    this.isPriceFocused.set(true);
+  }
+
+  onPriceBlur(): void {
+    this.isPriceFocused.set(false);
+  }
+
+  onNumericInput(event: Event, fieldName: string, maxDigits: number): void {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.replace(/\D/g, '');
+
+    if (fieldName === 'price') {
+      this.hasPriceValue.set(value.length > 0);
+    }
+
+    if (value.length > maxDigits) {
+      const truncated = value.slice(0, maxDigits);
+      input.value = truncated;
+      this.form.patchValue({ [fieldName]: Number(truncated) });
+    } else if (value) {
+      this.form.patchValue({ [fieldName]: Number(value) });
+    } else {
+      this.form.patchValue({ [fieldName]: null });
+    }
   }
 
   onSubmit() {

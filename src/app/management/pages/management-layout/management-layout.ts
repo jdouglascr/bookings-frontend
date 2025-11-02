@@ -43,7 +43,7 @@ export class ManagementLayout {
   userRole = computed(() => {
     const role = this.currentUser()?.role;
     if (role === 'ROLE_ADMIN') return 'Administrador';
-    if (role === 'ROLE_USER') return 'Usuario';
+    if (role === 'ROLE_STAFF') return 'Personal';
     return 'Invitado';
   });
 
@@ -82,6 +82,13 @@ export class ManagementLayout {
       icon: 'people',
       route: '/admin/customers',
       isEnabled: false,
+    },
+    {
+      id: 'usuarios',
+      label: 'Usuarios',
+      icon: 'groups',
+      route: '/admin/users',
+      isEnabled: true,
     },
   ]);
 

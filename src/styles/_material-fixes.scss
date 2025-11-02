@@ -94,7 +94,6 @@
   &:has(.mat-mdc-form-field-text-prefix),
   &:has(.mat-mdc-form-field-icon-prefix) {
     .mdc-floating-label:not(.mdc-floating-label--float-above) {
-      // Posición unificada para que quede igual visualmente
       left: 45px !important;
     }
   }
@@ -299,7 +298,73 @@
   }
 }
 
-// FIX 9: Responsive
+// FIX 9: Checkbox label spacing
+.mat-mdc-checkbox {
+  .mdc-label {
+    padding-left: 8px;
+  }
+}
+
+// FIX 10: Password toggle button
+.mat-mdc-form-field {
+  .mat-mdc-icon-button[matIconSuffix] {
+    color: var(--gray-text-medium);
+
+    &:hover:not(:disabled) {
+      color: var(--gray-text-darker);
+    }
+
+    &:focus {
+      color: var(--gray-text-darker);
+    }
+  }
+}
+
+// FIX 11: Password section
+.password-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+
+  > mat-checkbox {
+    padding: 0 4px;
+
+    ::ng-deep {
+      .mdc-form-field {
+        display: flex;
+        align-items: center;
+      }
+
+      .mdc-checkbox {
+        margin-right: 12px;
+      }
+
+      .mdc-label {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--gray-text-darker);
+      }
+    }
+  }
+
+  .password-field {
+    animation: slideDown 0.3s ease-out;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// FIX 12: Responsive
 @media (max-width: 768px) {
   .mat-mdc-form-field {
     .mat-mdc-form-field-infix {
@@ -354,6 +419,10 @@
       padding-bottom: 12px !important;
       margin-bottom: 12px !important;
     }
+  }
+
+  .password-section > mat-checkbox ::ng-deep .mdc-label {
+    font-size: 13px;
   }
 }
 

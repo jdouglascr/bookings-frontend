@@ -165,6 +165,48 @@
   );
 }
 
+// CHECKBOX OVERRIDES - NUEVO
+@mixin checkbox-overrides() {
+  @include mat.checkbox-overrides(
+    (
+      // Selected/Checked state icons
+      selected-icon-color: var(--color-secondary),
+      selected-hover-icon-color: var(--color-secondary),
+      selected-focus-icon-color: var(--color-secondary),
+      selected-pressed-icon-color: var(--color-secondary),
+      selected-checkmark-color: var(--color-primary),
+      // Unselected/Unchecked state icons
+      unselected-icon-color: var(--gray-text-medium),
+      unselected-hover-icon-color: var(--gray-text-darker),
+      unselected-focus-icon-color: var(--gray-text-darker),
+      // State layers
+      selected-hover-state-layer-color: var(--color-secondary),
+      selected-focus-state-layer-color: var(--color-secondary),
+      selected-pressed-state-layer-color: var(--color-secondary),
+      unselected-hover-state-layer-color: var(--gray-text-darker),
+      unselected-focus-state-layer-color: var(--gray-text-darker),
+      unselected-pressed-state-layer-color: var(--gray-text-darker),
+      // State layer opacity
+      selected-hover-state-layer-opacity: 0.08,
+      selected-focus-state-layer-opacity: 0.12,
+      selected-pressed-state-layer-opacity: 0.16,
+      unselected-hover-state-layer-opacity: 0.04,
+      unselected-focus-state-layer-opacity: 0.08,
+      unselected-pressed-state-layer-opacity: 0.12,
+
+      // Disabled states
+      disabled-selected-icon-color: var(--gray-text-light),
+      disabled-unselected-icon-color: var(--gray-text-light),
+      disabled-selected-checkmark-color: var(--color-primary),
+      disabled-label-color: var(--gray-text-light),
+      // Label
+      label-text-color: var(--gray-text-darker),
+      label-text-size: 14px,
+      label-text-weight: 500
+    )
+  );
+}
+
 // APLICAR TODOS LOS OVERRIDES
 @mixin apply-all-material-overrides() {
   @include form-field-overrides();
@@ -175,4 +217,5 @@
   @include icon-button-overrides();
   @include snackbar-overrides();
   @include tabs-overrides();
+  @include checkbox-overrides();
 }

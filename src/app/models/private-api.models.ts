@@ -39,6 +39,12 @@ export interface CategoryResponse {
   createdAt: string;
 }
 
+export interface CategoryWithServices {
+  category: CategoryResponse;
+  services: ServiceResponse[];
+  servicesCount: number;
+}
+
 // Service
 export interface ServiceRequest {
   categoryId: number;
@@ -63,8 +69,25 @@ export interface ServiceResponse {
   createdAt: string;
 }
 
-export interface CategoryWithServices {
-  category: CategoryResponse;
-  services: ServiceResponse[];
-  servicesCount: number;
+// User
+export interface UserRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  password?: string;
+  role: 'ROLE_ADMIN' | 'ROLE_STAFF';
+  isActive?: boolean;
+}
+
+export interface UserResponse {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  role: string;
+  isActive: boolean;
+  lastLogin?: string;
+  createdAt: string;
 }

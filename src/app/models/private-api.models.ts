@@ -20,12 +20,22 @@ export interface RefreshTokenResponse {
 }
 
 export interface DecodedToken {
-  sub: string;
+  email: string;
   role: string;
-  userId: number;
   type: string;
   iat: number;
   exp: number;
+}
+
+export interface CurrentUser {
+  id: number;
+  email: string;
+  fullName: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  role: string;
+  isActive: boolean;
 }
 
 // Category

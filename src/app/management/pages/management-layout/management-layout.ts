@@ -35,17 +35,15 @@ export class ManagementLayout {
   private router = inject(Router);
 
   mobileMenuOpen = signal(false);
-
   businessName = signal('Rulos Style');
 
   currentUser = this.authService.currentUser;
-  userEmail = computed(() => this.currentUser()?.sub || 'Usuario');
-  userRole = computed(() => {
-    const role = this.currentUser()?.role;
-    if (role === 'ROLE_ADMIN') return 'Administrador';
-    if (role === 'ROLE_STAFF') return 'Personal';
-    return 'Invitado';
-  });
+
+  userName = computed(() => this.currentUser()?.fullName || 'Usuario');
+
+  userRole = computed(() =>
+    this.currentUser()?.role === 'ROLE_ADMIN' ? 'Administrador' : 'Personal',
+  );
 
   menuItems = signal<MenuItem[]>([
     {

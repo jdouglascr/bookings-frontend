@@ -2,11 +2,13 @@ import { inject } from '@angular/core';
 import { Router, CanActivateFn } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = async (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isAuthenticated()) {
+  const hasValidSession = await authService.checkSession();
+
+  if (hasValidSession) {
     return true;
   }
 
@@ -16,11 +18,13 @@ export const authGuard: CanActivateFn = (route, state) => {
   return false;
 };
 
-export const publicGuard: CanActivateFn = () => {
+export const publicGuard: CanActivateFn = async () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isAuthenticated()) {
+  const hasValidSession = await authService.checkSession();
+
+  if (hasValidSession) {
     router.navigate(['/admin']);
     return false;
   }
@@ -29,11 +33,13 @@ export const publicGuard: CanActivateFn = () => {
 };
 
 export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
-  return (route, state) => {
+  return async (route, state) => {
     const authService = inject(AuthService);
     const router = inject(Router);
 
-    if (!authService.isAuthenticated()) {
+    const hasValidSession = await authService.checkSession();
+
+    if (!hasValidSession) {
       sessionStorage.setItem('returnUrl', state.url);
       router.navigate(['/login']);
       return false;

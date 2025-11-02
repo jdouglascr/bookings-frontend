@@ -11,12 +11,20 @@ import { catchError, switchMap, filter, take, throwError } from 'rxjs';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
 
-  const publicUrls = ['/api/auth/login', '/api/auth/refresh'];
+  const publicUrls = [
+    '/api/auth/login',
+    '/api/auth/refresh',
+    '/api/public/',
+    '/api/health',
+    '/api/ping',
+    '/api/customers',
+  ];
 
   const isPublicUrl = publicUrls.some((url) => req.url.includes(url));
   if (isPublicUrl) {
     return next(req);
   }
+
   const accessToken = authService.getAccessToken();
 
   if (!accessToken) {
@@ -76,7 +84,9 @@ function handleUnauthorizedError(
     }),
     catchError((error) => {
       authService.setRefreshingToken(false);
+
       authService.logout();
+
       return throwError(() => error);
     }),
   );

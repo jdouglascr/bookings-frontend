@@ -4,12 +4,14 @@ import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { MessageResponse } from '../../models/shared-api.models';
 import { UserRequest, UserResponse } from '../../models/private-api.models';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   private http = inject(HttpClient);
+  private authService = inject(AuthService);
   private apiUrl = `${environment.apiUrl}/users`;
 
   users = signal<UserResponse[]>([]);
@@ -39,9 +41,15 @@ export class UserService {
   }
 
   updateUser(id: number, request: UserRequest): Observable<MessageResponse> {
-    return this.http
-      .put<MessageResponse>(`${this.apiUrl}/${id}`, request)
-      .pipe(tap(() => this.loadUsers().subscribe()));
+    return this.http.put<MessageResponse>(`${this.apiUrl}/${id}`, request).pipe(
+      tap(async () => {
+        this.loadUsers().subscribe();
+        const currentUser = this.authService.currentUser();
+        if (currentUser && currentUser.id === id) {
+          await this.authService.reloadCurrentUser();
+        }
+      }),
+    );
   }
 
   deleteUser(id: number): Observable<MessageResponse> {

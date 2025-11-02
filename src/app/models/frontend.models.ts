@@ -1,3 +1,4 @@
+// SERVICE MODELS
 export interface Service {
   id: number;
   name: string;
@@ -9,6 +10,7 @@ export interface Service {
   durationFormatted: string;
 }
 
+// APPOINTMENT MODELS
 export interface Appointment {
   resourceServiceId: number;
   name: string;
@@ -16,6 +18,7 @@ export interface Appointment {
   imageUrl: string;
 }
 
+// CUSTOMER MODELS
 export interface Customer {
   id?: number;
   id_business?: number;
@@ -25,6 +28,7 @@ export interface Customer {
   phone: string;
 }
 
+// BOOKING MODELS
 export interface Booking {
   id?: number;
   id_customer: number;
@@ -53,6 +57,7 @@ export interface StepData {
   customer?: Customer;
 }
 
+// AVAILABILITY MODELS
 export interface TimeSlot {
   id: string;
   appointmentId: number;
@@ -94,4 +99,35 @@ export interface BookingConfirmation {
   success: boolean;
   customer: Customer;
   booking: Booking;
+}
+
+// DATA TABLE MODELS
+export interface TableColumn<T> {
+  key: string;
+  label: string;
+  type?: 'text' | 'avatar';
+  width?: string;
+  getValue: (row: T) => string;
+  getAvatarText?: (row: T) => string;
+}
+
+export interface TableAction<T> {
+  icon: string;
+  tooltip: string;
+  handler: (row: T) => void;
+}
+
+// USER MODELS
+export interface UserTableRow {
+  id: number;
+  fullName: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  role: string;
+  isActive: boolean;
+  statusText: string;
+  lastLogin: string;
+  initials: string;
 }

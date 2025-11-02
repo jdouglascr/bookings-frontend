@@ -207,6 +207,20 @@
   );
 }
 
+// PAGINATOR OVERRIDES
+@mixin paginator-overrides() {
+  @include mat.paginator-overrides(
+    (
+      container-text-color: var(--gray-text-darker),
+      container-background-color: transparent,
+      enabled-icon-color: var(--gray-text-darker),
+      disabled-icon-color: var(--gray-text-light),
+      container-text-size: 14px,
+      form-field-container-height: 40px,
+    )
+  );
+}
+
 // APLICAR TODOS LOS OVERRIDES
 @mixin apply-all-material-overrides() {
   @include form-field-overrides();
@@ -218,4 +232,5 @@
   @include snackbar-overrides();
   @include tabs-overrides();
   @include checkbox-overrides();
+  @include paginator-overrides();
 }

@@ -1,24 +1,17 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { UserService } from '../../../core/services/user.service';
 import { UserDialog } from '../../components/user-dialog/user-dialog';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
+import { DataTable } from '../../components/data-table/data-table';
+import { TableColumn, TableAction, UserTableRow } from '../../../models/frontend.models';
 
 @Component({
   selector: 'app-user-page',
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    MatDialogModule,
-    MatSnackBarModule,
-    MatTooltipModule,
-  ],
+  imports: [MatButtonModule, MatIconModule, MatDialogModule, MatSnackBarModule, DataTable],
   templateUrl: './user-page.html',
   styleUrl: './user-page.scss',
 })
@@ -30,15 +23,80 @@ export class UserPage {
   users = this.userService.users;
   isLoading = this.userService.isLoading;
 
+  tableData = computed<UserTableRow[]>(() => {
+    return this.users().map((user) => ({
+      id: user.id,
+      fullName: `${user.firstName} ${user.lastName}`,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
+      role: user.role,
+      isActive: user.isActive,
+      statusText: user.isActive ? 'Activo' : 'Inactivo',
+      lastLogin: this.formatLastLogin(user.lastLogin),
+      initials: this.getInitials(user.firstName, user.lastName),
+    }));
+  });
+
+  columns: TableColumn<UserTableRow>[] = [
+    {
+      key: 'fullName',
+      label: 'Usuario',
+      type: 'avatar',
+      width: '250px',
+      getValue: (row) => row.fullName,
+      getAvatarText: (row) => row.initials,
+    },
+    {
+      key: 'email',
+      label: 'Email',
+      getValue: (row) => row.email,
+    },
+    {
+      key: 'phone',
+      label: 'Teléfono',
+      getValue: (row) => row.phone,
+    },
+    {
+      key: 'role',
+      label: 'Rol',
+      getValue: (row) => row.role,
+    },
+    {
+      key: 'statusText',
+      label: 'Estado',
+      getValue: (row) => row.statusText,
+    },
+    {
+      key: 'lastLogin',
+      label: 'Último acceso',
+      getValue: (row) => row.lastLogin,
+    },
+  ];
+
+  actions: TableAction<UserTableRow>[] = [
+    {
+      icon: 'edit',
+      tooltip: 'Editar usuario',
+      handler: (row) => this.openUserDialog(row.id),
+    },
+    {
+      icon: 'delete',
+      tooltip: 'Eliminar usuario',
+      handler: (row) => this.deleteUser(row.id, row.fullName),
+    },
+  ];
+
   constructor() {
     this.loadData();
   }
 
-  loadData() {
+  loadData(): void {
     this.userService.loadUsers().subscribe();
   }
 
-  openUserDialog(userId?: number) {
+  openUserDialog(userId?: number): void {
     const dialogRef = this.dialog.open(UserDialog, {
       width: '600px',
       maxWidth: '95vw',
@@ -52,7 +110,7 @@ export class UserPage {
     });
   }
 
-  deleteUser(userId: number, userName: string) {
+  deleteUser(userId: number, userName: string): void {
     const dialogRef = this.dialog.open(ConfirmDialog, {
       width: '400px',
       maxWidth: '95vw',
@@ -68,17 +126,18 @@ export class UserPage {
       if (confirmed) {
         this.userService.deleteUser(userId).subscribe({
           next: () => this.showSuccess('Usuario eliminado exitosamente'),
-          error: (err) => this.showError(err.error?.message || 'Error al eliminar usuario'),
+          error: (err: { error?: { message?: string } }) =>
+            this.showError(err.error?.message || 'Error al eliminar usuario'),
         });
       }
     });
   }
 
-  getInitials(firstName: string, lastName: string): string {
+  private getInitials(firstName: string, lastName: string): string {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   }
 
-  formatLastLogin(lastLogin?: string): string {
+  private formatLastLogin(lastLogin?: string): string {
     if (!lastLogin) return 'Nunca';
 
     const date = new Date(lastLogin);
@@ -97,14 +156,14 @@ export class UserPage {
     });
   }
 
-  private showSuccess(message: string) {
+  private showSuccess(message: string): void {
     this.snackBar.open(message, 'Cerrar', {
       duration: 3000,
       panelClass: 'success-snackbar',
     });
   }
 
-  private showError(message: string) {
+  private showError(message: string): void {
     this.snackBar.open(message, 'Cerrar', {
       duration: 4000,
       panelClass: 'error-snackbar',

@@ -1,100 +1,20 @@
 <div class="users-page">
   <div class="page__header">
-    <div class="page__header-content">
-      <div class="page__header-text">
-        <h1 class="page__title">Usuarios del sistema</h1>
-        <p class="page__subtitle">
-          Gestiona los usuarios que tienen acceso al panel administrativo.
-        </p>
-      </div>
-      <button mat-flat-button color="primary" class="page__action" (click)="openUserDialog()">
-        <mat-icon>person_add</mat-icon>
-        Crear nuevo usuario
-      </button>
-    </div>
+    <h1 class="page__title">Usuarios del sistema</h1>
+    <p class="page__subtitle">Gestiona los usuarios que tienen acceso al panel administrativo.</p>
   </div>
 
-  @if (isLoading()) {
-    <div class="loading-state">
-      <mat-icon>hourglass_empty</mat-icon>
-      <p>Cargando usuarios...</p>
-    </div>
-  } @else if (users().length === 0) {
-    <mat-card class="empty-state">
-      <mat-icon>people</mat-icon>
-      <h3>No hay usuarios</h3>
-      <p>Crea el primer usuario para comenzar</p>
-      <button mat-flat-button color="primary" (click)="openUserDialog()">
-        <mat-icon>person_add</mat-icon>
-        Crear usuario
-      </button>
-    </mat-card>
-  } @else {
-    <mat-card class="users-table-card">
-      <div class="table-container">
-        <table class="users-table">
-          <thead>
-            <tr>
-              <th>Usuario</th>
-              <th>Email</th>
-              <th>Teléfono</th>
-              <th>Rol</th>
-              <th>Estado</th>
-              <th>Último acceso</th>
-              <th class="actions-column">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (user of users(); track user.id) {
-              <tr>
-                <td>
-                  <div class="user-info">
-                    <div class="user-avatar">
-                      {{ getInitials(user.firstName, user.lastName) }}
-                    </div>
-                    <div class="user-details">
-                      <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
-                    </div>
-                  </div>
-                </td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.phone || '-' }}</td>
-                <td>
-                  <span class="role-badge" [class.admin]="user.role === 'Administrador'">
-                    {{ user.role }}
-                  </span>
-                </td>
-                <td>
-                  <span class="status-badge" [class.active]="user.isActive">
-                    {{ user.isActive ? 'Activo' : 'Inactivo' }}
-                  </span>
-                </td>
-                <td>{{ formatLastLogin(user.lastLogin) }}</td>
-                <td class="actions-column">
-                  <div class="actions-buttons">
-                    <button
-                      mat-icon-button
-                      matTooltip="Editar usuario"
-                      class="edit-btn"
-                      (click)="openUserDialog(user.id)"
-                    >
-                      <mat-icon>edit</mat-icon>
-                    </button>
-                    <button
-                      mat-icon-button
-                      matTooltip="Eliminar usuario"
-                      class="delete-btn"
-                      (click)="deleteUser(user.id, user.firstName + ' ' + user.lastName)"
-                    >
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    </mat-card>
-  }
+  <!-- Data Table Component -->
+  <app-data-table
+    [data]="tableData()"
+    [columns]="columns"
+    [actions]="actions"
+    [isLoading]="isLoading()"
+    [showSearch]="true"
+    [showCreateButton]="true"
+    createButtonText="Crear nuevo usuario"
+    emptyMessage="No hay usuarios registrados"
+    emptyIcon="groups"
+    (createClick)="openUserDialog()"
+  />
 </div>

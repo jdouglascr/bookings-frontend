@@ -50,7 +50,6 @@
     color: var(--gray-text-medium);
     display: flex;
     align-items: center;
-
     padding-left: 16px !important;
   }
 
@@ -99,7 +98,36 @@
   }
 }
 
-// FIX 3: Select trigger spacing
+// FIX 3: Data Table Search Field
+.table-toolbar {
+  .search-field {
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      height: 44px;
+    }
+
+    .mat-mdc-form-field-infix {
+      min-height: 44px !important;
+      padding: 10px 16px !important;
+      display: flex;
+      align-items: center;
+    }
+
+    .mdc-floating-label {
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+    }
+
+    .mdc-floating-label.mdc-floating-label--float-above {
+      transform: translateY(-130%) scale(0.85) !important;
+    }
+  }
+}
+
+// FIX 4: Select trigger spacing
 .mat-mdc-select {
   .mat-mdc-select-trigger {
     padding: 0 !important;
@@ -116,7 +144,7 @@
   }
 }
 
-// FIX 4: Select panel y Autocomplete panel
+// FIX 5: Select panel y Autocomplete panel
 .mat-mdc-select-panel,
 .mat-mdc-autocomplete-panel {
   border-radius: 12px !important;
@@ -147,7 +175,7 @@
   }
 }
 
-// FIX 5: Error/Hint message spacing
+// FIX 6: Error/Hint message spacing
 .mat-mdc-form-field {
   margin-bottom: 0 !important;
 
@@ -203,7 +231,7 @@
   }
 }
 
-// FIX 6: Dialog header y actions
+// FIX 7: Dialog header y actions
 .mat-mdc-dialog-container {
   .mat-mdc-dialog-title {
     margin: 0;
@@ -228,7 +256,7 @@
   }
 }
 
-// FIX 7: Spacing de form-section
+// FIX 8: Spacing de form-section
 .form-section {
   display: flex;
   flex-direction: column;
@@ -249,7 +277,7 @@
   }
 }
 
-// FIX 8: Snackbar
+// FIX 9: Snackbar
 .success-snackbar,
 .error-snackbar {
   .mdc-snackbar__surface {
@@ -298,14 +326,14 @@
   }
 }
 
-// FIX 9: Checkbox label spacing
+// FIX 10: Checkbox label spacing
 .mat-mdc-checkbox {
   .mdc-label {
     padding-left: 8px;
   }
 }
 
-// FIX 10: Password toggle button
+// FIX 11: Password toggle button
 .mat-mdc-form-field {
   .mat-mdc-icon-button[matIconSuffix] {
     color: var(--gray-text-medium);
@@ -320,7 +348,7 @@
   }
 }
 
-// FIX 11: Password section
+// FIX 12: Password section
 .password-section {
   display: flex;
   flex-direction: column;
@@ -364,7 +392,39 @@
   }
 }
 
-// FIX 12: Responsive
+// FIX 13: Paginator styles
+.mat-mdc-paginator {
+  background-color: transparent;
+  border-top: 1px solid var(--gray-border);
+  padding: 0.75rem 1.5rem;
+
+  .mat-mdc-paginator-container {
+    justify-content: flex-end;
+    padding: 0;
+    min-height: 48px;
+  }
+
+  .mat-mdc-paginator-range-label {
+    margin: 0 16px 0 0;
+    font-size: 14px;
+    color: var(--gray-text-darker);
+    font-weight: 500;
+  }
+
+  .mat-mdc-icon-button {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+
+    .mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+// FIX 14: Responsive
 @media (max-width: 768px) {
   .mat-mdc-form-field {
     .mat-mdc-form-field-infix {
@@ -423,6 +483,10 @@
 
   .password-section > mat-checkbox ::ng-deep .mdc-label {
     font-size: 13px;
+  }
+
+  .mat-mdc-paginator {
+    padding: 1rem;
   }
 }
 

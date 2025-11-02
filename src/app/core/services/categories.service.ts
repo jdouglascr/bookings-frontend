@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { CategoryRequest, CategoryResponse } from '../../models/admin-api.models';
+import { CategoryRequest, CategoryResponse } from '../../models/private-api.models';
 import { MessageResponse } from '../../models/shared-api.models';
 import { environment } from '../../../environments/environment';
 

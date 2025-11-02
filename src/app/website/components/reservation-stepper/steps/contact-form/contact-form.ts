@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { ContactInfo } from '../../../../../models/reservation.models';
+import { ContactInfo } from '../../../../../models/frontend.models';
 
 @Component({
   selector: 'app-contact-form',

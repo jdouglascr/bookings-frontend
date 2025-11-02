@@ -7,7 +7,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { ServicesService } from '../../../core/services/services.service';
-import { CategoryWithServices } from '../../../models/admin-api.models';
+import { CategoryWithServices } from '../../../models/private-api.models';
 import { ServiceDialog } from '../../components/service-dialog/service-dialog';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { CategoryDialog } from '../../components/category-dialog/category-dialog';

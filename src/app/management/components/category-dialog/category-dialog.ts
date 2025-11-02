@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { CategoriesService } from '../../../core/services/categories.service';
-import { CategoryResponse } from '../../../models/admin-api.models';
+import { CategoryResponse } from '../../../models/private-api.models';
 
 @Component({
   selector: 'app-category-dialog',

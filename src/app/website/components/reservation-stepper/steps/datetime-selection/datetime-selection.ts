@@ -5,7 +5,7 @@ import {
   AppointmentAvailability,
   TimeSlot,
   CalendarDay,
-} from '../../../../../models/reservation.models';
+} from '../../../../../models/frontend.models';
 
 @Component({
   selector: 'app-datetime-selection',

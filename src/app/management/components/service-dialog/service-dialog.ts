@@ -26,7 +26,6 @@ interface DialogData {
     MatIconModule,
   ],
   templateUrl: './service-dialog.html',
-  styleUrl: './service-dialog.scss',
 })
 export class ServiceDialog implements OnInit {
   private fb = inject(FormBuilder);

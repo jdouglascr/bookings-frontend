@@ -1,10 +1,10 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { ServiceRequest, ServiceResponse } from '../../models/admin-api.models';
+import { ServiceRequest, ServiceResponse } from '../../models/private-api.models';
 import { MessageResponse } from '../../models/shared-api.models';
 import { environment } from '../../../environments/environment';
-import { PublicServicesResponse } from '../../models/services-api.models';
+import { PublicServicesResponse } from '../../models/public-api.models';
 
 @Injectable({
   providedIn: 'root',

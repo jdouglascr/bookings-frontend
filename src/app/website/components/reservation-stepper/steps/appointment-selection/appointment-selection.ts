@@ -3,8 +3,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ResourcesService } from '../../../../../core/services/resources.service';
-import { PublicResource } from '../../../../../models/booking-api.models';
-import { Appointment } from '../../../../../models/reservation.models';
+import { PublicResource } from '../../../../../models/public-api.models';
+import { Appointment } from '../../../../../models/frontend.models';
 
 @Component({
   selector: 'app-appointment-selection',

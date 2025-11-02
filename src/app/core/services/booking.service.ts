@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { PublicBookingCreateRequest, PublicBookingResponse } from '../../models/booking-api.models';
+import { PublicBookingCreateRequest, PublicBookingResponse } from '../../models/public-api.models';
 import { MessageResponse } from '../../models/shared-api.models';
 
 @Injectable({

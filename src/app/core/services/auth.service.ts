@@ -3,14 +3,14 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
+import { ErrorResponse } from '../../models/shared-api.models';
+import { environment } from '../../../environments/environment';
 import {
   DecodedToken,
   LoginRequest,
   LoginResponse,
   RefreshTokenResponse,
-} from '../../models/auth-api.models';
-import { ErrorResponse } from '../../models/shared-api.models';
-import { environment } from '../../../environments/environment';
+} from '../../models/private-api.models';
 
 @Injectable({
   providedIn: 'root',

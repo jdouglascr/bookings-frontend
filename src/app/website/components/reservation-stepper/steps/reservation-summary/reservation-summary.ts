@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { StepData } from '../../../../../models/reservation.models';
+import { StepData } from '../../../../../models/frontend.models';
 
 @Component({
   selector: 'app-reservation-summary',

@@ -9,14 +9,14 @@ import {
   TimeSlot,
   Service,
   ContactInfo,
-} from '../../../models/reservation.models';
+} from '../../../models/frontend.models';
 import { AppointmentSelection } from './steps/appointment-selection/appointment-selection';
 import { DatetimeSelection } from './steps/datetime-selection/datetime-selection';
 import { ContactForm } from './steps/contact-form/contact-form';
 import { ReservationSummary } from './steps/reservation-summary/reservation-summary';
 import { CustomerService } from '../../../core/services/customer.service';
 import { BookingService } from '../../../core/services/booking.service';
-import { PublicBookingCreateRequest } from '../../../models/booking-api.models';
+import { PublicBookingCreateRequest } from '../../../models/public-api.models';
 import { catchError, switchMap, of } from 'rxjs';
 
 interface StepConfig {

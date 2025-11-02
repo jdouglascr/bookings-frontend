@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ReservationStepper } from '../reservation-stepper/reservation-stepper';
 import { ServicesService } from '../../../core/services/services.service';
-import { PublicService } from '../../../models/services-api.models';
+import { PublicService } from '../../../models/public-api.models';
 
 @Component({
   selector: 'app-services-card',

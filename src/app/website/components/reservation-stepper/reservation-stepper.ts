@@ -227,16 +227,12 @@ export class ReservationStepper {
           this.isProcessingBooking.set(false);
           this.dialogRef.disableClose = false;
 
-          this.snackBar.open(
-            '❌ Error al crear la reserva. Por favor intenta nuevamente.',
-            'Cerrar',
-            {
-              duration: 5000,
-              horizontalPosition: 'right',
-              verticalPosition: 'bottom',
-              panelClass: ['error-snackbar'],
-            },
-          );
+          this.snackBar.open('Error al crear la reserva. Por favor intenta nuevamente.', 'Cerrar', {
+            duration: 5000,
+            horizontalPosition: 'right',
+            verticalPosition: 'bottom',
+            panelClass: ['error-snackbar'],
+          });
 
           return of(null);
         }),
@@ -245,7 +241,7 @@ export class ReservationStepper {
         if (bookingResponse) {
           this.dialogRef.close({ success: true, booking: bookingResponse });
 
-          this.snackBar.open('✅ ¡Reserva registrada exitosamente!', 'Cerrar', {
+          this.snackBar.open('¡Reserva registrada exitosamente!', 'Cerrar', {
             duration: 5000,
             horizontalPosition: 'right',
             verticalPosition: 'bottom',

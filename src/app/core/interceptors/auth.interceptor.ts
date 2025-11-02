@@ -9,23 +9,11 @@ import { AuthService } from '../services/auth.service';
 import { catchError, switchMap, filter, take, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService);
-
-  const publicUrls = [
-    '/api/auth/login',
-    '/api/auth/refresh',
-    '/api/public/',
-    '/api/health',
-    '/api/ping',
-    '/api/customers',
-  ];
-
-  const isPublicUrl = publicUrls.some((url) => req.url.includes(url));
-  if (isPublicUrl) {
+  if (req.url.includes('/api/public/')) {
     return next(req);
   }
 
-  const accessToken = authService.getAccessToken();
+  const accessToken = localStorage.getItem('accessToken');
 
   if (!accessToken) {
     return next(req);
@@ -39,7 +27,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401 && !req.url.includes('/api/auth/refresh')) {
+      if (error.status === 401 && !req.url.includes('/api/public/auth/refresh')) {
+        const authService = inject(AuthService);
         return handleUnauthorizedError(authService, req, next);
       }
 

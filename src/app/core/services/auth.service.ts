@@ -20,7 +20,8 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private apiUrl = `${environment.apiUrl}/auth`;
+  private publicAuthUrl = `${environment.apiUrl}/public/auth`;
+  private privateAuthUrl = `${environment.apiUrl}/auth`;
 
   private _isAuthenticated = signal<boolean>(false);
   private _currentUser = signal<CurrentUser | null>(null);
@@ -49,14 +50,6 @@ export class AuthService {
     }
 
     if (accessToken && !this.isTokenExpired(accessToken)) {
-      const decoded = this.decodeToken(accessToken);
-
-      if (!decoded || !this.isValidTokenStructure(decoded)) {
-        console.warn('Token con estructura inválida detectado, limpiando sesión');
-        this.clearAuthState();
-        return;
-      }
-
       try {
         await this.loadCurrentUser();
         this._isAuthenticated.set(true);
@@ -80,13 +73,9 @@ export class AuthService {
     }
   }
 
-  private isValidTokenStructure(decoded: DecodedToken): boolean {
-    return !!(decoded.email && decoded.role && decoded.type && decoded.exp && decoded.iat);
-  }
-
   private async loadCurrentUser(): Promise<void> {
     try {
-      const user = await firstValueFrom(this.http.get<CurrentUser>(`${this.apiUrl}/me`));
+      const user = await firstValueFrom(this.http.get<CurrentUser>(`${this.privateAuthUrl}/me`));
       this._currentUser.set(user);
     } catch (error) {
       console.error('Error al cargar usuario:', error);
@@ -189,7 +178,7 @@ export class AuthService {
   login(credentials: LoginRequest): Observable<LoginResponse> {
     this._isLoading.set(true);
 
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials).pipe(
+    return this.http.post<LoginResponse>(`${this.publicAuthUrl}/login`, credentials).pipe(
       tap(async (response) => {
         await this.handleLoginSuccess(response);
       }),
@@ -220,16 +209,18 @@ export class AuthService {
       return throwError(() => new Error('Refresh token expired'));
     }
 
-    return this.http.post<RefreshTokenResponse>(`${this.apiUrl}/refresh`, { refreshToken }).pipe(
-      tap((response) => {
-        this.saveTokens(response.accessToken, response.refreshToken);
-        this.refreshTokenSubject.next(response.accessToken);
-      }),
-      catchError((error: HttpErrorResponse) => {
-        this.logout();
-        return throwError(() => error);
-      }),
-    );
+    return this.http
+      .post<RefreshTokenResponse>(`${this.publicAuthUrl}/refresh`, { refreshToken })
+      .pipe(
+        tap((response) => {
+          this.saveTokens(response.accessToken, response.refreshToken);
+          this.refreshTokenSubject.next(response.accessToken);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          this.logout();
+          return throwError(() => error);
+        }),
+      );
   }
 
   logout(): void {

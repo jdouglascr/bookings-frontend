@@ -20,7 +20,7 @@ export interface RefreshTokenResponse {
 }
 
 export interface DecodedToken {
-  email: string;
+  sub: string;
   role: string;
   type: string;
   iat: number;

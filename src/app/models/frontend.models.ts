@@ -37,7 +37,7 @@ export interface Booking {
   start_time: string;
   end_time: string;
   price: number;
-  status: 'Pendiente' | 'Confirmada' | 'Completada' | 'Cancelada';
+  status: 'Pendiente' | 'Confirmada' | 'Pagada' | 'Completada' | 'Cancelada';
 }
 
 export interface ContactInfo {
@@ -130,4 +130,13 @@ export interface UserTableRow {
   statusText: string;
   lastLogin: string;
   initials: string;
+}
+
+// AVAILABLE TIMES MODELS
+export interface DaySchedule {
+  id: number | null;
+  dayOfWeek: string;
+  startTime: string;
+  endTime: string;
+  isClosed: boolean;
 }

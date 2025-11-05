@@ -5,7 +5,6 @@ export interface PublicBookingCreateRequest {
   startDatetime: string;
   endDatetime: string;
   price: number;
-  notes?: string;
 }
 
 export interface PublicBookingResponse {
@@ -20,7 +19,6 @@ export interface PublicBookingResponse {
   endDatetime: string;
   price: number;
   status: string;
-  notes: string | null;
 }
 
 // Resource

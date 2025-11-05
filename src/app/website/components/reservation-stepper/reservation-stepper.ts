@@ -190,7 +190,7 @@ export class ReservationStepper {
       !data.selectedTimeSlot ||
       !data.contactInfo
     ) {
-      this.snackBar.open('❌ Faltan datos para completar la reserva', 'Cerrar', {
+      this.snackBar.open('Faltan datos para completar la reserva', 'Cerrar', {
         duration: 4000,
         horizontalPosition: 'right',
         verticalPosition: 'bottom',
@@ -217,7 +217,6 @@ export class ReservationStepper {
             startDatetime: startDatetime,
             endDatetime: endDatetime,
             price: data.service!.price,
-            notes: `Reserva de ${data.service!.name}`,
           };
 
           return this.bookingService.createBooking(bookingRequest);

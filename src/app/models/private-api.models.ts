@@ -101,3 +101,49 @@ export interface UserResponse {
   lastLogin?: string;
   createdAt: string;
 }
+
+// Business
+export interface BusinessWithHoursResponse {
+  id: number;
+  name: string;
+  description: string;
+  address: string;
+  phone: string;
+  email: string;
+  facebookUrl: string | null;
+  instagramUrl: string | null;
+  tiktokUrl: string | null;
+  logoUrl: string;
+  bannerUrl: string;
+  businessHours: BusinessHourDto[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BusinessHourDto {
+  id: number | null;
+  dayOfWeek: string;
+  startTime: string | null;
+  endTime: string | null;
+  isClosed: boolean;
+}
+
+export interface BusinessWithHoursUpdateRequest {
+  name: string;
+  description: string;
+  address: string;
+  phone: string;
+  email: string;
+  facebookUrl?: string;
+  instagramUrl?: string;
+  tiktokUrl?: string;
+  businessHours: BusinessHourUpdateDto[];
+}
+
+export interface BusinessHourUpdateDto {
+  id: number;
+  dayOfWeek: string;
+  startTime: string | null;
+  endTime: string | null;
+  isClosed: boolean;
+}

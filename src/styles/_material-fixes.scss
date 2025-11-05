@@ -1,4 +1,4 @@
-// FIX 1: Input text overflow
+// FIX: Input text overflow
 .mat-mdc-form-field {
   .mat-mdc-input-element {
     overflow: hidden;
@@ -25,7 +25,7 @@
   }
 }
 
-// FIX 2: Prefix/Suffix spacing
+// FIX: Prefix/Suffix spacing
 .mat-mdc-form-field {
   .mat-mdc-form-field-icon-prefix,
   .mat-mdc-form-field-icon-suffix,
@@ -98,7 +98,7 @@
   }
 }
 
-// FIX 3: Data Table Search Field
+// FIX: Data Table Search Field
 .table-toolbar {
   .search-field {
     .mat-mdc-form-field-subscript-wrapper {
@@ -127,7 +127,7 @@
   }
 }
 
-// FIX 4: Select trigger spacing
+// FIX: Select trigger spacing
 .mat-mdc-select {
   .mat-mdc-select-trigger {
     padding: 0 !important;
@@ -144,7 +144,7 @@
   }
 }
 
-// FIX 5: Select panel y Autocomplete panel
+// FIX: Select panel y Autocomplete panel
 .mat-mdc-select-panel,
 .mat-mdc-autocomplete-panel {
   border-radius: 12px !important;
@@ -175,7 +175,7 @@
   }
 }
 
-// FIX 6: Error/Hint message spacing
+// FIX: Error/Hint message spacing
 .mat-mdc-form-field {
   margin-bottom: 0 !important;
 
@@ -231,7 +231,7 @@
   }
 }
 
-// FIX 7: Dialog header y actions
+// FIX: Dialog header y actions
 .mat-mdc-dialog-container {
   .mat-mdc-dialog-title {
     margin: 0;
@@ -256,7 +256,7 @@
   }
 }
 
-// FIX 8: Spacing de form-section
+// FIX: Spacing de form-section
 .form-section {
   display: flex;
   flex-direction: column;
@@ -277,7 +277,7 @@
   }
 }
 
-// FIX 9: Snackbar
+// FIX: Snackbar
 .success-snackbar,
 .error-snackbar {
   .mdc-snackbar__surface {
@@ -326,14 +326,14 @@
   }
 }
 
-// FIX 10: Checkbox label spacing
+// FIX: Checkbox label spacing
 .mat-mdc-checkbox {
   .mdc-label {
     padding-left: 8px;
   }
 }
 
-// FIX 11: Password toggle button
+// FIX: Password toggle button
 .mat-mdc-form-field {
   .mat-mdc-icon-button[matIconSuffix] {
     color: var(--gray-text-medium);
@@ -348,7 +348,7 @@
   }
 }
 
-// FIX 12: Password section
+// FIX: Password section
 .password-section {
   display: flex;
   flex-direction: column;
@@ -392,7 +392,7 @@
   }
 }
 
-// FIX 13: Paginator styles
+// FIX: Paginator styles
 .mat-mdc-paginator {
   background-color: transparent;
   border-top: 1px solid var(--gray-border);
@@ -424,7 +424,7 @@
   }
 }
 
-// FIX 14: Responsive
+// FIX: Responsive
 @media (max-width: 768px) {
   .mat-mdc-form-field {
     .mat-mdc-form-field-infix {

@@ -51,6 +51,12 @@ export const routes: Routes = [
           import('./management/pages/user-page/user-page').then((m) => m.UserPage),
         title: 'Rulos Style | Usuarios',
       },
+      {
+        path: 'business',
+        loadComponent: () =>
+          import('./management/pages/business-page/business-page').then((m) => m.BusinessPage),
+        title: 'Rulos Style | Mi Negocio',
+      },
     ],
   },
   {

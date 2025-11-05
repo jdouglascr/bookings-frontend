@@ -39,7 +39,7 @@ export class ManagementLayout {
 
   currentUser = this.authService.currentUser;
 
-  userName = computed(() => this.currentUser()?.fullName || 'Usuario');
+  userName = computed(() => this.currentUser()?.fullName);
 
   userRole = computed(() =>
     this.currentUser()?.role === 'ROLE_ADMIN' ? 'Administrador' : 'Personal',
@@ -96,7 +96,7 @@ export class ManagementLayout {
       label: 'Mi negocio',
       icon: 'business',
       route: '/admin/business',
-      isEnabled: false,
+      isEnabled: true,
     },
     {
       id: 'cuenta',

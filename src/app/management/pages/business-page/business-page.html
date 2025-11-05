@@ -1,0 +1,293 @@
+<div class="business-page">
+  <div class="page__header">
+    <div class="page__header-text">
+      <h1 class="page__title">Mi negocio</h1>
+      <p class="page__subtitle">Configura la información de tu negocio y horarios de atención</p>
+    </div>
+    <button
+      mat-flat-button
+      color="primary"
+      class="page__action"
+      (click)="saveBusiness()"
+      [disabled]="!canSave()"
+    >
+      @if (isSaving()) {
+        <ng-container>
+          <mat-spinner diameter="20"></mat-spinner>
+          <span>Guardando...</span>
+        </ng-container>
+      } @else {
+        <ng-container>
+          <mat-icon>save</mat-icon>
+          <span>Guardar cambios</span>
+        </ng-container>
+      }
+    </button>
+  </div>
+
+  @if (isLoading()) {
+    <!-- Skeleton Loader -->
+    <div class="business-skeleton">
+      <div class="skeleton-tabs">
+        <div class="skeleton skeleton-tab-header"></div>
+        <div class="skeleton skeleton-tab-header"></div>
+        <div class="skeleton skeleton-tab-header"></div>
+      </div>
+
+      <div class="skeleton-content">
+        <div class="skeleton-form">
+          <div class="skeleton skeleton-input"></div>
+          <div class="skeleton skeleton-textarea"></div>
+          <div class="skeleton-row">
+            <div class="skeleton skeleton-input"></div>
+            <div class="skeleton skeleton-input"></div>
+          </div>
+          <div class="skeleton skeleton-input"></div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <mat-tab-group class="business-tabs">
+      <!-- Información General -->
+      <mat-tab label="Información general">
+        <div class="tab-content">
+          <form [formGroup]="businessForm" class="panel-content">
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Nombre del negocio</mat-label>
+                <input matInput formControlName="name" placeholder="Ej: Rulos Style" />
+                @if (businessForm.get('name')?.hasError('required')) {
+                  <mat-error>El nombre es obligatorio</mat-error>
+                }
+                @if (businessForm.get('name')?.hasError('minlength')) {
+                  <mat-error>El nombre debe tener al menos 2 caracteres</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Descripción</mat-label>
+                <textarea
+                  matInput
+                  formControlName="description"
+                  rows="4"
+                  placeholder="Describe tu negocio..."
+                ></textarea>
+                @if (businessForm.get('description')?.hasError('required')) {
+                  <mat-error>La descripción es obligatoria</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Dirección</mat-label>
+                <mat-icon matIconPrefix>location_on</mat-icon>
+                <input matInput formControlName="address" placeholder="Calle 123, Ciudad" />
+                @if (businessForm.get('address')?.hasError('required')) {
+                  <mat-error>La dirección es obligatoria</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Teléfono</mat-label>
+                <mat-icon matIconPrefix>phone</mat-icon>
+                @if (shouldShowPhonePrefix()) {
+                  <span matTextPrefix>+56&nbsp;</span>
+                }
+                <input
+                  matInput
+                  type="text"
+                  inputmode="numeric"
+                  formControlName="phone"
+                  maxlength="9"
+                  placeholder="912345678"
+                  (input)="onPhoneInput($event)"
+                  (focus)="onPhoneFocus()"
+                  (blur)="onPhoneBlur()"
+                />
+                @if (businessForm.get('phone')?.hasError('required')) {
+                  <mat-error>El teléfono es obligatorio</mat-error>
+                }
+                @if (businessForm.get('phone')?.hasError('pattern')) {
+                  <mat-error>El teléfono debe tener 9 dígitos</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Email</mat-label>
+                <mat-icon matIconPrefix>email</mat-icon>
+                <input
+                  matInput
+                  type="email"
+                  formControlName="email"
+                  placeholder="contacto@negocio.com"
+                />
+                @if (businessForm.get('email')?.hasError('required')) {
+                  <mat-error>El email es obligatorio</mat-error>
+                }
+                @if (businessForm.get('email')?.hasError('email')) {
+                  <mat-error>Email inválido</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="section-divider">
+              <span>Redes sociales (opcional)</span>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Facebook</mat-label>
+                <mat-icon matIconPrefix>link</mat-icon>
+                <input
+                  matInput
+                  formControlName="facebookUrl"
+                  placeholder="https://facebook.com/tunegocio"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Instagram</mat-label>
+                <mat-icon matIconPrefix>link</mat-icon>
+                <input
+                  matInput
+                  formControlName="instagramUrl"
+                  placeholder="https://instagram.com/tunegocio"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>TikTok</mat-label>
+                <mat-icon matIconPrefix>link</mat-icon>
+                <input
+                  matInput
+                  formControlName="tiktokUrl"
+                  placeholder="https://tiktok.com/@tunegocio"
+                />
+              </mat-form-field>
+            </div>
+          </form>
+        </div>
+      </mat-tab>
+
+      <!-- Imágenes -->
+      <mat-tab label="Imágenes del negocio">
+        <div class="tab-content">
+          <div class="images-grid">
+            <!-- Logo -->
+            <div class="image-upload-section">
+              <label class="image-label" for="logo-input">Logo</label>
+              <div
+                class="image-dropzone logo"
+                role="button"
+                tabindex="0"
+                (drop)="onLogoDrop($event)"
+                (dragover)="onDragOver($event)"
+                (click)="logoInput.click()"
+                (keydown.enter)="logoInput.click()"
+                (keydown.space)="logoInput.click()"
+                [attr.aria-label]="logoPreview() ? 'Cambiar logo' : 'Subir logo'"
+              >
+                @if (logoPreview()) {
+                  <div class="image-preview">
+                    <img [src]="logoPreview()" alt="Vista previa del logo" />
+                    <div class="image-overlay">
+                      <button
+                        type="button"
+                        mat-icon-button
+                        class="change-image-btn"
+                        (click)="$event.stopPropagation(); logoInput.click()"
+                        aria-label="Cambiar logo"
+                      >
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                } @else {
+                  <div class="dropzone-content">
+                    <mat-icon>cloud_upload</mat-icon>
+                    <p>Arrastra o haz clic para subir el logo</p>
+                    <span>PNG, JPG, WEBP, SVG (máx. 10MB)</span>
+                  </div>
+                }
+              </div>
+              <input
+                #logoInput
+                id="logo-input"
+                type="file"
+                accept="image/*"
+                hidden
+                (change)="onLogoSelected($event)"
+                aria-label="Seleccionar logo"
+              />
+            </div>
+
+            <!-- Banner -->
+            <div class="image-upload-section">
+              <label class="image-label" for="banner-input">Banner</label>
+              <div
+                class="image-dropzone banner"
+                role="button"
+                tabindex="0"
+                (drop)="onBannerDrop($event)"
+                (dragover)="onDragOver($event)"
+                (click)="bannerInput.click()"
+                (keydown.enter)="bannerInput.click()"
+                (keydown.space)="bannerInput.click()"
+                [attr.aria-label]="bannerPreview() ? 'Cambiar banner' : 'Subir banner'"
+              >
+                @if (bannerPreview()) {
+                  <div class="image-preview">
+                    <img [src]="bannerPreview()" alt="Vista previa del banner" />
+                    <div class="image-overlay">
+                      <button
+                        type="button"
+                        mat-icon-button
+                        class="change-image-btn"
+                        (click)="$event.stopPropagation(); bannerInput.click()"
+                        aria-label="Cambiar banner"
+                      >
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                } @else {
+                  <div class="dropzone-content">
+                    <mat-icon>cloud_upload</mat-icon>
+                    <p>Arrastra o haz clic para subir el banner</p>
+                    <span>PNG, JPG, WEBP, SVG (máx. 10MB)</span>
+                  </div>
+                }
+              </div>
+              <input
+                #bannerInput
+                id="banner-input"
+                type="file"
+                accept="image/*"
+                hidden
+                (change)="onBannerSelected($event)"
+                aria-label="Seleccionar banner"
+              />
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Horarios de Atención -->
+      <mat-tab label="Horarios de atención">
+        <div class="tab-content">
+          <app-available-times-selector
+            [schedules]="schedules()"
+            (schedulesChange)="onSchedulesChange($event)"
+          />
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  }
+</div>

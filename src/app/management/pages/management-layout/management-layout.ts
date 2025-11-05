@@ -6,7 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AuthService } from '../../../core/services/auth.service';
+import { ProfileDialog } from '../../components/profile-dialog/profile-dialog';
 
 interface MenuItem {
   id: string;
@@ -26,6 +28,7 @@ interface MenuItem {
     MatMenuModule,
     MatDividerModule,
     MatTooltipModule,
+    MatDialogModule,
   ],
   templateUrl: './management-layout.html',
   styleUrl: './management-layout.scss',
@@ -33,6 +36,7 @@ interface MenuItem {
 export class ManagementLayout {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private dialog = inject(MatDialog);
 
   mobileMenuOpen = signal(false);
   businessName = signal('Rulos Style');
@@ -98,13 +102,6 @@ export class ManagementLayout {
       route: '/admin/business',
       isEnabled: true,
     },
-    {
-      id: 'cuenta',
-      label: 'Mi cuenta',
-      icon: 'account_box',
-      route: '/admin/billing',
-      isEnabled: false,
-    },
   ]);
 
   toggleMobileMenu() {
@@ -128,6 +125,13 @@ export class ManagementLayout {
     if (item.isEnabled) {
       this.navigateTo(item.route);
     }
+  }
+
+  openProfileDialog() {
+    this.dialog.open(ProfileDialog, {
+      width: '600px',
+      maxWidth: '95vw',
+    });
   }
 
   logout() {

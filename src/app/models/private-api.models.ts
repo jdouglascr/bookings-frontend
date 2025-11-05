@@ -102,6 +102,14 @@ export interface UserResponse {
   createdAt: string;
 }
 
+export interface UpdateProfileRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  password?: string;
+}
+
 // Business
 export interface BusinessWithHoursResponse {
   id: number;

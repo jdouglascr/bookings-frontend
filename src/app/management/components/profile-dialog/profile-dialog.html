@@ -1,0 +1,138 @@
+<div class="dialog-header">
+  <h2 mat-dialog-title>Mi perfil</h2>
+  <button mat-icon-button mat-dialog-close class="close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content-wrapper">
+  <form [formGroup]="form" class="dialog-form">
+    <div class="form-section">
+      <h3 class="section-title">Información personal</h3>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="firstName" />
+          @if (form.get('firstName')?.hasError('required') && form.get('firstName')?.touched) {
+            <mat-error>El nombre es obligatorio</mat-error>
+          }
+          @if (form.get('firstName')?.hasError('minlength')) {
+            <mat-error>El nombre debe tener al menos 2 caracteres</mat-error>
+          }
+          @if (form.get('firstName')?.hasError('maxlength')) {
+            <mat-error>El nombre no puede exceder 100 caracteres</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Apellido</mat-label>
+          <input matInput formControlName="lastName" />
+          @if (form.get('lastName')?.hasError('required') && form.get('lastName')?.touched) {
+            <mat-error>El apellido es obligatorio</mat-error>
+          }
+          @if (form.get('lastName')?.hasError('minlength')) {
+            <mat-error>El apellido debe tener al menos 2 caracteres</mat-error>
+          }
+          @if (form.get('lastName')?.hasError('maxlength')) {
+            <mat-error>El apellido no puede exceder 100 caracteres</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" />
+          @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+            <mat-error>El email es obligatorio</mat-error>
+          }
+          @if (form.get('email')?.hasError('email')) {
+            <mat-error>Email inválido</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Teléfono</mat-label>
+          @if (shouldShowPhonePrefix()) {
+            <span matTextPrefix>+56&nbsp;</span>
+          }
+          <input
+            matInput
+            type="text"
+            inputmode="numeric"
+            formControlName="phone"
+            maxlength="9"
+            (input)="onPhoneInput($event)"
+            (focus)="onPhoneFocus()"
+            (blur)="onPhoneBlur()"
+          />
+          @if (form.get('phone')?.hasError('required') && form.get('phone')?.touched) {
+            <mat-error>El teléfono es obligatorio</mat-error>
+          }
+          @if (form.get('phone')?.hasError('pattern')) {
+            <mat-error>El teléfono debe tener 9 dígitos</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3 class="section-title">Seguridad</h3>
+
+      <div class="password-section">
+        <mat-checkbox
+          [checked]="updatePassword()"
+          (change)="toggleUpdatePassword()"
+          color="primary"
+        >
+          ¿Desea cambiar su contraseña?
+        </mat-checkbox>
+
+        @if (updatePassword()) {
+          <mat-form-field appearance="outline" class="full-width password-field">
+            <mat-label>Nueva contraseña</mat-label>
+            <input
+              matInput
+              [type]="showPassword() ? 'text' : 'password'"
+              formControlName="password"
+            />
+            @if (showPasswordToggle) {
+              <button
+                mat-icon-button
+                matIconSuffix
+                type="button"
+                (click)="togglePasswordVisibility()"
+                tabindex="-1"
+              >
+                <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            }
+            @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
+              <mat-error>La contraseña es obligatoria</mat-error>
+            }
+            @if (form.get('password')?.hasError('minlength')) {
+              <mat-error>La contraseña debe tener al menos 6 caracteres</mat-error>
+            }
+          </mat-form-field>
+        }
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  <button mat-button mat-dialog-close class="cancel-btn">Cancelar</button>
+  <button
+    mat-flat-button
+    color="primary"
+    class="submit-btn"
+    (click)="onSubmit()"
+    [disabled]="form.invalid || isSaving()"
+  >
+    @if (isSaving()) {
+      <mat-icon class="material-spinner">hourglass_empty</mat-icon>
+    }
+    Guardar cambios
+  </button>
+</mat-dialog-actions>

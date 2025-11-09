@@ -6,10 +6,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProfileService } from '../../../core/services/profile.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../core/services/notification.service';
 import { UpdateProfileRequest } from '../../../models/private-api.models';
+import { PhoneInputComponent } from '../../../shared/components/phone-input/phone-input';
+import { PasswordInputComponent } from '../../../shared/components/password-input/password-input';
 
 @Component({
   selector: 'app-profile-dialog',
@@ -21,6 +23,8 @@ import { UpdateProfileRequest } from '../../../models/private-api.models';
     MatInputModule,
     MatIconModule,
     MatCheckboxModule,
+    PhoneInputComponent,
+    PasswordInputComponent,
   ],
   templateUrl: './profile-dialog.html',
 })
@@ -29,13 +33,10 @@ export class ProfileDialog implements OnInit {
   private dialogRef = inject(MatDialogRef<ProfileDialog>);
   private profileService = inject(ProfileService);
   private authService = inject(AuthService);
-  private snackBar = inject(MatSnackBar);
+  private notification = inject(NotificationService);
 
   isSaving = signal(false);
-  showPassword = signal(false);
   updatePassword = signal(false);
-  private isPhoneFocused = signal(false);
-  private hasPhoneValue = signal(false);
 
   form: FormGroup;
 
@@ -44,7 +45,7 @@ export class ProfileDialog implements OnInit {
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{9}$/)]],
+      phone: ['', [Validators.required, Validators.pattern(/^(\+56)?[0-9]{9}$/)]],
       password: [''],
     });
   }
@@ -53,55 +54,13 @@ export class ProfileDialog implements OnInit {
     const currentUser = this.authService.currentUser();
 
     if (currentUser) {
-      const phoneDisplay = currentUser.phone?.startsWith('+56')
-        ? currentUser.phone.substring(3)
-        : currentUser.phone || '';
-
       this.form.patchValue({
         firstName: currentUser.firstName,
         lastName: currentUser.lastName,
         email: currentUser.email,
-        phone: phoneDisplay,
+        phone: currentUser.phone,
       });
-
-      this.hasPhoneValue.set(!!phoneDisplay);
     }
-  }
-
-  shouldShowPhonePrefix(): boolean {
-    return this.isPhoneFocused() || this.hasPhoneValue();
-  }
-
-  onPhoneFocus(): void {
-    this.isPhoneFocused.set(true);
-  }
-
-  onPhoneBlur(): void {
-    this.isPhoneFocused.set(false);
-  }
-
-  onPhoneInput(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const value = input.value.replace(/\D/g, '');
-
-    if (value.length > 9) {
-      const truncated = value.slice(0, 9);
-      input.value = truncated;
-      this.form.patchValue({ phone: truncated });
-    } else {
-      this.form.patchValue({ phone: value });
-    }
-
-    this.hasPhoneValue.set(value.length > 0);
-  }
-
-  get showPasswordToggle(): boolean {
-    const passwordControl = this.form.get('password');
-    return !!passwordControl && passwordControl.value?.length > 0;
-  }
-
-  togglePasswordVisibility(): void {
-    this.showPassword.update((value) => !value);
   }
 
   toggleUpdatePassword(): void {
@@ -120,18 +79,21 @@ export class ProfileDialog implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      Object.keys(this.form.controls).forEach((key) => {
+        this.form.get(key)?.markAsTouched();
+      });
+      return;
+    }
 
     this.isSaving.set(true);
     const formValue = this.form.getRawValue();
-
-    const phone = `+56${formValue.phone}`;
 
     const request: UpdateProfileRequest = {
       firstName: formValue.firstName,
       lastName: formValue.lastName,
       email: formValue.email,
-      phone: phone,
+      phone: formValue.phone,
     };
 
     if (this.updatePassword() && formValue.password) {
@@ -141,27 +103,13 @@ export class ProfileDialog implements OnInit {
     this.profileService.updateProfile(request).subscribe({
       next: () => {
         this.isSaving.set(false);
-        this.showSuccess('Perfil actualizado exitosamente');
+        this.notification.success('Perfil actualizado exitosamente');
         this.dialogRef.close(true);
       },
       error: (err) => {
         this.isSaving.set(false);
-        this.showError(err.error?.message || 'Error al actualizar perfil');
+        this.notification.error(err.error?.message || 'Error al actualizar el perfil');
       },
-    });
-  }
-
-  private showSuccess(message: string): void {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 3000,
-      panelClass: 'success-snackbar',
-    });
-  }
-
-  private showError(message: string): void {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 4000,
-      panelClass: 'error-snackbar',
     });
   }
 }

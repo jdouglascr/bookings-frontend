@@ -26,7 +26,6 @@
   </div>
 
   @if (isLoading()) {
-    <!-- Skeleton Loader -->
     <div class="business-skeleton">
       <div class="skeleton-tabs">
         <div class="skeleton skeleton-tab-header"></div>
@@ -48,7 +47,6 @@
     </div>
   } @else {
     <mat-tab-group class="business-tabs">
-      <!-- Información General -->
       <mat-tab label="Información general">
         <div class="tab-content">
           <form [formGroup]="businessForm" class="panel-content">
@@ -90,30 +88,7 @@
                 }
               </mat-form-field>
 
-              <mat-form-field appearance="outline">
-                <mat-label>Teléfono</mat-label>
-                <mat-icon matIconPrefix>phone</mat-icon>
-                @if (shouldShowPhonePrefix()) {
-                  <span matTextPrefix>+56&nbsp;</span>
-                }
-                <input
-                  matInput
-                  type="text"
-                  inputmode="numeric"
-                  formControlName="phone"
-                  maxlength="9"
-                  placeholder="912345678"
-                  (input)="onPhoneInput($event)"
-                  (focus)="onPhoneFocus()"
-                  (blur)="onPhoneBlur()"
-                />
-                @if (businessForm.get('phone')?.hasError('required')) {
-                  <mat-error>El teléfono es obligatorio</mat-error>
-                }
-                @if (businessForm.get('phone')?.hasError('pattern')) {
-                  <mat-error>El teléfono debe tener 9 dígitos</mat-error>
-                }
-              </mat-form-field>
+              <app-phone-input formControlName="phone" />
             </div>
 
             <div class="form-row">
@@ -176,110 +151,26 @@
         </div>
       </mat-tab>
 
-      <!-- Imágenes -->
       <mat-tab label="Imágenes del negocio">
         <div class="tab-content">
           <div class="images-grid">
-            <!-- Logo -->
-            <div class="image-upload-section">
-              <label class="image-label" for="logo-input">Logo</label>
-              <div
-                class="image-dropzone logo"
-                role="button"
-                tabindex="0"
-                (drop)="onLogoDrop($event)"
-                (dragover)="onDragOver($event)"
-                (click)="logoInput.click()"
-                (keydown.enter)="logoInput.click()"
-                (keydown.space)="logoInput.click()"
-                [attr.aria-label]="logoPreview() ? 'Cambiar logo' : 'Subir logo'"
-              >
-                @if (logoPreview()) {
-                  <div class="image-preview">
-                    <img [src]="logoPreview()" alt="Vista previa del logo" />
-                    <div class="image-overlay">
-                      <button
-                        type="button"
-                        mat-icon-button
-                        class="change-image-btn"
-                        (click)="$event.stopPropagation(); logoInput.click()"
-                        aria-label="Cambiar logo"
-                      >
-                        <mat-icon>edit</mat-icon>
-                      </button>
-                    </div>
-                  </div>
-                } @else {
-                  <div class="dropzone-content">
-                    <mat-icon>cloud_upload</mat-icon>
-                    <p>Arrastra o haz clic para subir el logo</p>
-                    <span>PNG, JPG, WEBP, SVG (máx. 10MB)</span>
-                  </div>
-                }
-              </div>
-              <input
-                #logoInput
-                id="logo-input"
-                type="file"
-                accept="image/*"
-                hidden
-                (change)="onLogoSelected($event)"
-                aria-label="Seleccionar logo"
-              />
-            </div>
+            <app-image-input
+              #logoInput
+              label="Logo"
+              imageType="logo"
+              (fileChange)="onLogoChange($event)"
+            />
 
-            <!-- Banner -->
-            <div class="image-upload-section">
-              <label class="image-label" for="banner-input">Banner</label>
-              <div
-                class="image-dropzone banner"
-                role="button"
-                tabindex="0"
-                (drop)="onBannerDrop($event)"
-                (dragover)="onDragOver($event)"
-                (click)="bannerInput.click()"
-                (keydown.enter)="bannerInput.click()"
-                (keydown.space)="bannerInput.click()"
-                [attr.aria-label]="bannerPreview() ? 'Cambiar banner' : 'Subir banner'"
-              >
-                @if (bannerPreview()) {
-                  <div class="image-preview">
-                    <img [src]="bannerPreview()" alt="Vista previa del banner" />
-                    <div class="image-overlay">
-                      <button
-                        type="button"
-                        mat-icon-button
-                        class="change-image-btn"
-                        (click)="$event.stopPropagation(); bannerInput.click()"
-                        aria-label="Cambiar banner"
-                      >
-                        <mat-icon>edit</mat-icon>
-                      </button>
-                    </div>
-                  </div>
-                } @else {
-                  <div class="dropzone-content">
-                    <mat-icon>cloud_upload</mat-icon>
-                    <p>Arrastra o haz clic para subir el banner</p>
-                    <span>PNG, JPG, WEBP, SVG (máx. 10MB)</span>
-                  </div>
-                }
-              </div>
-              <input
-                #bannerInput
-                id="banner-input"
-                type="file"
-                accept="image/*"
-                hidden
-                (change)="onBannerSelected($event)"
-                aria-label="Seleccionar banner"
-              />
-            </div>
+            <app-image-input
+              #bannerInput
+              label="Banner"
+              imageType="banner"
+              (fileChange)="onBannerChange($event)"
+            />
           </div>
         </div>
       </mat-tab>
 
-      <!-- Horarios de Atención -->
       <mat-tab label="Horarios de atención">
         <div class="tab-content">
           <app-available-times-selector

@@ -10,7 +10,7 @@
         <div class="card-content">
           <div class="service-info">
             <div class="service-name">{{ stepData().service?.name }}</div>
-            <div class="service-price">{{ stepData().service?.priceFormatted }}</div>
+            <div class="service-price">{{ priceFormatter.format(stepData().service?.price) }}</div>
           </div>
         </div>
       </div>
@@ -81,7 +81,7 @@
             </div>
             <div class="contact-row">
               <mat-icon class="info-icon">phone</mat-icon>
-              <span>+56 {{ formatPhoneNumber() }}</span>
+              <span>{{ stepData().contactInfo?.phone }}</span>
             </div>
           </div>
         </div>

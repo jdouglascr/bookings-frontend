@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { ServicesService } from '../../../core/services/services.service';
 import { ServiceDialogData } from '../../../models/frontend.models';
+import { PriceInput } from '../../../shared/components/price-input/price-input';
 
 @Component({
   selector: 'app-service-dialog',
@@ -20,6 +21,7 @@ import { ServiceDialogData } from '../../../models/frontend.models';
     MatInputModule,
     MatSelectModule,
     MatIconModule,
+    PriceInput,
   ],
   templateUrl: './service-dialog.html',
 })
@@ -33,9 +35,6 @@ export class ServiceDialog implements OnInit {
   isEdit = signal(false);
   isSaving = signal(false);
   isLoadingService = signal(false);
-
-  private readonly isPriceFocused = signal(false);
-  private readonly hasPriceValue = signal(false);
 
   categories = this.categoryService.categories;
 
@@ -71,7 +70,6 @@ export class ServiceDialog implements OnInit {
           bufferTimeMin: service.bufferTimeMin,
           price: service.price,
         });
-        this.hasPriceValue.set(service.price !== null && service.price !== undefined);
         this.isLoadingService.set(false);
       },
       error: () => {
@@ -80,25 +78,9 @@ export class ServiceDialog implements OnInit {
     });
   }
 
-  shouldShowPricePrefix(): boolean {
-    return this.isPriceFocused() || this.hasPriceValue();
-  }
-
-  onPriceFocus(): void {
-    this.isPriceFocused.set(true);
-  }
-
-  onPriceBlur(): void {
-    this.isPriceFocused.set(false);
-  }
-
   onNumericInput(event: Event, fieldName: string, maxDigits: number): void {
     const input = event.target as HTMLInputElement;
     const value = input.value.replace(/\D/g, '');
-
-    if (fieldName === 'price') {
-      this.hasPriceValue.set(value.length > 0);
-    }
 
     if (value.length > maxDigits) {
       const truncated = value.slice(0, maxDigits);

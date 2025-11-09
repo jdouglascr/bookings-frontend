@@ -47,6 +47,7 @@ export interface ContactInfo {
   phone: string;
 }
 
+// STEPPER MODELS
 export interface StepData {
   service?: Service;
   serviceId?: number;
@@ -55,6 +56,13 @@ export interface StepData {
   selectedTimeSlot?: TimeSlot;
   contactInfo?: ContactInfo;
   customer?: Customer;
+}
+
+export interface StepConfig {
+  id: string;
+  title: string;
+  subtitle: string;
+  icon: string;
 }
 
 // AVAILABILITY MODELS
@@ -139,4 +147,30 @@ export interface DaySchedule {
   startTime: string;
   endTime: string;
   isClosed: boolean;
+}
+
+// DIALOG MODELS
+export interface ConfirmDialogData {
+  title: string;
+  message: string;
+  confirmText?: string;
+  cancelText?: string;
+}
+
+export interface ServiceDialogData {
+  categoryId?: number;
+  serviceId?: number;
+}
+
+export interface SelectedServiceDialogData {
+  selectedService: Service;
+}
+
+// LAYOUT MODELS
+export interface LayoutMenuItem {
+  id: string;
+  label: string;
+  icon: string;
+  route: string;
+  isEnabled: boolean;
 }

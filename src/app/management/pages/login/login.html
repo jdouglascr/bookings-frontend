@@ -41,45 +41,11 @@
         }
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Contraseña</mat-label>
-        <input
-          matInput
-          [type]="hidePassword() ? 'password' : 'text'"
-          formControlName="password"
-          name="password"
-          id="password"
-          autocomplete="current-password"
-          required
-        />
-
-        @if (showPasswordToggle) {
-          <button
-            mat-icon-button
-            matSuffix
-            type="button"
-            (click)="togglePasswordVisibility()"
-            tabindex="-1"
-            aria-label="Mostrar/ocultar contraseña"
-          >
-            <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-        }
-
-        @if (
-          loginForm.get('password')?.invalid &&
-          (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)
-        ) {
-          <mat-error>
-            @if (loginForm.get('password')?.hasError('required')) {
-              La contraseña es requerida
-            }
-            @if (loginForm.get('password')?.hasError('minlength')) {
-              Mínimo 4 caracteres
-            }
-          </mat-error>
-        }
-      </mat-form-field>
+      <app-password-input
+        formControlName="password"
+        label="Contraseña"
+        autocomplete="current-password"
+      />
 
       <button
         mat-flat-button

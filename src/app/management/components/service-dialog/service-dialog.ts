@@ -8,11 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { ServicesService } from '../../../core/services/services.service';
-
-interface DialogData {
-  categoryId?: number;
-  serviceId?: number;
-}
+import { ServiceDialogData } from '../../../models/frontend.models';
 
 @Component({
   selector: 'app-service-dialog',
@@ -28,11 +24,11 @@ interface DialogData {
   templateUrl: './service-dialog.html',
 })
 export class ServiceDialog implements OnInit {
-  private fb = inject(FormBuilder);
-  private dialogRef = inject(MatDialogRef<ServiceDialog>);
-  private categoryService = inject(CategoriesService);
-  private serviceService = inject(ServicesService);
-  data = inject<DialogData>(MAT_DIALOG_DATA);
+  private readonly fb = inject(FormBuilder);
+  private readonly dialogRef = inject(MatDialogRef<ServiceDialog>);
+  private readonly categoryService = inject(CategoriesService);
+  private readonly serviceService = inject(ServicesService);
+  data = inject<ServiceDialogData>(MAT_DIALOG_DATA);
 
   isEdit = signal(false);
   isSaving = signal(false);

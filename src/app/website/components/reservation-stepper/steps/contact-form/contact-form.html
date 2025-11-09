@@ -58,35 +58,7 @@
           }
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Teléfono</mat-label>
-          @if (shouldShowPhonePrefix()) {
-            <span matPrefix class="phone-prefix">+56</span>
-          }
-          <input
-            matInput
-            formControlName="phone"
-            type="text"
-            inputmode="numeric"
-            maxlength="9"
-            autocomplete="tel"
-            (input)="onPhoneInput($event)"
-            (focus)="onPhoneFocus()"
-            (blur)="onPhoneBlur()"
-          />
-          @if (
-            contactForm.get('phone')?.invalid &&
-            (contactForm.get('phone')?.dirty || contactForm.get('phone')?.touched)
-          ) {
-            <mat-error>
-              @if (contactForm.get('phone')?.hasError('required')) {
-                El teléfono es requerido
-              } @else {
-                El teléfono debe tener 9 dígitos
-              }
-            </mat-error>
-          }
-        </mat-form-field>
+        <app-phone-input formControlName="phone" label="Teléfono" />
       </div>
 
       <div class="form-notes">

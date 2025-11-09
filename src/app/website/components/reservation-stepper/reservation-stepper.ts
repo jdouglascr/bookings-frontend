@@ -2,13 +2,13 @@ import { Component, computed, inject, signal, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import {
   Appointment,
   StepData,
   TimeSlot,
-  Service,
   ContactInfo,
+  StepConfig,
+  SelectedServiceDialogData,
 } from '../../../models/frontend.models';
 import { AppointmentSelection } from './steps/appointment-selection/appointment-selection';
 import { DatetimeSelection } from './steps/datetime-selection/datetime-selection';
@@ -18,17 +18,7 @@ import { CustomerService } from '../../../core/services/customer.service';
 import { BookingService } from '../../../core/services/booking.service';
 import { PublicBookingCreateRequest } from '../../../models/public-api.models';
 import { catchError, switchMap, of } from 'rxjs';
-
-interface StepConfig {
-  id: string;
-  title: string;
-  subtitle: string;
-  icon: string;
-}
-
-interface DialogData {
-  selectedService: Service;
-}
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-reservation-stepper',
@@ -36,7 +26,6 @@ interface DialogData {
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
-    MatSnackBarModule,
     AppointmentSelection,
     DatetimeSelection,
     ContactForm,
@@ -47,10 +36,10 @@ interface DialogData {
 })
 export class ReservationStepper {
   private readonly dialogRef = inject(MatDialogRef<ReservationStepper>);
-  private readonly snackBar = inject(MatSnackBar);
+  private readonly notification = inject(NotificationService);
   private readonly customerService = inject(CustomerService);
   private readonly bookingService = inject(BookingService);
-  readonly data = inject(MAT_DIALOG_DATA, { optional: true }) as DialogData | null;
+  readonly data = inject(MAT_DIALOG_DATA, { optional: true }) as SelectedServiceDialogData | null;
 
   @ViewChild(DatetimeSelection) datetimeSelection?: DatetimeSelection;
 
@@ -190,12 +179,7 @@ export class ReservationStepper {
       !data.selectedTimeSlot ||
       !data.contactInfo
     ) {
-      this.snackBar.open('Faltan datos para completar la reserva', 'Cerrar', {
-        duration: 4000,
-        horizontalPosition: 'right',
-        verticalPosition: 'bottom',
-        panelClass: ['error-snackbar'],
-      });
+      this.notification.error('Faltan datos para completar la reserva');
       return;
     }
 
@@ -225,27 +209,14 @@ export class ReservationStepper {
           console.error('Error al crear la reserva:', error);
           this.isProcessingBooking.set(false);
           this.dialogRef.disableClose = false;
-
-          this.snackBar.open('Error al crear la reserva. Por favor intenta nuevamente.', 'Cerrar', {
-            duration: 5000,
-            horizontalPosition: 'right',
-            verticalPosition: 'bottom',
-            panelClass: ['error-snackbar'],
-          });
-
+          this.notification.error('Error al crear la reserva. Por favor intenta nuevamente.');
           return of(null);
         }),
       )
       .subscribe((bookingResponse) => {
         if (bookingResponse) {
           this.dialogRef.close({ success: true, booking: bookingResponse });
-
-          this.snackBar.open('¡Reserva registrada exitosamente!', 'Cerrar', {
-            duration: 5000,
-            horizontalPosition: 'right',
-            verticalPosition: 'bottom',
-            panelClass: ['success-snackbar'],
-          });
+          this.notification.success('¡Reserva registrada exitosamente!');
         }
 
         this.isProcessingBooking.set(false);

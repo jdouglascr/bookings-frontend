@@ -2,13 +2,7 @@ import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-
-interface ConfirmDialogData {
-  title: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
-}
+import { ConfirmDialogData } from '../../../models/frontend.models';
 
 @Component({
   selector: 'app-confirm-dialog',

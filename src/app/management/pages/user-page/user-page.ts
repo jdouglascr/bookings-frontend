@@ -2,23 +2,23 @@ import { Component, inject, computed } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { UserService } from '../../../core/services/user.service';
 import { UserDialog } from '../../components/user-dialog/user-dialog';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { DataTable } from '../../components/data-table/data-table';
 import { TableColumn, TableAction, UserTableRow } from '../../../models/frontend.models';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-user-page',
-  imports: [MatButtonModule, MatIconModule, MatDialogModule, MatSnackBarModule, DataTable],
+  imports: [MatButtonModule, MatIconModule, MatDialogModule, DataTable],
   templateUrl: './user-page.html',
   styleUrl: './user-page.scss',
 })
 export class UserPage {
   private userService = inject(UserService);
   private dialog = inject(MatDialog);
-  private snackBar = inject(MatSnackBar);
+  private notification = inject(NotificationService);
 
   users = this.userService.users;
   isLoading = this.userService.isLoading;
@@ -105,7 +105,7 @@ export class UserPage {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.showSuccess('Usuario guardado exitosamente');
+        this.notification.success('Usuario guardado exitosamente');
       }
     });
   }
@@ -125,9 +125,9 @@ export class UserPage {
     dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
         this.userService.deleteUser(userId).subscribe({
-          next: () => this.showSuccess('Usuario eliminado exitosamente'),
+          next: () => this.notification.success('Usuario eliminado exitosamente'),
           error: (err: { error?: { message?: string } }) =>
-            this.showError(err.error?.message || 'Error al eliminar usuario'),
+            this.notification.error(err.error?.message || 'Error al eliminar usuario'),
         });
       }
     });
@@ -153,20 +153,6 @@ export class UserPage {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
-    });
-  }
-
-  private showSuccess(message: string): void {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 3000,
-      panelClass: 'success-snackbar',
-    });
-  }
-
-  private showError(message: string): void {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 4000,
-      panelClass: 'error-snackbar',
     });
   }
 }

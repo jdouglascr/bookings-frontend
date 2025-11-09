@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UserService } from '../../../core/services/user.service';
 import { UserRequest } from '../../../models/private-api.models';
+import { PhoneInputComponent } from '../../../shared/components/phone-input/phone-input';
+import { PasswordInputComponent } from '../../../shared/components/password-input/password-input';
 
 @Component({
   selector: 'app-user-dialog',
@@ -21,21 +23,20 @@ import { UserRequest } from '../../../models/private-api.models';
     MatSelectModule,
     MatIconModule,
     MatCheckboxModule,
+    PhoneInputComponent,
+    PasswordInputComponent,
   ],
   templateUrl: './user-dialog.html',
 })
 export class UserDialog implements OnInit {
   private fb = inject(FormBuilder);
-  private dialogRef = inject(MatDialogRef<UserDialog>);
-  private userService = inject(UserService);
+  private readonly dialogRef = inject(MatDialogRef<UserDialog>);
+  private readonly userService = inject(UserService);
   userId = inject<number | undefined>(MAT_DIALOG_DATA);
   isEdit = signal(false);
   isSaving = signal(false);
   isLoadingUser = signal(false);
-  showPassword = signal(false);
   updatePassword = signal(false);
-  private isPhoneFocused = signal(false);
-  private hasPhoneValue = signal(false);
   form: FormGroup;
 
   constructor() {
@@ -43,7 +44,7 @@ export class UserDialog implements OnInit {
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{9}$/)]],
+      phone: ['', [Validators.required, Validators.pattern(/^\+56[0-9]{9}$/)]],
       role: ['ROLE_STAFF', [Validators.required]],
       isActive: [true],
       password: ['', []],
@@ -65,20 +66,14 @@ export class UserDialog implements OnInit {
     this.isLoadingUser.set(true);
     this.userService.getUserById(this.userId!).subscribe({
       next: (user) => {
-        const phoneDisplay = user.phone?.startsWith('+56')
-          ? user.phone.substring(3)
-          : user.phone || '';
-
         this.form.patchValue({
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
-          phone: phoneDisplay,
+          phone: user.phone,
           role: this.mapRoleToEnum(user.role),
           isActive: user.isActive,
         });
-
-        this.hasPhoneValue.set(!!phoneDisplay);
         this.isLoadingUser.set(false);
       },
       error: () => {
@@ -90,42 +85,6 @@ export class UserDialog implements OnInit {
   mapRoleToEnum(roleDisplay: string): string {
     if (roleDisplay === 'Administrador') return 'ROLE_ADMIN';
     return 'ROLE_STAFF';
-  }
-
-  shouldShowPhonePrefix(): boolean {
-    return this.isPhoneFocused() || this.hasPhoneValue();
-  }
-
-  onPhoneFocus(): void {
-    this.isPhoneFocused.set(true);
-  }
-
-  onPhoneBlur(): void {
-    this.isPhoneFocused.set(false);
-  }
-
-  onPhoneInput(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const value = input.value.replace(/\D/g, '');
-
-    if (value.length > 9) {
-      const truncated = value.slice(0, 9);
-      input.value = truncated;
-      this.form.patchValue({ phone: truncated });
-    } else {
-      this.form.patchValue({ phone: value });
-    }
-
-    this.hasPhoneValue.set(value.length > 0);
-  }
-
-  get showPasswordToggle(): boolean {
-    const passwordControl = this.form.get('password');
-    return !!passwordControl && passwordControl.value?.length > 0;
-  }
-
-  togglePasswordVisibility(): void {
-    this.showPassword.update((value) => !value);
   }
 
   toggleUpdatePassword(): void {
@@ -149,13 +108,11 @@ export class UserDialog implements OnInit {
     this.isSaving.set(true);
     const formValue = this.form.getRawValue();
 
-    const phone = `+56${formValue.phone}`;
-
     const request: UserRequest = {
       firstName: formValue.firstName,
       lastName: formValue.lastName,
       email: formValue.email,
-      phone: phone,
+      phone: formValue.phone,
       role: formValue.role,
       isActive: formValue.isActive,
     };

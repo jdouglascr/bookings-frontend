@@ -9,14 +9,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AuthService } from '../../../core/services/auth.service';
 import { ProfileDialog } from '../../components/profile-dialog/profile-dialog';
-
-interface MenuItem {
-  id: string;
-  label: string;
-  icon: string;
-  route: string;
-  isEnabled: boolean;
-}
+import { LayoutMenuItem } from '../../../models/frontend.models';
 
 @Component({
   selector: 'app-management-layout',
@@ -34,9 +27,9 @@ interface MenuItem {
   styleUrl: './management-layout.scss',
 })
 export class ManagementLayout {
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  private dialog = inject(MatDialog);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly dialog = inject(MatDialog);
 
   mobileMenuOpen = signal(false);
   businessName = signal('Rulos Style');
@@ -49,7 +42,7 @@ export class ManagementLayout {
     this.currentUser()?.role === 'ROLE_ADMIN' ? 'Administrador' : 'Personal',
   );
 
-  menuItems = signal<MenuItem[]>([
+  menuItems = signal<LayoutMenuItem[]>([
     {
       id: 'resumen',
       label: 'Resumen',
@@ -94,7 +87,7 @@ export class ManagementLayout {
     },
   ]);
 
-  accountItems = signal<MenuItem[]>([
+  accountItems = signal<LayoutMenuItem[]>([
     {
       id: 'negocio',
       label: 'Mi negocio',
@@ -121,7 +114,7 @@ export class ManagementLayout {
     return this.router.url === route;
   }
 
-  navigateToIfEnabled(item: MenuItem) {
+  navigateToIfEnabled(item: LayoutMenuItem) {
     if (item.isEnabled) {
       this.navigateTo(item.route);
     }

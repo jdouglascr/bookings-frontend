@@ -3,7 +3,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { ServicesService } from '../../../core/services/services.service';
@@ -11,25 +10,19 @@ import { CategoryWithServices } from '../../../models/private-api.models';
 import { ServiceDialog } from '../../components/service-dialog/service-dialog';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { CategoryDialog } from '../../components/category-dialog/category-dialog';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-service-page',
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    MatDialogModule,
-    MatSnackBarModule,
-    MatMenuModule,
-  ],
+  imports: [MatButtonModule, MatIconModule, MatCardModule, MatDialogModule, MatMenuModule],
   templateUrl: './service-page.html',
   styleUrl: './service-page.scss',
 })
 export class ServicePage {
-  private categoryService = inject(CategoriesService);
-  private serviceService = inject(ServicesService);
-  private dialog = inject(MatDialog);
-  private snackBar = inject(MatSnackBar);
+  private readonly categoryService = inject(CategoriesService);
+  private readonly serviceService = inject(ServicesService);
+  private readonly dialog = inject(MatDialog);
+  private readonly notification = inject(NotificationService);
 
   isLoading = computed(() => this.categoryService.isLoading() || this.serviceService.isLoading());
 
@@ -62,7 +55,7 @@ export class ServicePage {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.showSuccess('Categoría guardada exitosamente');
+        this.notification.success('Categoría guardada exitosamente');
       }
     });
   }
@@ -76,17 +69,14 @@ export class ServicePage {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.showSuccess('Servicio guardado exitosamente');
+        this.notification.success('Servicio guardado exitosamente');
       }
     });
   }
 
   deleteCategory(category: CategoryWithServices) {
     if (category.servicesCount > 0) {
-      this.snackBar.open('No se puede eliminar una categoría con servicios', 'Cerrar', {
-        duration: 4000,
-        panelClass: 'error-snackbar',
-      });
+      this.notification.error('No se puede eliminar una categoría con servicios');
       return;
     }
 
@@ -104,8 +94,8 @@ export class ServicePage {
     dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
         this.categoryService.deleteCategory(category.category.id).subscribe({
-          next: () => this.showSuccess('Categoría eliminada exitosamente'),
-          error: (err) => this.showError(err.message),
+          next: () => this.notification.success('Categoría eliminada exitosamente'),
+          error: (err) => this.notification.error(err.message),
         });
       }
     });
@@ -126,24 +116,10 @@ export class ServicePage {
     dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
         this.serviceService.deleteService(serviceId).subscribe({
-          next: () => this.showSuccess('Servicio eliminado exitosamente'),
-          error: (err) => this.showError(err.message),
+          next: () => this.notification.success('Servicio eliminado exitosamente'),
+          error: (err) => this.notification.error(err.message),
         });
       }
-    });
-  }
-
-  private showSuccess(message: string) {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 3000,
-      panelClass: 'success-snackbar',
-    });
-  }
-
-  private showError(message: string) {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 4000,
-      panelClass: 'error-snackbar',
     });
   }
 }

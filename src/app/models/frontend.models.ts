@@ -18,26 +18,18 @@ export interface Appointment {
   imageUrl: string;
 }
 
-// CUSTOMER MODELS
-export interface Customer {
-  id?: number;
-  id_business?: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-}
-
 // BOOKING MODELS
 export interface Booking {
   id?: number;
-  id_customer: number;
-  id_appointment_service: number;
-  date: string;
-  start_time: string;
-  end_time: string;
+  customerId: number;
+  resourceServiceId: number;
+  startDatetime: string;
+  endDatetime: string;
   price: number;
   status: 'Pendiente' | 'Confirmada' | 'Pagada' | 'Completada' | 'Cancelada';
+  cancellationReason?: string;
+  cancelledBy?: string;
+  cancelledAt?: string;
 }
 
 export interface ContactInfo {
@@ -55,7 +47,6 @@ export interface StepData {
   selectedDate?: string;
   selectedTimeSlot?: TimeSlot;
   contactInfo?: ContactInfo;
-  customer?: Customer;
 }
 
 export interface StepConfig {
@@ -105,7 +96,6 @@ export interface AppointmentAvailability {
 
 export interface BookingConfirmation {
   success: boolean;
-  customer: Customer;
   booking: Booking;
 }
 
@@ -125,7 +115,6 @@ export interface TableAction<T> {
   handler: (row: T) => void;
 }
 
-// USER MODELS
 export interface UserTableRow {
   id: number;
   fullName: string;
@@ -137,6 +126,17 @@ export interface UserTableRow {
   isActive: boolean;
   statusText: string;
   lastLogin: string;
+  initials: string;
+}
+
+export interface CustomerTableRow {
+  id: number;
+  fullName: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  createdAt: string;
   initials: string;
 }
 

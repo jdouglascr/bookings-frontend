@@ -110,6 +110,24 @@ export interface UpdateProfileRequest {
   password?: string;
 }
 
+// Customer
+export interface CustomerRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+}
+
+export interface CustomerResponse {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // Business
 export interface BusinessWithHoursResponse {
   id: number;

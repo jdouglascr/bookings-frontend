@@ -1,0 +1,42 @@
+.customers-page {
+  max-width: 1400px;
+  margin: 0 auto;
+
+  .page__header {
+    margin-bottom: 2rem;
+  }
+
+  .page__title {
+    margin: 0 0 0.5rem 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gray-text-titles);
+  }
+
+  .page__subtitle {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--gray-text-medium);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .customers-page {
+    .page__title {
+      font-size: 1.5rem;
+    }
+
+    .page__subtitle {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .customers-page {
+    .page__title {
+      font-size: 1.25rem;
+    }
+  }
+}

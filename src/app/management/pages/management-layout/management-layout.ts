@@ -76,7 +76,7 @@ export class ManagementLayout {
       label: 'Clientes',
       icon: 'people',
       route: '/admin/customers',
-      isEnabled: false,
+      isEnabled: true,
     },
     {
       id: 'usuarios',

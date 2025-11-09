@@ -51,7 +51,7 @@ export class DataTable<T> {
 
   searchTerm = signal('');
   currentPage = signal(0);
-  readonly pageSize = 10;
+  readonly pageSize = 5;
 
   displayedColumns = computed(() => {
     const cols = this.columns().map((col) => col.key);

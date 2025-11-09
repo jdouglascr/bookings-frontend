@@ -19,6 +19,7 @@ import { BookingService } from '../../../core/services/booking.service';
 import { PublicBookingCreateRequest } from '../../../models/public-api.models';
 import { catchError, switchMap, of } from 'rxjs';
 import { NotificationService } from '../../../core/services/notification.service';
+import { CustomerRequest } from '../../../models/private-api.models';
 
 @Component({
   selector: 'app-reservation-stepper',
@@ -189,14 +190,19 @@ export class ReservationStepper {
     const startDatetime = this.buildDatetime(data.selectedDate, data.selectedTimeSlot.time);
     const endDatetime = this.calculateEndDatetime(startDatetime, data.service.durationMin);
 
-    this.customerService
-      .upsertCustomer(data.contactInfo)
-      .pipe(
-        switchMap((customerResponse) => {
-          const customer = this.customerService.mapToCustomer(customerResponse);
+    const customerRequest: CustomerRequest = {
+      firstName: data.contactInfo.firstName,
+      lastName: data.contactInfo.lastName,
+      email: data.contactInfo.email,
+      phone: data.contactInfo.phone,
+    };
 
+    this.customerService
+      .upsertCustomer(customerRequest)
+      .pipe(
+        switchMap((customer) => {
           const bookingRequest: PublicBookingCreateRequest = {
-            customerId: customer.id!,
+            customerId: customer.id,
             resourceServiceId: data.appointment!.resourceServiceId,
             startDatetime: startDatetime,
             endDatetime: endDatetime,

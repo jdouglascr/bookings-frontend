@@ -1,0 +1,82 @@
+<div class="dialog-header">
+  <h2 mat-dialog-title>{{ isEdit() ? 'Editar' : 'Crear' }} cliente</h2>
+  <button mat-icon-button mat-dialog-close class="close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content-wrapper">
+  @if (isLoadingCustomer()) {
+    <div class="dialog-loading">
+      <mat-icon class="spinner">hourglass_empty</mat-icon>
+      <p>Cargando cliente...</p>
+    </div>
+  } @else {
+    <form [formGroup]="form" class="dialog-form">
+      <div class="form-section">
+        <h3 class="section-title">Información personal</h3>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="firstName" />
+            @if (form.get('firstName')?.hasError('required') && form.get('firstName')?.touched) {
+              <mat-error>El nombre es obligatorio</mat-error>
+            }
+            @if (form.get('firstName')?.hasError('minlength')) {
+              <mat-error>El nombre debe tener al menos 2 caracteres</mat-error>
+            }
+            @if (form.get('firstName')?.hasError('maxlength')) {
+              <mat-error>El nombre no puede exceder 100 caracteres</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Apellido</mat-label>
+            <input matInput formControlName="lastName" />
+            @if (form.get('lastName')?.hasError('required') && form.get('lastName')?.touched) {
+              <mat-error>El apellido es obligatorio</mat-error>
+            }
+            @if (form.get('lastName')?.hasError('minlength')) {
+              <mat-error>El apellido debe tener al menos 2 caracteres</mat-error>
+            }
+            @if (form.get('lastName')?.hasError('maxlength')) {
+              <mat-error>El apellido no puede exceder 100 caracteres</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" />
+            @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+              <mat-error>El email es obligatorio</mat-error>
+            }
+            @if (form.get('email')?.hasError('email')) {
+              <mat-error>Email inválido</mat-error>
+            }
+          </mat-form-field>
+
+          <app-phone-input formControlName="phone" />
+        </div>
+      </div>
+    </form>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  <button mat-button mat-dialog-close class="cancel-btn">Cancelar</button>
+  <button
+    mat-flat-button
+    color="primary"
+    class="submit-btn"
+    (click)="onSubmit()"
+    [disabled]="form.invalid || isSaving() || isLoadingCustomer()"
+  >
+    @if (isSaving()) {
+      <mat-icon class="material-spinner">hourglass_empty</mat-icon>
+    }
+    {{ isEdit() ? 'Actualizar' : 'Crear' }}
+  </button>
+</mat-dialog-actions>

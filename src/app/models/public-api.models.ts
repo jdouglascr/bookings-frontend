@@ -30,22 +30,6 @@ export interface PublicResource {
   imageUrl: string;
 }
 
-// Customer
-export interface PublicCustomerRequest {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-}
-
-export interface PublicCustomerResponse {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-}
-
 // Business
 export interface PublicBusinessInfo {
   name: string;

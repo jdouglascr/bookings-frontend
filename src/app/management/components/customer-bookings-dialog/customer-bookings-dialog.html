@@ -1,0 +1,23 @@
+<div class="dialog-header">
+  <h2 mat-dialog-title>Reservas de {{ data.customerName }}</h2>
+  <button mat-icon-button mat-dialog-close class="close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content-wrapper">
+  <app-data-table
+    [data]="tableData()"
+    [columns]="columns"
+    [actions]="[]"
+    [isLoading]="isLoading()"
+    [showSearch]="true"
+    [showCreateButton]="false"
+    emptyMessage="Este cliente no tiene reservas"
+    emptyIcon="event_busy"
+  />
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  <button mat-flat-button color="primary" mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>

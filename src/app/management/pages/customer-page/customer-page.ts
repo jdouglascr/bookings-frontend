@@ -8,6 +8,7 @@ import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { DataTable } from '../../components/data-table/data-table';
 import { TableColumn, TableAction, CustomerTableRow } from '../../../models/frontend.models';
 import { NotificationService } from '../../../core/services/notification.service';
+import { CustomerBookingsDialog } from '../../components/customer-bookings-dialog/customer-bookings-dialog';
 
 @Component({
   selector: 'app-customer-page',
@@ -103,9 +104,11 @@ export class CustomerPage {
   }
 
   viewBookings(customerId: number, customerName: string): void {
-    // TODO: Implementar vista de reservas
-    console.log(`Reservas de: ${customerName} (ID: ${customerId})`);
-    this.notification.info(`Mostrando reservas de ${customerName}`);
+    this.dialog.open(CustomerBookingsDialog, {
+      width: '1000px',
+      maxWidth: '95vw',
+      data: { customerId, customerName },
+    });
   }
 
   deleteCustomer(customerId: number, customerName: string): void {

@@ -140,6 +140,16 @@ export interface CustomerTableRow {
   initials: string;
 }
 
+export interface BookingTableRow {
+  id: number;
+  serviceName: string;
+  resourceName: string;
+  customerName?: string;
+  duration: string;
+  price: string;
+  status: string;
+}
+
 // AVAILABLE TIMES MODELS
 export interface DaySchedule {
   id: number | null;
@@ -164,6 +174,11 @@ export interface ServiceDialogData {
 
 export interface SelectedServiceDialogData {
   selectedService: Service;
+}
+
+export interface CustomerBookingsDialogData {
+  customerId: number;
+  customerName: string;
 }
 
 // LAYOUT MODELS

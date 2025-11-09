@@ -209,7 +209,7 @@ export class ReservationStepper {
             price: data.service!.price,
           };
 
-          return this.bookingService.createBooking(bookingRequest);
+          return this.bookingService.createPublicBooking(bookingRequest);
         }),
         catchError((error) => {
           console.error('Error al crear la reserva:', error);

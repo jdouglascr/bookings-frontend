@@ -173,3 +173,40 @@ export interface BusinessHourUpdateDto {
   endTime: string | null;
   isClosed: boolean;
 }
+
+// Booking
+export interface BookingResponse {
+  id: number;
+  customerId: number;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  resourceServiceId: number;
+  resourceId: number;
+  resourceName: string;
+  serviceId: number;
+  serviceName: string;
+  startDatetime: string;
+  endDatetime: string;
+  price: number;
+  status: string;
+  cancellationReason?: string;
+  cancelledBy?: string;
+  cancelledAt?: string;
+  confirmationToken?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BookingRequest {
+  customerId: number;
+  resourceServiceId: number;
+  startDatetime: string;
+  endDatetime: string;
+  price: number;
+  status: string;
+  cancellationReason?: string;
+  cancelledBy?: string;
+  cancelledAt?: string;
+  confirmationToken?: string;
+}

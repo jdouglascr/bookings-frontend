@@ -46,6 +46,12 @@ export const routes: Routes = [
         title: 'Rulos Style | Servicios',
       },
       {
+        path: 'resources',
+        loadComponent: () =>
+          import('./management/pages/resource-page/resource-page').then((m) => m.ResourcePage),
+        title: 'Rulos Style | Recursos',
+      },
+      {
         path: 'customers',
         loadComponent: () =>
           import('./management/pages/customer-page/customer-page').then((m) => m.CustomerPage),

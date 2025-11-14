@@ -1,0 +1,136 @@
+<div class="resources-page">
+  <!-- Header -->
+  <div class="page__header">
+    <div class="page__header-text">
+      <h1 class="page__title">Recursos</h1>
+      <p class="page__subtitle">Administra los profesionales e infraestructura de tu negocio.</p>
+    </div>
+  </div>
+
+  <!-- Filters Bar -->
+  <div class="filters-bar">
+    <button
+      mat-flat-button
+      color="primary"
+      class="create-resource-btn"
+      (click)="openResourceDialog()"
+    >
+      <mat-icon>add</mat-icon>
+      Crear nuevo recurso
+    </button>
+
+    <div class="filters-group">
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Tipo</mat-label>
+        <mat-select [value]="typeFilter()" (selectionChange)="onTypeFilterChange($event.value)">
+          <mat-option value="all">Todos</mat-option>
+          <mat-option value="Profesional">Profesional</mat-option>
+          <mat-option value="Infraestructura">Infraestructura</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Usuario</mat-label>
+        <mat-select [value]="userFilter()" (selectionChange)="onUserFilterChange($event.value)">
+          <mat-option value="all">Todos</mat-option>
+          @for (user of users(); track user.id) {
+            <mat-option [value]="user.id">{{ user.firstName }} {{ user.lastName }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      @if (typeFilter() !== 'all' || userFilter() !== 'all') {
+        <button mat-stroked-button (click)="clearFilters()" class="clear-filters-btn">
+          <mat-icon>filter_alt_off</mat-icon>
+          Limpiar filtros
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Loading Skeleton -->
+  @if (isLoading()) {
+    <div class="resources-grid">
+      @for (_ of [1, 2, 3, 4, 5, 6]; track $index) {
+        <mat-card class="resource-card skeleton">
+          <div class="resource-main">
+            <div class="skeleton-image"></div>
+            <div class="resource-content">
+              <div class="skeleton-header">
+                <div class="skeleton-line skeleton-title"></div>
+              </div>
+              <div class="skeleton-line skeleton-description"></div>
+              <div class="skeleton-meta">
+                <div class="skeleton-badge"></div>
+                <div class="skeleton-line skeleton-meta-item"></div>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+      }
+    </div>
+  } @else if (filteredResources().length === 0) {
+    <!-- Empty State -->
+    <mat-card class="empty-state">
+      <mat-icon>star</mat-icon>
+      @if (typeFilter() !== 'all' || userFilter() !== 'all') {
+        <h3>No se encontraron recursos</h3>
+        <p>Intenta ajustar los filtros de búsqueda</p>
+      } @else {
+        <h3>No hay recursos</h3>
+        <p>Crea tu primer recurso para comenzar</p>
+      }
+    </mat-card>
+  } @else {
+    <!-- Resources Grid -->
+    <div class="resources-grid">
+      @for (resource of filteredResources(); track resource.id) {
+        <mat-card class="resource-card">
+          <div class="resource-main">
+            <!-- Image -->
+            <div class="resource-image">
+              <img [src]="resource.imageUrl" [alt]="resource.name" />
+            </div>
+
+            <!-- Content -->
+            <div class="resource-content">
+              <div class="resource-header">
+                <h3 class="resource-name">{{ resource.name }}</h3>
+                <button mat-icon-button [matMenuTriggerFor]="menu" class="resource-menu-btn">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="editResource(resource.id)">
+                    <mat-icon>edit</mat-icon>
+                    <span>Editar</span>
+                  </button>
+                  <button mat-menu-item (click)="deleteResource(resource.id, resource.name)">
+                    <mat-icon>delete</mat-icon>
+                    <span>Eliminar</span>
+                  </button>
+                </mat-menu>
+              </div>
+
+              @if (resource.description) {
+                <p class="resource-description">{{ resource.description }}</p>
+              }
+
+              <div class="resource-meta">
+                <span
+                  class="resource-type-badge"
+                  [class.professional]="resource.resourceType === 'Profesional'"
+                >
+                  {{ resource.resourceType }}
+                </span>
+                <div class="resource-meta-item">
+                  <mat-icon>construction</mat-icon>
+                  <span>{{ resource.services.length }} servicios</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+      }
+    </div>
+  }
+</div>

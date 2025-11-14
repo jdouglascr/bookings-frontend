@@ -65,11 +65,11 @@ export class ManagementLayout {
       isEnabled: true,
     },
     {
-      id: 'agendas',
-      label: 'Agendas',
-      icon: 'schedule',
-      route: '/admin/schedules',
-      isEnabled: false,
+      id: 'recursos',
+      label: 'Recursos',
+      icon: 'star',
+      route: '/admin/resources',
+      isEnabled: true,
     },
     {
       id: 'clientes',

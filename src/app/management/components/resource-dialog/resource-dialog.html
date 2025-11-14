@@ -1,0 +1,160 @@
+<div class="dialog-header">
+  <h2 mat-dialog-title>{{ isEdit() ? 'Editar' : 'Crear' }} recurso</h2>
+  <button mat-icon-button mat-dialog-close class="close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content-wrapper">
+  @if (isLoadingResource()) {
+    <div class="dialog-loading">
+      <mat-icon class="spinner">hourglass_empty</mat-icon>
+      <p>Cargando recurso...</p>
+    </div>
+  } @else {
+    <form [formGroup]="form" class="dialog-form">
+      <!-- Información básica -->
+      <div class="form-section">
+        <h3 class="section-title">Información básica</h3>
+
+        <div class="form-with-image">
+          <div class="image-wrapper">
+            <span class="image-label">Imagen</span>
+            <app-image-input
+              #imageInput
+              imageType="resource"
+              (fileChange)="onImageChange($event)"
+            />
+          </div>
+
+          <div class="form-fields">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Nombre</mat-label>
+              <input matInput formControlName="name" />
+              @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
+                <mat-error>El nombre es obligatorio</mat-error>
+              }
+              @if (form.get('name')?.hasError('minlength')) {
+                <mat-error>El nombre debe tener al menos 2 caracteres</mat-error>
+              }
+              @if (form.get('name')?.hasError('maxlength')) {
+                <mat-error>El nombre no puede exceder 100 caracteres</mat-error>
+              }
+            </mat-form-field>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Tipo</mat-label>
+                <mat-select formControlName="resourceType">
+                  <mat-option value="Profesional">Profesional</mat-option>
+                  <mat-option value="Infraestructura">Infraestructura</mat-option>
+                </mat-select>
+                @if (
+                  form.get('resourceType')?.hasError('required') &&
+                  form.get('resourceType')?.touched
+                ) {
+                  <mat-error>El tipo es obligatorio</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Usuario asignado</mat-label>
+                <mat-select formControlName="userId">
+                  @for (user of users(); track user.id) {
+                    <mat-option [value]="user.id">
+                      {{ user.firstName }} {{ user.lastName }}
+                    </mat-option>
+                  }
+                </mat-select>
+                @if (form.get('userId')?.hasError('required') && form.get('userId')?.touched) {
+                  <mat-error>El usuario es obligatorio</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descripción (opcional)</mat-label>
+          <textarea matInput formControlName="description" rows="3" maxlength="500"></textarea>
+          @if (form.get('description')?.hasError('maxlength')) {
+            <mat-error>La descripción no puede exceder 500 caracteres</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <!-- Servicios -->
+      <div class="form-section services-section">
+        <h3 class="section-title">Servicios disponibles</h3>
+
+        @if (isLoadingServices()) {
+          <div class="services-skeleton">
+            <div class="category-skeleton">
+              <div class="skeleton skeleton-category-header"></div>
+              <div class="services-list-skeleton">
+                <div class="skeleton skeleton-service-item"></div>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <div class="services-selector">
+            @for (category of groupedServices(); track category.categoryName) {
+              <div class="category-group">
+                <div class="category-header">
+                  <span class="category-name">{{ category.categoryName }}</span>
+                  <button
+                    type="button"
+                    mat-flat-button
+                    class="select-all-btn"
+                    (click)="toggleCategoryServices(category)"
+                  >
+                    {{ isCategoryFullySelected(category) ? 'Deseleccionar' : 'Seleccionar' }} todos
+                  </button>
+                </div>
+
+                <div class="services-list">
+                  @for (service of category.services; track service.id) {
+                    <label class="service-item" [class.selected]="isServiceSelected(service.id)">
+                      <input
+                        type="checkbox"
+                        [checked]="isServiceSelected(service.id)"
+                        (change)="toggleService(service.id)"
+                      />
+                      <div class="service-content">
+                        <span class="service-name">{{ service.name }}</span>
+                        <span class="service-price">{{ formatPrice(service.price) }}</span>
+                      </div>
+                      <mat-icon class="check-icon">check_circle</mat-icon>
+                    </label>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+          @if (form.get('serviceIds')?.hasError('required') && form.get('serviceIds')?.touched) {
+            <p class="services-error">Debe seleccionar al menos un servicio</p>
+          }
+        }
+      </div>
+    </form>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  <button mat-button mat-dialog-close class="cancel-btn">Cancelar</button>
+  <button
+    mat-flat-button
+    color="primary"
+    class="submit-btn"
+    (click)="onSubmit()"
+    [disabled]="
+      form.invalid || isSaving() || isLoadingResource() || (!selectedImage() && !isEdit())
+    "
+  >
+    @if (isSaving()) {
+      <mat-icon class="material-spinner">hourglass_empty</mat-icon>
+    }
+    {{ isEdit() ? 'Actualizar' : 'Crear' }}
+  </button>
+</mat-dialog-actions>

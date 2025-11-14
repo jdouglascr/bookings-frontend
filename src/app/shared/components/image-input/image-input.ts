@@ -2,7 +2,7 @@ import { Component, input, signal, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
-export type ImageInputType = 'logo' | 'banner' | 'profile' | 'general';
+type ImageInputType = 'logo' | 'banner' | 'resource';
 
 @Component({
   selector: 'app-image-input',
@@ -17,7 +17,8 @@ export type ImageInputType = 'logo' | 'banner' | 'profile' | 'general';
         class="image-dropzone"
         [class.logo]="imageType() === 'logo'"
         [class.banner]="imageType() === 'banner'"
-        [class.profile]="imageType() === 'profile'"
+        [class.resource]="imageType() === 'resource'"
+        [class.has-preview]="preview()"
         role="button"
         tabindex="0"
         (click)="fileInput.click()"
@@ -39,6 +40,11 @@ export type ImageInputType = 'logo' | 'banner' | 'profile' | 'general';
                 <mat-icon>edit</mat-icon>
               </button>
             </div>
+          </div>
+        } @else {
+          <div class="image-placeholder">
+            <mat-icon>add_photo_alternate</mat-icon>
+            <p>Click para seleccionar</p>
           </div>
         }
       </div>
@@ -109,9 +115,53 @@ export type ImageInputType = 'logo' | 'banner' | 'profile' | 'general';
           border-radius: 50%;
         }
 
+        &.resource {
+          width: 100px;
+          height: 100px;
+          border-radius: 8px;
+        }
+
         &.general {
-          aspect-ratio: 4 / 3;
-          max-height: 400px;
+          width: 200px;
+          height: 200px;
+        }
+      }
+
+      .image-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        color: var(--gray-text-medium);
+        padding: 0.5rem;
+
+        .mat-icon {
+          font-size: 28px;
+          width: 28px;
+          height: 28px;
+        }
+
+        p {
+          margin: 0;
+          font-size: 0.6875rem;
+          font-weight: 500;
+          text-align: center;
+          line-height: 1.2;
+        }
+      }
+
+      .resource .image-placeholder {
+        .mat-icon {
+          font-size: 32px;
+          width: 32px;
+          height: 32px;
+        }
+
+        p {
+          font-size: 0.625rem;
         }
       }
 
@@ -151,9 +201,9 @@ export type ImageInputType = 'logo' | 'banner' | 'profile' | 'general';
         }
 
         .mat-icon {
-          font-size: 24px;
-          width: 24px;
-          height: 24px;
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
         }
       }
 
@@ -174,6 +224,11 @@ export type ImageInputType = 'logo' | 'banner' | 'profile' | 'general';
             width: 150px;
             height: 150px;
           }
+
+          &.resource {
+            width: 90px;
+            height: 90px;
+          }
         }
       }
     `,
@@ -181,7 +236,7 @@ export type ImageInputType = 'logo' | 'banner' | 'profile' | 'general';
 })
 export class ImageInput {
   label = input<string>('');
-  imageType = input<ImageInputType>('general');
+  imageType = input<ImageInputType>();
   accept = input<string>('image/*');
 
   fileChange = output<File>();

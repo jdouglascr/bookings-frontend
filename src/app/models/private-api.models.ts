@@ -210,3 +210,33 @@ export interface BookingRequest {
   cancelledAt?: string;
   confirmationToken?: string;
 }
+
+// Resource
+export interface ResourceRequest {
+  userId: number;
+  name: string;
+  resourceType: 'Profesional' | 'Infraestructura';
+  description?: string;
+  serviceIds: number[];
+}
+
+export interface ResourceResponse {
+  id: number;
+  userId: number;
+  userName: string;
+  name: string;
+  resourceType: string;
+  description?: string;
+  imageUrl: string;
+  services: ServiceInfoResponse[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ServiceInfoResponse {
+  id: number;
+  name: string;
+  categoryName: string;
+  durationMin: number;
+  price: number;
+}

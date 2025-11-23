@@ -36,8 +36,14 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'services',
+        redirectTo: 'calendar',
         pathMatch: 'full',
+      },
+      {
+        path: 'calendar',
+        loadComponent: () =>
+          import('./management/pages/calendar-page/calendar-page').then((m) => m.CalendarPage),
+        title: 'Rulos Style | Calendario',
       },
       {
         path: 'services',

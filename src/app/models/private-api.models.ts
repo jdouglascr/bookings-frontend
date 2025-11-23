@@ -211,6 +211,45 @@ export interface BookingRequest {
   confirmationToken?: string;
 }
 
+export interface BookingCalendarParams {
+  resourceId: number;
+  startDate: string;
+  endDate: string;
+}
+
+export interface UpdateBookingStatusRequest {
+  status: string;
+}
+
+export const BOOKING_STATUSES = [
+  'PENDIENTE',
+  'CONFIRMADA',
+  'PAGADA',
+  'COMPLETADA',
+  'CANCELADA',
+] as const;
+
+export type BookingStatus = (typeof BOOKING_STATUSES)[number];
+
+export interface CalendarWeek {
+  weekStart: Date;
+  weekEnd: Date;
+  weekLabel: string;
+}
+
+export interface CalendarDay {
+  date: Date;
+  dateLabel: string;
+  dayNumber: number;
+  isToday: boolean;
+  bookings: BookingResponse[];
+}
+
+export interface CalendarFilters {
+  resourceId: number | null;
+  currentWeek: CalendarWeek;
+}
+
 // Resource
 export interface ResourceRequest {
   userId: number;

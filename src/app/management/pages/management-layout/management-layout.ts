@@ -55,7 +55,7 @@ export class ManagementLayout {
       label: 'Calendario',
       icon: 'event',
       route: '/admin/calendar',
-      isEnabled: false,
+      isEnabled: true,
     },
     {
       id: 'servicios',

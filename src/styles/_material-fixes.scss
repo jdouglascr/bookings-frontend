@@ -479,6 +479,75 @@
   }
 }
 
+// FIX: Altura para tabs del calendario
+.calendar-tabs {
+  .mat-mdc-tab-header {
+    height: auto !important;
+    min-height: 64px;
+  }
+
+  .mat-mdc-tab-label-container {
+    height: auto !important;
+    min-height: 64px;
+  }
+
+  .mat-mdc-tab {
+    height: auto !important;
+    min-height: 64px;
+    padding: 10px 16px !important;
+  }
+
+  .mat-mdc-tab-label-content {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    white-space: normal !important;
+    text-align: center;
+  }
+
+  .tab-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    width: 100%;
+
+    .day-name {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+
+    .day-number {
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    &.today {
+      .day-number {
+        background-color: var(--color-secondary);
+        color: var(--color-primary);
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  .mat-mdc-tab-header-pagination {
+    display: none !important;
+  }
+}
+
 // FIX: Responsive
 @media (max-width: 768px) {
   .mat-mdc-form-field {
@@ -543,6 +612,34 @@
   .mat-mdc-paginator {
     padding: 1rem;
   }
+
+  .mat-mdc-tab-header {
+    min-height: 64px;
+  }
+
+  .mat-mdc-tab-label-container {
+    min-height: 64px;
+  }
+
+  .mat-mdc-tab {
+    min-height: 64px;
+    padding: 10px 12px !important;
+  }
+
+  .tab-label {
+    .day-name {
+      font-size: 0.625rem;
+    }
+
+    .day-number {
+      font-size: 1.125rem;
+    }
+
+    &.today .day-number {
+      width: 30px;
+      height: 30px;
+    }
+  }
 }
 
 @media (max-width: 480px) {
@@ -592,6 +689,36 @@
     &:not(:last-child) {
       padding-bottom: 12px !important;
       margin-bottom: 12px !important;
+    }
+  }
+
+  .mat-mdc-tab-header {
+    min-height: 56px;
+  }
+
+  .mat-mdc-tab-label-container {
+    min-height: 56px;
+  }
+
+  .mat-mdc-tab {
+    min-height: 56px;
+    padding: 8px 8px !important;
+  }
+
+  .tab-label {
+    gap: 2px;
+
+    .day-name {
+      font-size: 0.5625rem;
+    }
+
+    .day-number {
+      font-size: 1rem;
+    }
+
+    &.today .day-number {
+      width: 26px;
+      height: 26px;
     }
   }
 }

@@ -1,0 +1,104 @@
+<div class="calendar-page">
+  <div class="page__header">
+    <div class="page__header-text">
+      <h1 class="page__title">Calendario de reservas</h1>
+      <p class="page__subtitle">Visualiza y gestiona las reservas de tus recursos.</p>
+    </div>
+  </div>
+
+  <div class="calendar-toolbar">
+    <button
+      mat-flat-button
+      class="create-booking-btn"
+      [disabled]="isInitialLoading()"
+      (click)="openCreateBookingDialog()"
+    >
+      <mat-icon>add</mat-icon>
+      Crear reserva
+    </button>
+
+    <div class="toolbar-spacer"></div>
+
+    <div class="toolbar-filters">
+      @if (isInitialLoading()) {
+        <div class="skeleton skeleton-select"></div>
+      } @else {
+        <mat-form-field appearance="outline" class="filter-field resource-select">
+          <mat-label>Recurso</mat-label>
+          <mat-select
+            [value]="selectedResourceId()"
+            (selectionChange)="onResourceChange($event.value)"
+          >
+            @for (resource of resources(); track resource.id) {
+              <mat-option [value]="resource.id">{{ resource.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+
+      <div class="week-navigation">
+        <button mat-icon-button (click)="previousWeek()" [disabled]="isInitialLoading()">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <span class="week-label">{{ currentWeek().weekLabel }}</span>
+        <button mat-icon-button (click)="nextWeek()" [disabled]="isInitialLoading()">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+
+      <button
+        mat-stroked-button
+        class="today-btn"
+        (click)="goToCurrentWeek()"
+        [disabled]="isInitialLoading()"
+      >
+        Hoy
+      </button>
+    </div>
+  </div>
+
+  <mat-tab-group class="calendar-tabs" mat-stretch-tabs [selectedIndex]="getInitialTabIndex()">
+    @for (day of weekDays(); track day.date.getTime()) {
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div class="tab-label" [class.today]="day.isToday">
+            <span class="day-name">{{ getDayName(day.date) }}</span>
+            <span class="day-number">{{ day.dayNumber }}</span>
+          </div>
+        </ng-template>
+
+        <div class="day-content">
+          @if (isInitialLoading()) {
+            <div class="bookings-loading">
+              @for (_ of [1, 2, 3]; track $index) {
+                <div class="skeleton skeleton-booking-mini"></div>
+              }
+            </div>
+          } @else if (isLoadingBookings()) {
+            <div class="bookings-loading">
+              @for (_ of [1, 2]; track $index) {
+                <div class="skeleton skeleton-booking-mini"></div>
+              }
+            </div>
+          } @else if (day.bookings.length === 0) {
+            <div class="no-bookings">
+              <mat-icon>event_available</mat-icon>
+              <p>No hay reservas para este día</p>
+            </div>
+          } @else {
+            <app-data-table
+              [data]="day.bookings"
+              [columns]="tableColumns()"
+              [actions]="tableActions()"
+              [isLoading]="false"
+              [showSearch]="false"
+              [showCreateButton]="false"
+              emptyMessage="No hay reservas para este día"
+              emptyIcon="event_available"
+            />
+          }
+        </div>
+      </mat-tab>
+    }
+  </mat-tab-group>
+</div>

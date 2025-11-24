@@ -68,3 +68,27 @@ export interface PublicService {
   priceFormatted: string;
   durationFormatted: string;
 }
+
+// Availability
+export interface WeekAvailabilityResponse {
+  resourceServiceId: number;
+  weekStart: string;
+  weekEnd: string;
+  weekHeader: string;
+  navigation: NavigationDto;
+  weekSchedule: DayScheduleDto[];
+}
+
+export interface NavigationDto {
+  canGoPrevious: boolean;
+  canGoNext: boolean;
+}
+
+export interface DayScheduleDto {
+  date: string;
+  dayOfWeek: string;
+  shortName: string;
+  dayNumber: number;
+  isAvailable: boolean;
+  timeSlots: string[];
+}

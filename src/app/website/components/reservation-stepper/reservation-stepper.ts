@@ -235,10 +235,16 @@ export class ReservationStepper {
   }
 
   private calculateEndDatetime(startDatetime: string, durationMin: number): string {
-    const start = new Date(startDatetime);
-    const end = new Date(start.getTime() + durationMin * 60000);
+    const [date, time] = startDatetime.split('T');
+    const [hours, minutes] = time.split(':').map(Number);
 
-    return end.toISOString().slice(0, 19);
+    const totalMinutes = hours * 60 + minutes + durationMin;
+    const endHours = Math.floor(totalMinutes / 60);
+    const endMinutes = totalMinutes % 60;
+
+    const endTime = `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}:00`;
+
+    return `${date}T${endTime}`;
   }
 
   closeDialog() {

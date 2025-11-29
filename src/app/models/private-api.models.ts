@@ -279,3 +279,51 @@ export interface ServiceInfoResponse {
   durationMin: number;
   price: number;
 }
+
+// Dashboard
+export interface DashboardStats {
+  monthlyKpis: MonthlyKpis;
+  dailyBookings: DailyBookingCount[];
+  topResources: TopResource[];
+  topServices: TopService[];
+  statusDistribution: BookingStatusDistribution;
+}
+
+export interface MonthlyKpis {
+  currentMonthBookings: number;
+  previousMonthBookings: number;
+  bookingsChangePercent: number;
+  currentMonthRevenue: number;
+  previousMonthRevenue: number;
+  revenueChangePercent: number;
+  confirmationRate: number;
+  cancellationRate: number;
+  newCustomers: number;
+  upcomingBookingsToday: number;
+  upcomingBookingsThisWeek: number;
+}
+
+export interface DailyBookingCount {
+  date: string;
+  count: number;
+}
+
+export interface TopResource {
+  resourceName: string;
+  bookingCount: number;
+  totalRevenue: number;
+}
+
+export interface TopService {
+  serviceName: string;
+  bookingCount: number;
+  totalRevenue: number;
+}
+
+export interface BookingStatusDistribution {
+  pending: number;
+  confirmed: number;
+  paid: number;
+  completed: number;
+  cancelled: number;
+}

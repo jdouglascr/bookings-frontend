@@ -2,8 +2,9 @@ import { Component, computed, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { ServicesService } from '../../../core/services/services.service';
 import { CategoryWithServices } from '../../../models/private-api.models';
@@ -14,7 +15,7 @@ import { NotificationService } from '../../../core/services/notification.service
 
 @Component({
   selector: 'app-service-page',
-  imports: [MatButtonModule, MatIconModule, MatCardModule, MatDialogModule, MatMenuModule],
+  imports: [MatButtonModule, MatIconModule, MatCardModule, MatMenuModule, MatTooltipModule],
   templateUrl: './service-page.html',
   styleUrl: './service-page.scss',
 })
@@ -41,12 +42,12 @@ export class ServicePage {
     this.loadData();
   }
 
-  loadData() {
+  private loadData(): void {
     this.categoryService.loadCategories().subscribe();
     this.serviceService.privateLoadServices().subscribe();
   }
 
-  openCategoryDialog(category?: CategoryWithServices) {
+  openCategoryDialog(category?: CategoryWithServices): void {
     const dialogRef = this.dialog.open(CategoryDialog, {
       width: '500px',
       maxWidth: '95vw',
@@ -60,7 +61,7 @@ export class ServicePage {
     });
   }
 
-  openServiceDialog(categoryId?: number, serviceId?: number) {
+  openServiceDialog(categoryId?: number, serviceId?: number): void {
     const dialogRef = this.dialog.open(ServiceDialog, {
       width: '600px',
       maxWidth: '95vw',
@@ -74,7 +75,7 @@ export class ServicePage {
     });
   }
 
-  deleteCategory(category: CategoryWithServices) {
+  deleteCategory(category: CategoryWithServices): void {
     if (category.servicesCount > 0) {
       this.notification.error('No se puede eliminar una categoría con servicios');
       return;
@@ -101,7 +102,7 @@ export class ServicePage {
     });
   }
 
-  deleteService(serviceId: number, serviceName: string) {
+  deleteService(serviceId: number, serviceName: string): void {
     const dialogRef = this.dialog.open(ConfirmDialog, {
       width: '400px',
       maxWidth: '95vw',

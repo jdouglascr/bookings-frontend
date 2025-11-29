@@ -48,7 +48,7 @@ export class ManagementLayout {
       label: 'Resumen',
       icon: 'dashboard',
       route: '/admin/dashboard',
-      isEnabled: false,
+      isEnabled: true,
     },
     {
       id: 'calendario',

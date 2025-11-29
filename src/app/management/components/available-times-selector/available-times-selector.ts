@@ -168,13 +168,10 @@ export class AvailableTimesSelector {
   private fb = new FormBuilder();
 
   constructor() {
-    effect(
-      () => {
-        const schedules = this.schedules();
-        this.initializeForms(schedules);
-      },
-      { allowSignalWrites: true },
-    );
+    effect(() => {
+      const schedules = this.schedules();
+      this.initializeForms(schedules);
+    });
   }
 
   private initializeForms(schedules: DaySchedule[]): void {

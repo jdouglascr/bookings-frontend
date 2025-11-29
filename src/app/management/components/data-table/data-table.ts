@@ -8,16 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { TableColumn, TableAction } from '../../../models/frontend.models';
-
-export class SpanishPaginatorIntl extends MatPaginatorIntl {
-  override getRangeLabel = (page: number, pageSize: number, length: number): string => {
-    if (length === 0) return `0 de ${length}`;
-    const startIndex = page * pageSize;
-    const endIndex =
-      startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
-    return `${startIndex + 1} - ${endIndex} de ${length}`;
-  };
-}
+import { SpanishPaginatorIntl } from '../../../core/services/spanish-paginator-intl';
 
 @Component({
   selector: 'app-data-table',

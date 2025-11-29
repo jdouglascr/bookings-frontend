@@ -1,33 +1,60 @@
 <div class="services-page">
   <div class="page__header">
-    <div class="page__header-content">
-      <div class="page__header-text">
-        <h1 class="page__title">Categorías de servicios</h1>
-        <p class="page__subtitle">Agrupa tus servicios dependiendo de sus características.</p>
-      </div>
-      <button mat-flat-button color="primary" class="page__action" (click)="openCategoryDialog()">
-        <mat-icon>add</mat-icon>
-        Crear nueva categoría
-      </button>
+    <div class="page__header-text">
+      <h1 class="page__title">Categorías de servicios</h1>
+      <p class="page__subtitle">Agrupa tus servicios dependiendo de sus características.</p>
     </div>
+    <button
+      mat-flat-button
+      class="page__action"
+      (click)="openCategoryDialog()"
+      [disabled]="isLoading()"
+    >
+      <mat-icon>add</mat-icon>
+      Crear nueva categoría
+    </button>
   </div>
 
   @if (isLoading()) {
-    <div class="loading-state">
-      <mat-icon>hourglass_empty</mat-icon>
-      <p>Cargando servicios...</p>
+    <!-- Skeleton Loading State -->
+    <div class="skeleton-container">
+      @for (_ of [1, 2, 3]; track $index) {
+        <div class="skeleton-card">
+          <div class="skeleton-header">
+            <div class="skeleton skeleton-title"></div>
+            <div class="skeleton skeleton-button"></div>
+          </div>
+          <div class="skeleton-body">
+            @for (_ of [1, 2, 3]; track $index) {
+              <div class="skeleton-service">
+                <div class="skeleton skeleton-avatar"></div>
+                <div class="skeleton-details">
+                  <div class="skeleton skeleton-text"></div>
+                  <div class="skeleton skeleton-text-small"></div>
+                </div>
+                <div class="skeleton-actions">
+                  <div class="skeleton skeleton-icon"></div>
+                  <div class="skeleton skeleton-icon"></div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
     </div>
   } @else if (categoriesWithServices().length === 0) {
+    <!-- Empty State -->
     <mat-card class="empty-state">
       <mat-icon>category</mat-icon>
       <h3>No hay categorías</h3>
       <p>Crea tu primera categoría para comenzar a organizar tus servicios</p>
-      <button mat-flat-button color="primary" (click)="openCategoryDialog()">
+      <button mat-flat-button class="page__action" (click)="openCategoryDialog()">
         <mat-icon>add</mat-icon>
         Crear categoría
       </button>
     </mat-card>
   } @else {
+    <!-- Categories List -->
     <div class="categories-list">
       @for (item of categoriesWithServices(); track item.category.id) {
         <mat-card class="category-card">

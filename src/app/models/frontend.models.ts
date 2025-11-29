@@ -189,3 +189,32 @@ export interface LayoutMenuItem {
   route: string;
   isEnabled: boolean;
 }
+
+// KPI CARD MODELS
+export interface KpiCardData {
+  title: string;
+  value: string | number;
+  icon: string;
+  trend?: {
+    value: number;
+    isPositive: boolean;
+  };
+  colorClass: string;
+}
+
+// CHART DATA MODELS
+export interface ChartDataPoint {
+  x: string;
+  y: number;
+}
+
+export interface BarChartData {
+  name: string;
+  value: number;
+}
+
+export interface DonutChartFormatterContext {
+  globals: {
+    seriesTotals: number[];
+  };
+}

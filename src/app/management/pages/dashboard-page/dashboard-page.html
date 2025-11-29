@@ -1,0 +1,82 @@
+<div class="dashboard-page">
+  <div class="page__header">
+    <div class="page__header-text">
+      <h1 class="page__title">Panel de control</h1>
+      <p class="page__subtitle">Resumen de tu negocio y métricas clave</p>
+    </div>
+    <button mat-flat-button class="page__action" (click)="loadDashboard()" [disabled]="isLoading()">
+      <mat-icon>refresh</mat-icon>
+      Actualizar
+    </button>
+  </div>
+
+  @if (isLoading()) {
+    <div class="dashboard-loading">
+      <div class="kpi-grid">
+        @for (_ of [1, 2, 3, 4, 5, 6]; track $index) {
+          <div class="skeleton skeleton-kpi"></div>
+        }
+      </div>
+      <div class="charts-grid">
+        <div class="skeleton skeleton-chart-large"></div>
+        <div class="skeleton skeleton-chart"></div>
+        <div class="skeleton skeleton-chart"></div>
+        <div class="skeleton skeleton-chart"></div>
+      </div>
+    </div>
+  } @else if (stats()) {
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      @for (card of kpiCards(); track card.title) {
+        <app-kpi-card [card]="card" />
+      }
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="charts-grid">
+      <!-- Daily Bookings Chart -->
+      <div class="chart-large">
+        <app-area-chart
+          title="Flujo de reservas"
+          subtitle="Últimos 30 días"
+          [data]="dailyBookingsData()"
+          seriesName="Reservas"
+        />
+      </div>
+
+      <!-- Status Distribution -->
+      <app-donut-chart
+        title="Distribución por estado"
+        subtitle="Reservas del mes actual"
+        [chartLabels]="statusLabels()"
+        [values]="statusValues()"
+      />
+
+      <!-- Top Resources -->
+      <app-horizontal-bar-chart
+        title="Top recursos"
+        subtitle="Más reservados del mes"
+        [data]="topResourcesData()"
+        seriesName="Reservas"
+      />
+
+      <!-- Top Services -->
+      <app-horizontal-bar-chart
+        title="Top servicios"
+        subtitle="Más solicitados del mes"
+        [data]="topServicesData()"
+        seriesName="Reservas"
+      />
+    </div>
+  } @else {
+    <div class="empty-state">
+      <mat-icon>dashboard</mat-icon>
+      <h3>No hay datos disponibles</h3>
+      <p>No se pudieron cargar las estadísticas</p>
+      <button mat-flat-button class="page__action" (click)="loadDashboard()">
+        <mat-icon>refresh</mat-icon>
+        Reintentar
+      </button>
+    </div>
+  }
+</div>

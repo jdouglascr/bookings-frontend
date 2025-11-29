@@ -40,6 +40,12 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
       {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./management/pages/dashboard-page/dashboard-page').then((m) => m.DashboardPage),
+        title: 'Rulos Style | Dashboard',
+      },
+      {
         path: 'calendar',
         loadComponent: () =>
           import('./management/pages/calendar-page/calendar-page').then((m) => m.CalendarPage),

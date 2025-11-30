@@ -1,4 +1,4 @@
-import { Component, inject, effect } from '@angular/core';
+import { Component, inject, effect, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -9,6 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { BusinessService } from '../../../core/services/business.service';
 import { ErrorResponse } from '../../../models/shared-api.models';
 import { PasswordInputComponent } from '../../../shared/components/password-input/password-input';
 
@@ -28,11 +29,12 @@ import { PasswordInputComponent } from '../../../shared/components/password-inpu
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
-export class Login {
+export class Login implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private fb = inject(FormBuilder);
   private readonly notification = inject(NotificationService);
+  readonly businessService = inject(BusinessService);
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -50,6 +52,12 @@ export class Login {
         this.loginForm.enable({ emitEvent: false });
       }
     });
+  }
+
+  ngOnInit(): void {
+    if (!this.businessService.business()) {
+      this.businessService.loadBusinessInfo();
+    }
   }
 
   onSubmit() {

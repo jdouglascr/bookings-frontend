@@ -1,4 +1,15 @@
 <div class="login-bg">
+  @if (businessService.isLoading()) {
+    <div class="skeleton-bg"></div>
+  } @else if (businessService.business()?.bannerUrl) {
+    <div
+      class="bg-image"
+      [style.background-image]="'url(' + businessService.business()!.bannerUrl + ')'"
+    ></div>
+  } @else {
+    <div class="bg-image bg-fallback"></div>
+  }
+
   <div class="overlay"></div>
 
   <mat-card class="login-card">

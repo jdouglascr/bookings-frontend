@@ -32,25 +32,23 @@ export const publicGuard: CanActivateFn = async () => {
   return true;
 };
 
-export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
-  return async (route, state) => {
-    const authService = inject(AuthService);
-    const router = inject(Router);
+export const adminGuard: CanActivateFn = async (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-    const hasValidSession = await authService.checkSession();
+  const hasValidSession = await authService.checkSession();
 
-    if (!hasValidSession) {
-      sessionStorage.setItem('returnUrl', state.url);
-      router.navigate(['/login']);
-      return false;
-    }
-
-    const userRole = authService.userRole();
-    if (userRole && allowedRoles.includes(userRole)) {
-      return true;
-    }
-
-    router.navigate(['/']);
+  if (!hasValidSession) {
+    sessionStorage.setItem('returnUrl', state.url);
+    router.navigate(['/login']);
     return false;
-  };
+  }
+
+  const userRole = authService.userRole();
+  if (userRole === 'ROLE_ADMIN') {
+    return true;
+  }
+
+  router.navigate(['/admin/calendar']);
+  return false;
 };

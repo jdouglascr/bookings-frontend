@@ -187,7 +187,7 @@ export interface LayoutMenuItem {
   label: string;
   icon: string;
   route: string;
-  isEnabled: boolean;
+  allowedRoles: string[];
 }
 
 // KPI CARD MODELS

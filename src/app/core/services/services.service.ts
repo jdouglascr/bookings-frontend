@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { ServiceRequest, ServiceResponse } from '../../models/private-api.models';
+import { ServiceResponse } from '../../models/private-api.models';
 import { MessageResponse } from '../../models/shared-api.models';
 import { environment } from '../../../environments/environment';
 import { PublicServicesResponse } from '../../models/public-api.models';
@@ -52,15 +52,15 @@ export class ServicesService {
     return this.http.get<ServiceResponse>(`${this.privateApiUrl}/${id}`);
   }
 
-  createService(request: ServiceRequest): Observable<MessageResponse> {
+  createService(formData: FormData): Observable<MessageResponse> {
     return this.http
-      .post<MessageResponse>(this.privateApiUrl, request)
+      .post<MessageResponse>(this.privateApiUrl, formData)
       .pipe(tap(() => this.privateLoadServices().subscribe()));
   }
 
-  updateService(id: number, request: ServiceRequest): Observable<MessageResponse> {
+  updateService(id: number, formData: FormData): Observable<MessageResponse> {
     return this.http
-      .put<MessageResponse>(`${this.privateApiUrl}/${id}`, request)
+      .put<MessageResponse>(`${this.privateApiUrl}/${id}`, formData)
       .pipe(tap(() => this.privateLoadServices().subscribe()));
   }
 

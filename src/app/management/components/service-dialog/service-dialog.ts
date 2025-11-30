@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, viewChild, effect } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -10,6 +10,7 @@ import { CategoriesService } from '../../../core/services/categories.service';
 import { ServicesService } from '../../../core/services/services.service';
 import { ServiceDialogData } from '../../../models/frontend.models';
 import { PriceInput } from '../../../shared/components/price-input/price-input';
+import { ImageInput } from '../../../shared/components/image-input/image-input';
 
 @Component({
   selector: 'app-service-dialog',
@@ -22,8 +23,10 @@ import { PriceInput } from '../../../shared/components/price-input/price-input';
     MatSelectModule,
     MatIconModule,
     PriceInput,
+    ImageInput,
   ],
   templateUrl: './service-dialog.html',
+  styleUrl: './service-dialog.scss',
 })
 export class ServiceDialog implements OnInit {
   private readonly fb = inject(FormBuilder);
@@ -32,9 +35,13 @@ export class ServiceDialog implements OnInit {
   private readonly serviceService = inject(ServicesService);
   data = inject<ServiceDialogData>(MAT_DIALOG_DATA);
 
+  imageInput = viewChild<ImageInput>('imageInput');
+
   isEdit = signal(false);
   isSaving = signal(false);
   isLoadingService = signal(false);
+  selectedImage = signal<File | null>(null);
+  currentLogoUrl = signal<string | null>(null);
 
   categories = this.categoryService.categories;
 
@@ -48,6 +55,15 @@ export class ServiceDialog implements OnInit {
       durationMin: [null, [Validators.required, Validators.min(1), Validators.max(999999999)]],
       bufferTimeMin: [0, [Validators.min(0), Validators.max(999999999)]],
       price: [null, [Validators.required, Validators.min(1), Validators.max(999999999)]],
+    });
+
+    effect(() => {
+      const input = this.imageInput();
+      const logoUrl = this.currentLogoUrl();
+
+      if (input && logoUrl) {
+        input.setPreview(logoUrl);
+      }
     });
   }
 
@@ -70,12 +86,21 @@ export class ServiceDialog implements OnInit {
           bufferTimeMin: service.bufferTimeMin,
           price: service.price,
         });
+
+        if (service.logoUrl) {
+          this.currentLogoUrl.set(service.logoUrl);
+        }
+
         this.isLoadingService.set(false);
       },
       error: () => {
         this.isLoadingService.set(false);
       },
     });
+  }
+
+  onImageChange(file: File): void {
+    this.selectedImage.set(file);
   }
 
   onNumericInput(event: Event, fieldName: string, maxDigits: number): void {
@@ -96,15 +121,31 @@ export class ServiceDialog implements OnInit {
   onSubmit() {
     if (this.form.invalid) return;
 
+    if (!this.isEdit() && !this.selectedImage()) {
+      return;
+    }
+
     this.isSaving.set(true);
-    const request = {
-      ...this.form.value,
-      logoUrl: 'logo.png',
+
+    const formData = new FormData();
+    const serviceData = {
+      categoryId: this.form.value.categoryId,
+      name: this.form.value.name,
+      description: this.form.value.description,
+      durationMin: this.form.value.durationMin,
+      bufferTimeMin: this.form.value.bufferTimeMin,
+      price: this.form.value.price,
     };
 
+    formData.append('data', JSON.stringify(serviceData));
+
+    if (this.selectedImage()) {
+      formData.append('logo', this.selectedImage()!);
+    }
+
     const operation = this.isEdit()
-      ? this.serviceService.updateService(this.data.serviceId!, request)
-      : this.serviceService.createService(request);
+      ? this.serviceService.updateService(this.data.serviceId!, formData)
+      : this.serviceService.createService(formData);
 
     operation.subscribe({
       next: () => {

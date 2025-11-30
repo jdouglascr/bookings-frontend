@@ -16,31 +16,46 @@
       <div class="form-section">
         <h3 class="section-title">Información general</h3>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Categoría</mat-label>
-          <mat-select formControlName="categoryId">
-            @for (category of categories(); track category.id) {
-              <mat-option [value]="category.id">{{ category.name }}</mat-option>
-            }
-          </mat-select>
-          @if (form.get('categoryId')?.hasError('required') && form.get('categoryId')?.touched) {
-            <mat-error>La categoría es obligatoria</mat-error>
-          }
-        </mat-form-field>
+        <div class="form-with-image">
+          <div class="image-wrapper">
+            <span class="image-label">Logo</span>
+            <app-image-input
+              #imageInput
+              imageType="resource"
+              (fileChange)="onImageChange($event)"
+            />
+          </div>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Nombre del servicio</mat-label>
-          <input matInput formControlName="name" />
-          @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
-            <mat-error>El nombre es obligatorio</mat-error>
-          }
-          @if (form.get('name')?.hasError('minlength')) {
-            <mat-error>El nombre debe tener al menos 2 caracteres</mat-error>
-          }
-          @if (form.get('name')?.hasError('maxlength')) {
-            <mat-error>El nombre no puede exceder 255 caracteres</mat-error>
-          }
-        </mat-form-field>
+          <div class="form-fields">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Categoría</mat-label>
+              <mat-select formControlName="categoryId">
+                @for (category of categories(); track category.id) {
+                  <mat-option [value]="category.id">{{ category.name }}</mat-option>
+                }
+              </mat-select>
+              @if (
+                form.get('categoryId')?.hasError('required') && form.get('categoryId')?.touched
+              ) {
+                <mat-error>La categoría es obligatoria</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Nombre del servicio</mat-label>
+              <input matInput formControlName="name" />
+              @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
+                <mat-error>El nombre es obligatorio</mat-error>
+              }
+              @if (form.get('name')?.hasError('minlength')) {
+                <mat-error>El nombre debe tener al menos 2 caracteres</mat-error>
+              }
+              @if (form.get('name')?.hasError('maxlength')) {
+                <mat-error>El nombre no puede exceder 255 caracteres</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Descripción</mat-label>
@@ -81,9 +96,6 @@
               (input)="onNumericInput($event, 'bufferTimeMin', 9)"
             />
             <mat-hint>Tiempo de preparación</mat-hint>
-            @if (form.get('bufferTimeMin')?.hasError('min')) {
-              <mat-error>El buffer no puede ser negativo</mat-error>
-            }
           </mat-form-field>
         </div>
 
@@ -105,7 +117,7 @@
     color="primary"
     class="submit-btn"
     (click)="onSubmit()"
-    [disabled]="form.invalid || isSaving() || isLoadingService()"
+    [disabled]="form.invalid || isSaving() || isLoadingService() || (!selectedImage() && !isEdit())"
   >
     @if (isSaving()) {
       <mat-icon class="material-spinner">hourglass_empty</mat-icon>

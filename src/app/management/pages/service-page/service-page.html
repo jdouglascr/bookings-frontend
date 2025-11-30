@@ -94,11 +94,7 @@
               @for (service of item.services; track service.id) {
                 <div class="service-item">
                   <div class="service-icon">
-                    @if (service.logoUrl) {
-                      <img [src]="service.logoUrl" [alt]="service.name" />
-                    } @else {
-                      <mat-icon>image</mat-icon>
-                    }
+                    <img [src]="service.logoUrl" [alt]="service.name" />
                   </div>
                   <div class="service-details">
                     <h3 class="service-name">{{ service.name }}</h3>

@@ -118,7 +118,8 @@ export class ServicePage {
       if (confirmed) {
         this.serviceService.deleteService(serviceId).subscribe({
           next: () => this.notification.success('Servicio eliminado exitosamente'),
-          error: (err) => this.notification.error(err.message),
+          error: (err) =>
+            this.notification.error(err.error?.message || 'Error al eliminar servicio'),
         });
       }
     });

@@ -1,0 +1,235 @@
+@use '@angular/material' as mat;
+
+// FORM FIELD OVERRIDES
+@mixin form-field-overrides() {
+  @include mat.form-field-overrides(
+    (
+      // Outline styles
+      outlined-outline-color: var(--gray-border-dark),
+      outlined-outline-width: 1.5px,
+      outlined-focus-outline-color: var(--gray-text-darker),
+      outlined-focus-outline-width: 2px,
+      outlined-hover-outline-color: var(--gray-text-darker),
+      outlined-container-shape: 12px,
+      // Container
+      container-text-size: 15px,
+      container-text-line-height: 1.2,
+      container-height: 56px,
+      // Label
+      outlined-label-text-size: 14px,
+      outlined-label-text-color: var(--gray-text-medium),
+      outlined-focus-label-text-color: var(--gray-text-darker),
+      // Error states
+      outlined-error-focus-outline-color: var(--color-error),
+      outlined-error-outline-color: var(--color-error),
+      outlined-error-label-text-color: var(--color-error),
+      // Input text colors
+      outlined-input-text-color: var(--gray-text-darker),
+      outlined-input-text-placeholder-color: var(--gray-text-light),
+      // Icons
+      leading-icon-color: var(--gray-text-medium),
+      trailing-icon-color: var(--gray-text-medium)
+    )
+  );
+}
+
+// SELECT OVERRIDES
+@mixin select-overrides() {
+  @include mat.select-overrides(
+    (
+      trigger-text-size: 15px,
+      enabled-trigger-text-color: var(--gray-text-darker),
+      enabled-arrow-color: var(--gray-text-medium),
+      focused-arrow-color: var(--gray-text-darker),
+      panel-background-color: var(--color-primary),
+    )
+  );
+}
+
+// OPTION OVERRIDES
+@mixin option-overrides() {
+  @include mat.option-overrides(
+    (
+      label-text-size: 15px,
+      label-text-color: var(--gray-text-darker),
+      hover-state-layer-color: var(--color-primary-soft),
+      selected-state-label-text-color: var(--gray-text-darker),
+      selected-state-layer-color: rgba(41, 38, 41, 0.08),
+      focus-state-layer-color: var(--color-primary-soft),
+    )
+  );
+}
+
+// BUTTON OVERRIDES
+@mixin button-overrides() {
+  @include mat.button-overrides(
+    (
+      // Filled buttons
+      filled-container-shape: 10px,
+      filled-container-color: var(--color-secondary),
+      filled-label-text-color: var(--color-primary),
+      filled-label-text-weight: 600,
+      filled-hover-state-layer-opacity: 0.08,
+      filled-focus-state-layer-opacity: 0.12,
+      filled-pressed-state-layer-opacity: 0.16,
+      filled-disabled-container-color: var(--gray-border-dark),
+      filled-disabled-label-text-color: var(--gray-text-light),
+      // Text buttons
+      text-container-shape: 10px,
+      text-label-text-color: var(--gray-text-darker),
+      text-label-text-weight: 600,
+      text-state-layer-color: var(--gray-text-darker),
+      text-hover-state-layer-opacity: 0.04,
+      text-focus-state-layer-opacity: 0.08,
+      text-pressed-state-layer-opacity: 0.12,
+      text-disabled-label-text-color: var(--gray-text-light),
+      // Outlined buttons
+      outlined-container-shape: 10px,
+      outlined-label-text-color: var(--gray-text-darker),
+      outlined-label-text-weight: 600,
+      outlined-outline-color: var(--gray-border-dark),
+      outlined-outline-width: 1.5px,
+      outlined-state-layer-color: var(--gray-text-darker),
+      outlined-hover-state-layer-opacity: 0.04,
+      outlined-focus-state-layer-opacity: 0.08,
+      outlined-pressed-state-layer-opacity: 0.12,
+      outlined-disabled-label-text-color: var(--gray-text-light),
+      outlined-disabled-outline-color: var(--gray-border)
+    )
+  );
+}
+
+// DIALOG OVERRIDES
+@mixin dialog-overrides() {
+  @include mat.dialog-overrides(
+    (
+      container-shape: 16px,
+      container-color: var(--color-primary),
+      container-max-width: 600px,
+    )
+  );
+}
+
+// ICON BUTTON OVERRIDES
+@mixin icon-button-overrides() {
+  @include mat.icon-button-overrides(
+    (
+      container-shape: 8px,
+      icon-color: var(--gray-text-medium),
+      state-layer-color: var(--gray-text-medium),
+      hover-state-layer-opacity: 0.08,
+      focus-state-layer-opacity: 0.12,
+      pressed-state-layer-opacity: 0.16,
+    )
+  );
+}
+
+// SNACKBAR OVERRIDES
+@mixin snackbar-overrides() {
+  @include mat.snack-bar-overrides(
+    (
+      container-shape: 8px,
+      container-color: var(--color-secondary),
+      button-color: var(--color-primary),
+      supporting-text-color: var(--color-primary),
+    )
+  );
+}
+
+// TABS OVERRIDES
+@mixin tabs-overrides() {
+  @include mat.tabs-overrides(
+    (
+      background-color: transparent,
+      foreground-color: var(--gray-text-darker),
+      divider-color: var(--gray-border),
+      divider-height: 2px,
+      inactive-label-text-color: var(--gray-text-medium),
+      inactive-focus-label-text-color: var(--gray-text-darker),
+      inactive-hover-label-text-color: var(--gray-text-darker),
+      active-label-text-color: var(--gray-text-darker),
+      active-focus-label-text-color: var(--gray-text-darker),
+      active-hover-label-text-color: var(--gray-text-darker),
+      active-ripple-color: var(--gray-text-darker),
+      inactive-ripple-color: var(--gray-text-medium),
+      active-indicator-color: var(--gray-text-darker),
+      active-indicator-height: 3px,
+      active-indicator-shape: 0,
+      active-hover-indicator-color: var(--gray-text-darker),
+      active-focus-indicator-color: var(--gray-text-darker),
+      label-text-size: 14px,
+      label-text-weight: 600,
+      label-text-font: 'Nunito Sans',
+    )
+  );
+}
+
+// CHECKBOX OVERRIDES - NUEVO
+@mixin checkbox-overrides() {
+  @include mat.checkbox-overrides(
+    (
+      // Selected/Checked state icons
+      selected-icon-color: var(--color-secondary),
+      selected-hover-icon-color: var(--color-secondary),
+      selected-focus-icon-color: var(--color-secondary),
+      selected-pressed-icon-color: var(--color-secondary),
+      selected-checkmark-color: var(--color-primary),
+      // Unselected/Unchecked state icons
+      unselected-icon-color: var(--gray-text-medium),
+      unselected-hover-icon-color: var(--gray-text-darker),
+      unselected-focus-icon-color: var(--gray-text-darker),
+      // State layers
+      selected-hover-state-layer-color: var(--color-secondary),
+      selected-focus-state-layer-color: var(--color-secondary),
+      selected-pressed-state-layer-color: var(--color-secondary),
+      unselected-hover-state-layer-color: var(--gray-text-darker),
+      unselected-focus-state-layer-color: var(--gray-text-darker),
+      unselected-pressed-state-layer-color: var(--gray-text-darker),
+      // State layer opacity
+      selected-hover-state-layer-opacity: 0.08,
+      selected-focus-state-layer-opacity: 0.12,
+      selected-pressed-state-layer-opacity: 0.16,
+      unselected-hover-state-layer-opacity: 0.04,
+      unselected-focus-state-layer-opacity: 0.08,
+      unselected-pressed-state-layer-opacity: 0.12,
+
+      // Disabled states
+      disabled-selected-icon-color: var(--gray-text-light),
+      disabled-unselected-icon-color: var(--gray-text-light),
+      disabled-selected-checkmark-color: var(--color-primary),
+      disabled-label-color: var(--gray-text-light),
+      // Label
+      label-text-color: var(--gray-text-darker),
+      label-text-size: 14px,
+      label-text-weight: 500
+    )
+  );
+}
+
+// PAGINATOR OVERRIDES
+@mixin paginator-overrides() {
+  @include mat.paginator-overrides(
+    (
+      container-text-color: var(--gray-text-darker),
+      container-background-color: transparent,
+      enabled-icon-color: var(--gray-text-darker),
+      disabled-icon-color: var(--gray-text-light),
+      container-text-size: 14px,
+      form-field-container-height: 40px,
+    )
+  );
+}
+
+// APLICAR TODOS LOS OVERRIDES
+@mixin apply-all-material-overrides() {
+  @include form-field-overrides();
+  @include select-overrides();
+  @include option-overrides();
+  @include button-overrides();
+  @include dialog-overrides();
+  @include icon-button-overrides();
+  @include snackbar-overrides();
+  @include tabs-overrides();
+  @include checkbox-overrides();
+  @include paginator-overrides();
+}

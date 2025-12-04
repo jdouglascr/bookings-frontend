@@ -1,0 +1,21 @@
+<div class="customers-page">
+  <div class="page__header">
+    <h1 class="page__title">Clientes</h1>
+    <p class="page__subtitle">
+      Gestiona la información de tus clientes y consulta su historial de reservas.
+    </p>
+  </div>
+
+  <app-data-table
+    [data]="tableData()"
+    [columns]="columns"
+    [actions]="actions"
+    [isLoading]="isLoading()"
+    [showSearch]="true"
+    [showCreateButton]="true"
+    createButtonText="Crear nuevo cliente"
+    emptyMessage="No hay clientes registrados"
+    emptyIcon="people"
+    (createClick)="openCustomerDialog()"
+  />
+</div>

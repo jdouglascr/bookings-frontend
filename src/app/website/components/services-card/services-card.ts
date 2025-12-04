@@ -5,7 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ReservationStepper } from '../reservation-stepper/reservation-stepper';
 import { ServicesService } from '../../../core/services/services.service';
-import { PublicService } from '../../../models/services-api.models';
+import { PublicService } from '../../../models/public-api.models';
+import { PriceFormatterService } from '../../../core/services/prices-formatter.service';
 
 @Component({
   selector: 'app-services-card',
@@ -14,16 +15,15 @@ import { PublicService } from '../../../models/services-api.models';
   styleUrl: './services-card.scss',
 })
 export class ServicesCard implements OnInit {
-  private dialog = inject(MatDialog);
-  servicesService = inject(ServicesService);
+  private readonly dialog = inject(MatDialog);
+  readonly servicesService = inject(ServicesService);
+  readonly priceFormatter = inject(PriceFormatterService);
 
   ngOnInit() {
     this.servicesService.loadServices();
   }
 
   onSelectService(service: PublicService) {
-    console.log('Servicio seleccionado:', service);
-
     const dialogRef = this.dialog.open(ReservationStepper, {
       width: '800px',
       maxWidth: '90vw',

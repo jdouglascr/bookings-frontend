@@ -1,4 +1,4 @@
-import { Component, inject, signal, effect } from '@angular/core';
+import { Component, inject, effect, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -6,10 +6,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../core/services/notification.service';
+import { BusinessService } from '../../../core/services/business.service';
 import { ErrorResponse } from '../../../models/shared-api.models';
+import { PasswordInputComponent } from '../../../shared/components/password-input/password-input';
 
 @Component({
   selector: 'app-login',
@@ -20,23 +22,23 @@ import { ErrorResponse } from '../../../models/shared-api.models';
     MatCardModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule,
     ReactiveFormsModule,
+    RouterLink,
+    PasswordInputComponent,
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
-export class Login {
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  private snackBar = inject(MatSnackBar);
+export class Login implements OnInit {
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   private fb = inject(FormBuilder);
-
-  hidePassword = signal(true);
+  private readonly notification = inject(NotificationService);
+  readonly businessService = inject(BusinessService);
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(4)]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   isLoading = this.authService.isLoading;
@@ -52,13 +54,10 @@ export class Login {
     });
   }
 
-  get showPasswordToggle(): boolean {
-    const passwordControl = this.loginForm.get('password');
-    return !!passwordControl && passwordControl.value.length > 0;
-  }
-
-  togglePasswordVisibility() {
-    this.hidePassword.update((v) => !v);
+  ngOnInit(): void {
+    if (!this.businessService.business()) {
+      this.businessService.loadBusinessInfo();
+    }
   }
 
   onSubmit() {
@@ -75,35 +74,14 @@ export class Login {
         password: this.loginForm.value.password,
       })
       .subscribe({
-        next: (response) => {
-          this.showSuccess(response.message);
-
+        next: () => {
           const returnUrl = sessionStorage.getItem('returnUrl') || '/admin';
           sessionStorage.removeItem('returnUrl');
-
           this.router.navigate([returnUrl]);
         },
         error: (error: ErrorResponse) => {
-          this.showError(error.message);
+          this.notification.error(error.message || 'Inicio de sesión fallido');
         },
       });
-  }
-
-  private showSuccess(message: string) {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 3000,
-      horizontalPosition: 'end',
-      verticalPosition: 'top',
-      panelClass: ['success-snackbar'],
-    });
-  }
-
-  private showError(message: string) {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 5000,
-      horizontalPosition: 'end',
-      verticalPosition: 'top',
-      panelClass: ['error-snackbar'],
-    });
   }
 }

@@ -17,6 +17,7 @@
         <div class="business__social" style="margin-top: 16px">
           <div class="skeleton skeleton-circle"></div>
           <div class="skeleton skeleton-circle"></div>
+          <div class="skeleton skeleton-circle"></div>
         </div>
       </div>
     } @else if (businessService.business()) {
@@ -43,7 +44,7 @@
             target="_blank"
             rel="noopener noreferrer"
           >
-            <mat-icon class="business__social--icon" svgIcon="instagram"></mat-icon>
+            <mat-icon class="business__social--icon" svgIcon="instagram" />
           </a>
         }
         @if (businessService.business()!.tiktokUrl) {
@@ -53,7 +54,17 @@
             target="_blank"
             rel="noopener noreferrer"
           >
-            <mat-icon class="business__social--icon" svgIcon="tiktok"></mat-icon>
+            <mat-icon class="business__social--icon" svgIcon="tiktok" />
+          </a>
+        }
+        @if (businessService.business()!.facebookUrl) {
+          <a
+            class="business__social--overlay"
+            [href]="businessService.business()!.facebookUrl!"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <mat-icon class="business__social--icon" svgIcon="facebook" />
           </a>
         }
       </div>

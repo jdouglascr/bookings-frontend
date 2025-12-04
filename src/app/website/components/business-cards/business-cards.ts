@@ -24,6 +24,10 @@ export class BusinessCards implements OnInit {
       'tiktok',
       this.sanitizer.bypassSecurityTrustResourceUrl('tiktok.svg'),
     );
+    this.iconRegistry.addSvgIcon(
+      'facebook',
+      this.sanitizer.bypassSecurityTrustResourceUrl('facebook.svg'),
+    );
   }
 
   ngOnInit() {

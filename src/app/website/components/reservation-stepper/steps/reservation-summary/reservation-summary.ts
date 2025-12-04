@@ -1,6 +1,7 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { StepData } from '../../../../../models/reservation.models';
+import { StepData } from '../../../../../models/frontend.models';
+import { PriceFormatterService } from '../../../../../core/services/prices-formatter.service';
 
 @Component({
   selector: 'app-reservation-summary',
@@ -10,6 +11,7 @@ import { StepData } from '../../../../../models/reservation.models';
 })
 export class ReservationSummary {
   stepData = input.required<StepData>();
+  readonly priceFormatter = inject(PriceFormatterService);
 
   readonly formatSelectedDate = computed(() => {
     const selectedDate = this.stepData().selectedDate;
@@ -38,16 +40,5 @@ export class ReservationSummary {
     const dayName = dayNames[date.getUTCDay()];
 
     return `${dayName}, ${day} de ${month} de ${year}`;
-  });
-
-  readonly formatPhoneNumber = computed(() => {
-    const phone = this.stepData().contactInfo?.phone;
-    if (!phone) return '';
-
-    if (phone.length === 9) {
-      return `${phone.slice(0, 1)} ${phone.slice(1, 5)} ${phone.slice(5)}`;
-    }
-
-    return phone;
   });
 }

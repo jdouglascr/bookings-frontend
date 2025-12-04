@@ -1,0 +1,20 @@
+<div class="users-page">
+  <div class="page__header">
+    <h1 class="page__title">Usuarios del sistema</h1>
+    <p class="page__subtitle">Gestiona los usuarios que tienen acceso al panel administrativo.</p>
+  </div>
+
+  <!-- Data Table Component -->
+  <app-data-table
+    [data]="tableData()"
+    [columns]="columns"
+    [actions]="actions"
+    [isLoading]="isLoading()"
+    [showSearch]="true"
+    [showCreateButton]="true"
+    createButtonText="Crear nuevo usuario"
+    emptyMessage="No hay usuarios registrados"
+    emptyIcon="groups"
+    (createClick)="openUserDialog()"
+  />
+</div>

@@ -1,0 +1,377 @@
+.calendar-page {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .page__header {
+    margin-bottom: 1.5rem;
+  }
+
+  .page__title {
+    margin: 0 0 0.25rem 0;
+  }
+
+  .page__subtitle {
+    margin: 0;
+  }
+}
+
+// Toolbar
+.calendar-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  .create-booking-btn {
+    height: 44px;
+    background-color: var(--color-secondary) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(41, 38, 41, 0.2) !important;
+    flex-shrink: 0;
+
+    .mat-icon {
+      margin-right: 0.5rem;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-secondary-hover) !important;
+      box-shadow: 0 4px 12px rgba(41, 38, 41, 0.3) !important;
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+
+  .toolbar-spacer {
+    flex: 1;
+  }
+
+  .toolbar-filters {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .resource-select {
+    width: 220px;
+  }
+
+  .skeleton-select {
+    width: 220px;
+    height: 44px;
+    border-radius: 10px;
+  }
+
+  .week-navigation {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    background-color: var(--color-primary);
+    border: 1.5px solid var(--gray-border-dark);
+    border-radius: 10px;
+    padding: 0 0.25rem;
+
+    .week-label {
+      min-width: 150px;
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--gray-text-darker);
+      padding: 0 0.5rem;
+    }
+
+    .mat-mdc-icon-button {
+      width: 36px;
+      height: 36px;
+      color: var(--gray-text-medium);
+
+      &:hover:not(:disabled) {
+        color: var(--gray-text-darker);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+      }
+    }
+  }
+
+  .today-btn {
+    height: 44px;
+    font-weight: 600;
+    border-color: var(--gray-border-dark) !important;
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-primary-soft) !important;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+}
+
+// Skeleton
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-soft) 0%,
+    #e0e0e0 20%,
+    var(--color-primary-soft) 40%,
+    var(--color-primary-soft) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 8px;
+}
+
+.calendar-skeleton {
+  background-color: var(--color-primary);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+
+  .skeleton-tabs {
+    display: flex;
+    gap: 0;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid var(--gray-border);
+  }
+
+  .skeleton-tab {
+    flex: 1;
+    height: 52px;
+    margin: 0 0.25rem;
+  }
+
+  .skeleton-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .skeleton-booking {
+    height: 72px;
+    width: 100%;
+  }
+}
+
+// Calendar Tabs
+.calendar-tabs {
+  background-color: var(--color-primary);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+// Day Content
+.day-content {
+  padding: 0;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+
+  app-data-table {
+    ::ng-deep {
+      .data-table-container {
+        gap: 0;
+      }
+
+      .table-card {
+        box-shadow: none;
+        border-radius: 0;
+
+        &:hover {
+          box-shadow: none;
+        }
+      }
+
+      .data-table {
+        th.mat-mdc-header-cell {
+          font-size: 0.75rem;
+          padding: 0.875rem 1rem;
+        }
+
+        td.mat-mdc-cell {
+          padding: 0.875rem 1rem;
+          font-size: 0.8125rem;
+        }
+      }
+
+      .empty-state {
+        min-height: 240px;
+        padding: 3rem 1.5rem;
+      }
+    }
+  }
+}
+
+.no-bookings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 1.5rem;
+  flex: 1;
+  min-height: 280px;
+
+  .mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: var(--gray-text-light);
+  }
+
+  p {
+    font-size: 0.95rem;
+    color: var(--gray-text-medium);
+    margin: 0;
+  }
+}
+
+.bookings-loading {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  .skeleton-booking-mini {
+    height: 72px;
+    width: 100%;
+  }
+}
+
+// Responsive
+@media (max-width: 900px) {
+  .calendar-toolbar {
+    flex-wrap: wrap;
+
+    .create-booking-btn {
+      order: 1;
+    }
+
+    .toolbar-spacer {
+      display: none;
+    }
+
+    .toolbar-filters {
+      order: 2;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .resource-select,
+    .skeleton-select {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .week-navigation {
+      flex: 0;
+    }
+
+    .today-btn {
+      flex-shrink: 0;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .calendar-toolbar {
+    .create-booking-btn {
+      width: 100%;
+      order: 3;
+    }
+
+    .toolbar-filters {
+      order: 1;
+    }
+
+    .resource-select,
+    .skeleton-select {
+      width: 100%;
+    }
+
+    .week-navigation {
+      flex: 1;
+
+      .week-label {
+        flex: 1;
+      }
+    }
+  }
+
+  .day-content {
+    app-data-table {
+      ::ng-deep {
+        .data-table {
+          min-width: 900px;
+
+          th.mat-mdc-header-cell,
+          td.mat-mdc-cell {
+            padding: 0.75rem 0.875rem;
+            font-size: 0.75rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .day-content {
+    min-height: 260px;
+
+    app-data-table {
+      ::ng-deep {
+        .empty-state {
+          min-height: 200px;
+          gap: 0.75rem;
+          padding: 2rem 1rem;
+
+          .mat-icon {
+            font-size: 40px;
+            width: 40px;
+            height: 40px;
+          }
+
+          h3 {
+            font-size: 1.125rem;
+          }
+
+          p {
+            font-size: 0.875rem;
+          }
+        }
+      }
+    }
+  }
+
+  .no-bookings {
+    min-height: 200px;
+    gap: 0.75rem;
+    padding: 2rem 1rem;
+
+    .mat-icon {
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+    }
+
+    p {
+      font-size: 0.875rem;
+    }
+  }
+}

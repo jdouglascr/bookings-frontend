@@ -33,19 +33,26 @@
     @extend .card;
     border-radius: 16px;
     overflow: hidden;
-    display: flex;
-    padding: 1rem;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0.75rem !important;
     cursor: pointer;
     transition:
       transform 0.2s ease,
-      box-shadow 0.2s ease;
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
     box-sizing: border-box;
     max-width: 100%;
     word-wrap: break-word;
+    min-height: 80px !important;
+    max-height: 80px !important;
+    height: 80px !important;
+    border: 1px solid var(--gray-border);
 
     &:hover {
       transform: scale(1.02);
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      border-color: var(--gray-border-dark);
       z-index: 2;
       position: relative;
     }
@@ -56,19 +63,23 @@
   }
 
   &__content {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem;
     width: 100%;
+    height: 100%;
+    overflow: hidden;
 
     &--image {
-      max-width: 100%;
-      height: auto;
+      width: 48px !important;
+      height: 48px !important;
+      min-width: 48px;
+      min-height: 48px;
       object-fit: cover;
       flex-shrink: 0;
-      max-width: 70px;
-      max-height: 70px;
-      border-radius: 8px;
+      border-radius: 10px !important;
+      background-color: var(--color-primary-soft);
+      margin: 0 !important;
     }
   }
 
@@ -77,18 +88,26 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    min-width: 0;
+    overflow: hidden;
 
     &--title {
-      margin: 0 0 0.25rem;
-      font-size: 1.1rem;
+      margin: 0 0 0.15rem;
+      font-size: 0.95rem;
       font-weight: 600;
       color: var(--gray-text-titles);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     &--description {
       margin: 0;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       color: var(--gray-text-darker);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
@@ -96,27 +115,36 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 0.5rem;
-    min-width: 100px;
+    justify-content: center;
+    gap: 0.35rem;
+    min-width: 90px;
     font-weight: bold;
+    flex-shrink: 0;
 
     &--duration {
       display: flex;
       align-items: center;
       gap: 0.25rem;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       color: var(--gray-text-medium);
+      white-space: nowrap;
+
+      .mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
     }
 
     &--price {
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: var(--color-secondary);
       font-weight: 700;
+      white-space: nowrap;
     }
   }
 }
 
-// Skeleton
 @keyframes shimmer {
   0% {
     background-position: -1000px 0;
@@ -136,6 +164,9 @@
 .services__card--skeleton {
   cursor: default;
   pointer-events: none;
+  min-height: 80px !important;
+  max-height: 80px !important;
+  height: 80px !important;
 
   &:hover {
     transform: none;
@@ -158,36 +189,36 @@
 
 .skeleton-circle-image {
   @extend .skeleton;
-  width: 70px;
-  height: 70px;
-  border-radius: 8px;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
   flex-shrink: 0;
 }
 
 .skeleton-title {
   @extend .skeleton;
-  height: 24px;
+  height: 20px;
   width: 60%;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .skeleton-text {
   @extend .skeleton;
-  height: 16px;
+  height: 14px;
   width: 90%;
 }
 
 .skeleton-duration {
   @extend .skeleton;
-  height: 18px;
-  width: 80px;
-  margin-bottom: 8px;
+  height: 16px;
+  width: 70px;
+  margin-bottom: 6px;
 }
 
 .skeleton-price {
   @extend .skeleton;
-  height: 20px;
-  width: 70px;
+  height: 18px;
+  width: 60px;
 }
 
 .empty-state {
@@ -212,10 +243,87 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
+  .services {
+    &__card {
+      min-height: 75px !important;
+      max-height: 75px !important;
+      height: 75px !important;
+    }
+
+    &__content {
+      &--image {
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px;
+        min-height: 44px;
+      }
+    }
+
+    &__details {
+      min-width: 80px;
+    }
+  }
+
   .skeleton-circle-image {
-    width: 60px;
-    height: 60px;
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .services {
+    padding: 0.5rem;
+
+    &__card {
+      padding: 0.75rem;
+      min-height: auto;
+      max-height: none;
+    }
+
+    &__content {
+      flex-direction: column;
+      align-items: stretch;
+      text-align: center;
+      gap: 0.75rem;
+
+      &--image {
+        align-self: center;
+        width: 50px !important;
+        height: 50px !important;
+        min-width: 50px;
+        min-height: 50px;
+      }
+    }
+
+    &__info {
+      text-align: center;
+
+      &--title {
+        font-size: 0.9rem;
+        white-space: normal;
+      }
+
+      &--description {
+        font-size: 0.75rem;
+        white-space: normal;
+      }
+    }
+
+    &__details {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      min-width: auto;
+
+      &--duration {
+        font-size: 0.7rem;
+      }
+
+      &--price {
+        font-size: 0.85rem;
+      }
+    }
   }
 
   .empty-state {
@@ -229,68 +337,6 @@
 
     p {
       font-size: 0.9rem;
-    }
-  }
-}
-
-// Responsive
-@media (max-width: 600px) {
-  .services {
-    flex-direction: column;
-
-    &__details {
-      min-width: auto;
-      align-items: flex-start;
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .services {
-    padding: 0.5rem;
-
-    &__card {
-      padding: 0.75rem;
-    }
-
-    &__content {
-      flex-direction: column;
-      align-items: stretch;
-      text-align: center;
-      gap: 0.75rem;
-
-      &--image {
-        align-self: center;
-        width: 60px;
-        height: 60px;
-      }
-    }
-
-    &__info {
-      text-align: center;
-
-      &--title {
-        font-size: 0.95rem;
-      }
-
-      &--description {
-        font-size: 0.8rem;
-      }
-    }
-
-    &__details {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      min-width: auto;
-
-      &--duration {
-        font-size: 0.8rem;
-      }
-
-      &--price {
-        font-size: 0.9rem;
-      }
     }
   }
 }

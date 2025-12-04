@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject } from '@angular/core';
+import { Component, signal, computed, inject, effect } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -6,15 +6,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AuthService } from '../../../core/services/auth.service';
-
-interface MenuItem {
-  id: string;
-  label: string;
-  icon: string;
-  route: string;
-  isEnabled: boolean;
-}
+import { BusinessService } from '../../../core/services/business.service';
+import { ProfileDialog } from '../../components/profile-dialog/profile-dialog';
+import { LayoutMenuItem } from '../../../models/frontend.models';
 
 @Component({
   selector: 'app-management-layout',
@@ -26,81 +22,113 @@ interface MenuItem {
     MatMenuModule,
     MatDividerModule,
     MatTooltipModule,
+    MatDialogModule,
   ],
   templateUrl: './management-layout.html',
   styleUrl: './management-layout.scss',
 })
 export class ManagementLayout {
-  private authService = inject(AuthService);
-  private router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly dialog = inject(MatDialog);
+  readonly businessService = inject(BusinessService);
 
   mobileMenuOpen = signal(false);
 
-  businessName = signal('Rulos Style');
-
   currentUser = this.authService.currentUser;
-  userEmail = computed(() => this.currentUser()?.sub || 'Usuario');
-  userRole = computed(() => {
-    const role = this.currentUser()?.role;
-    if (role === 'ROLE_ADMIN') return 'Administrador';
-    if (role === 'ROLE_USER') return 'Usuario';
-    return 'Invitado';
-  });
+  isAdmin = computed(() => this.currentUser()?.role === 'ROLE_ADMIN');
 
-  menuItems = signal<MenuItem[]>([
+  userName = computed(() => this.currentUser()?.fullName);
+  userRole = computed(() => (this.isAdmin() ? 'Administrador' : 'Personal'));
+
+  businessName = computed(() => this.businessService.business()?.name || 'Cargando...');
+  businessLogo = computed(() => this.businessService.business()?.logoUrl || 'logo.png');
+
+  private allMenuItems = signal<LayoutMenuItem[]>([
     {
       id: 'resumen',
       label: 'Resumen',
       icon: 'dashboard',
       route: '/admin/dashboard',
-      isEnabled: false,
+      allowedRoles: ['ROLE_ADMIN'],
     },
     {
       id: 'calendario',
       label: 'Calendario',
       icon: 'event',
       route: '/admin/calendar',
-      isEnabled: false,
+      allowedRoles: ['ROLE_ADMIN', 'ROLE_STAFF'],
     },
     {
       id: 'servicios',
       label: 'Servicios',
       icon: 'construction',
       route: '/admin/services',
-      isEnabled: true,
+      allowedRoles: ['ROLE_ADMIN'],
     },
     {
-      id: 'agendas',
-      label: 'Agendas',
-      icon: 'schedule',
-      route: '/admin/schedules',
-      isEnabled: false,
+      id: 'recursos',
+      label: 'Recursos',
+      icon: 'star',
+      route: '/admin/resources',
+      allowedRoles: ['ROLE_ADMIN'],
     },
     {
       id: 'clientes',
       label: 'Clientes',
       icon: 'people',
       route: '/admin/customers',
-      isEnabled: false,
+      allowedRoles: ['ROLE_ADMIN'],
+    },
+    {
+      id: 'usuarios',
+      label: 'Usuarios',
+      icon: 'groups',
+      route: '/admin/users',
+      allowedRoles: ['ROLE_ADMIN'],
     },
   ]);
 
-  accountItems = signal<MenuItem[]>([
+  private allAccountItems = signal<LayoutMenuItem[]>([
     {
       id: 'negocio',
       label: 'Mi negocio',
       icon: 'business',
       route: '/admin/business',
-      isEnabled: false,
-    },
-    {
-      id: 'cuenta',
-      label: 'Mi cuenta',
-      icon: 'account_box',
-      route: '/admin/billing',
-      isEnabled: false,
+      allowedRoles: ['ROLE_ADMIN'],
     },
   ]);
+
+  menuItems = computed(() => {
+    const userRole = this.currentUser()?.role;
+    if (!userRole) return [];
+    return this.allMenuItems().filter((item) => item.allowedRoles.includes(userRole));
+  });
+
+  accountItems = computed(() => {
+    const userRole = this.currentUser()?.role;
+    if (!userRole) return [];
+    return this.allAccountItems().filter((item) => item.allowedRoles.includes(userRole));
+  });
+
+  hasConfigSection = computed(() => this.accountItems().length > 0);
+
+  constructor() {
+    if (!this.businessService.business()) {
+      this.businessService.loadBusinessInfo();
+    }
+
+    effect(() => {
+      const userRole = this.currentUser()?.role;
+      if (userRole === 'ROLE_STAFF') {
+        const currentRoute = this.router.url;
+        const allowedRoutes = this.menuItems().map((item) => item.route);
+        if (!allowedRoutes.some((route) => currentRoute.startsWith(route))) {
+          this.router.navigate(['/admin/calendar']);
+        }
+      }
+    });
+  }
 
   toggleMobileMenu() {
     this.mobileMenuOpen.update((value) => !value);
@@ -119,10 +147,11 @@ export class ManagementLayout {
     return this.router.url === route;
   }
 
-  navigateToIfEnabled(item: MenuItem) {
-    if (item.isEnabled) {
-      this.navigateTo(item.route);
-    }
+  openProfileDialog() {
+    this.dialog.open(ProfileDialog, {
+      width: '600px',
+      maxWidth: '95vw',
+    });
   }
 
   logout() {

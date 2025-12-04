@@ -2,46 +2,51 @@ import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-
-interface ConfirmDialogData {
-  title: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
-}
+import { ConfirmDialogData } from '../../../models/frontend.models';
 
 @Component({
   selector: 'app-confirm-dialog',
   imports: [MatButtonModule, MatDialogModule, MatIconModule],
   template: `
-    <div class="confirm-dialog">
-      <div class="dialog-icon">
-        <mat-icon>warning</mat-icon>
-      </div>
+    <div class="dialog-header">
       <h2 mat-dialog-title>{{ data.title }}</h2>
-      <mat-dialog-content>
-        <p>{{ data.message }}</p>
-      </mat-dialog-content>
-      <mat-dialog-actions>
-        <button mat-button [mat-dialog-close]="false" class="cancel-btn">
-          {{ data.cancelText || 'Cancelar' }}
-        </button>
-        <button mat-flat-button class="confirm-btn" [mat-dialog-close]="true">
-          {{ data.confirmText || 'Confirmar' }}
-        </button>
-      </mat-dialog-actions>
+      <button mat-icon-button mat-dialog-close class="close-btn">
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
+
+    <mat-dialog-content class="dialog-content-wrapper">
+      <div class="confirm-dialog-content">
+        <div class="dialog-icon">
+          <mat-icon>warning</mat-icon>
+        </div>
+        <p>{{ data.message }}</p>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions class="dialog-actions">
+      <button mat-button [mat-dialog-close]="false" class="cancel-btn">
+        {{ data.cancelText || 'Cancelar' }}
+      </button>
+      <button mat-flat-button color="primary" class="confirm-btn" [mat-dialog-close]="true">
+        {{ data.confirmText || 'Confirmar' }}
+      </button>
+    </mat-dialog-actions>
   `,
   styles: `
-    .confirm-dialog {
+    .confirm-dialog-content {
       text-align: center;
-      padding: 1rem;
+      padding-top: 0;
+      padding-bottom: 20px;
     }
 
     .dialog-icon {
-      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
 
-      .mat-icon {
+      mat-icon {
         font-size: 64px;
         width: 64px;
         height: 64px;
@@ -49,55 +54,28 @@ interface ConfirmDialogData {
       }
     }
 
-    h2 {
-      margin: 0 0 1rem 0;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--gray-text-titles);
-    }
-
-    mat-dialog-content {
-      padding: 0 1rem 1.5rem;
-
-      p {
-        margin: 0;
-        font-size: 1rem;
-        color: var(--gray-text-medium);
-        line-height: 1.5;
+    @media (max-width: 768px) {
+      .confirm-dialog-content {
+        padding-bottom: 16px;
       }
-    }
 
-    mat-dialog-actions {
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      gap: 0.75rem;
+      .dialog-icon {
+        margin-bottom: 16px;
 
-      .cancel-btn {
-        border-radius: 10px !important;
-        font-weight: 600 !important;
-        padding: 10px 20px !important;
-        color: var(--gray-text-darker) !important;
-        transition: all 0.2s ease !important;
-
-        &:hover {
-          background-color: var(--color-primary-soft) !important;
+        mat-icon {
+          font-size: 56px;
+          width: 56px;
+          height: 56px;
         }
       }
+    }
 
-      .confirm-btn {
-        border-radius: 10px !important;
-        font-weight: 600 !important;
-        padding: 10px 24px !important;
-        background-color: var(--color-error) !important;
-        color: white !important;
-        box-shadow: 0 2px 8px rgba(226, 91, 91, 0.25) !important;
-        transition: all 0.2s ease !important;
-
-        &:hover {
-          background-color: #c94444 !important;
-          box-shadow: 0 4px 12px rgba(226, 91, 91, 0.35) !important;
-          transform: translateY(-1px);
+    @media (max-width: 480px) {
+      .dialog-icon {
+        mat-icon {
+          font-size: 48px;
+          width: 48px;
+          height: 48px;
         }
       }
     }

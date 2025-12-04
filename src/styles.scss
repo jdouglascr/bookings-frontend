@@ -1,8 +1,17 @@
-// COLORES DEL PROYECTO
+// ANGULAR MATERIAL
+@use '@angular/material' as mat;
+
+// ARCHIVOS DE ESTILOS MODULARES
+@use './styles/material-overrides' as overrides;
+@use './styles/material-fixes';
+@use './styles/dialog-styles';
+
+// VARIABLES CSS
 :root {
   // Colores Principales
   --color-primary: #ffffff;
   --color-secondary: #292629;
+
   // Colores de Estado
   --color-success: #28a745;
   --color-error: #e25b5b;
@@ -14,7 +23,7 @@
   --color-secondary-hover: #1a1a1a;
   --color-secondary-shadow: rgba(41, 38, 41, 0.1);
 
-  // Colores Fijos
+  // Escala de Grises
   --gray-border: #e9ecef;
   --gray-border-dark: #dee2e6;
   --gray-text-light: #adb5bd;
@@ -25,11 +34,36 @@
   --gray-text-titles: #0d1426;
 }
 
-// Estilos Globales
+// CORE DE ANGULAR MATERIAL
+@include mat.core();
+
+// TEMA DE ANGULAR MATERIAL
+:root {
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: mat.$violet-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: (
+        plain-family: 'Nunito Sans',
+        brand-family: 'Nunito Sans',
+      ),
+      density: 0,
+    )
+  );
+
+  // OVERRIDES DE MATERIAL
+  @include overrides.apply-all-material-overrides();
+}
+
+// ESTILOS GLOBALES BASE
 html {
   overflow-x: hidden;
   width: 100%;
   max-width: 100%;
+  color-scheme: light;
 }
 
 body,
@@ -48,71 +82,74 @@ body {
   overflow-x: hidden;
 }
 
-// Success Snackbar
-.success-snackbar {
-  .mdc-snackbar__surface {
-    background-color: var(--color-success) !important;
-    color: var(--color-primary) !important;
-    border-radius: 8px !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+// RESET Y NORMALIZACIONES
+* {
+  box-sizing: border-box;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// UTILIDADES GLOBALES
+.full-width {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+// ANIMACIÓN REUTILIZABLES
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-
-  .mat-mdc-snack-bar-label {
-    font-weight: 500 !important;
-    font-size: 14px !important;
-  }
-
-  .mat-mdc-snack-bar-action {
-    color: var(--color-primary) !important;
-    font-weight: 600 !important;
-
-    &:hover {
-      background-color: transparent !important;
-    }
-
-    .mat-mdc-button-persistent-ripple,
-    .mat-ripple {
-      display: none !important;
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-// Error Snackbar
-.error-snackbar {
-  .mdc-snackbar__surface {
-    background-color: var(--color-error) !important;
-    color: var(--color-primary) !important;
-    border-radius: 8px !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-
-  .mat-mdc-snack-bar-label {
-    font-weight: 500 !important;
-    font-size: 14px !important;
-  }
-
-  .mat-mdc-snack-bar-action {
-    color: var(--color-primary) !important;
-    font-weight: 600 !important;
-
-    &:hover {
-      background-color: transparent !important;
-    }
-
-    .mat-mdc-button-persistent-ripple,
-    .mat-ripple {
-      display: none !important;
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-// Estilos globales para select panels
-.mat-mdc-select-panel,
-.mdc-menu-surface {
-  background-color: var(--color-primary) !important;
+// ACCESIBILIDAD
+*:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
 }
 
-.mat-mdc-option,
-.mdc-list-item {
-  background-color: var(--color-primary) !important;
+// Ocultar outline en mouse clicks
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+// PRINT STYLES
+@media print {
+  body {
+    background-color: white;
+  }
+
+  .no-print {
+    display: none !important;
+  }
 }

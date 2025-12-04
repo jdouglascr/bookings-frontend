@@ -1,16 +1,17 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { Observable, throwError, BehaviorSubject, timer, Subscription, firstValueFrom } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
+import { ErrorResponse } from '../../models/shared-api.models';
+import { environment } from '../../../environments/environment';
 import {
   DecodedToken,
+  CurrentUser,
   LoginRequest,
   LoginResponse,
   RefreshTokenResponse,
-} from '../../models/auth-api.models';
-import { ErrorResponse } from '../../models/shared-api.models';
-import { environment } from '../../../environments/environment';
+} from '../../models/private-api.models';
 
 @Injectable({
   providedIn: 'root',
@@ -19,14 +20,16 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private apiUrl = `${environment.apiUrl}/auth`;
+  private publicAuthUrl = `${environment.apiUrl}/public/auth`;
+  private privateAuthUrl = `${environment.apiUrl}/auth`;
 
   private _isAuthenticated = signal<boolean>(false);
-  private _currentUser = signal<DecodedToken | null>(null);
+  private _currentUser = signal<CurrentUser | null>(null);
   private _isLoading = signal<boolean>(false);
 
   private refreshTokenInProgress = new BehaviorSubject<boolean>(false);
   private refreshTokenSubject = new BehaviorSubject<string | null>(null);
+  private tokenRefreshTimer: Subscription | null = null;
 
   isAuthenticated = computed(() => this._isAuthenticated());
   currentUser = computed(() => this._currentUser());
@@ -34,30 +37,150 @@ export class AuthService {
   userRole = computed(() => this._currentUser()?.role || null);
 
   constructor() {
-    this.checkAuthStatus();
+    this.initializeAuth();
   }
 
-  private checkAuthStatus(): void {
+  private async initializeAuth(): Promise<void> {
     const accessToken = this.getAccessToken();
+    const refreshToken = this.getRefreshToken();
+
+    if (!accessToken && !refreshToken) {
+      this.clearAuthState();
+      return;
+    }
+
     if (accessToken && !this.isTokenExpired(accessToken)) {
-      this._isAuthenticated.set(true);
-      this._currentUser.set(this.decodeToken(accessToken));
-    } else {
-      const refreshToken = this.getRefreshToken();
-      if (refreshToken && !this.isTokenExpired(refreshToken)) {
+      try {
+        await this.loadCurrentUser();
         this._isAuthenticated.set(true);
-      } else {
-        this.clearTokens();
+        this.scheduleTokenRefresh();
+      } catch (error) {
+        console.error('Error cargando usuario:', error);
+        this.clearAuthState();
+      }
+      return;
+    }
+
+    if (refreshToken && !this.isTokenExpired(refreshToken)) {
+      try {
+        await this.silentRefresh();
+      } catch (error) {
+        console.error('Error en inicialización:', error);
+        this.clearAuthState();
+      }
+    } else {
+      this.clearAuthState();
+    }
+  }
+
+  private async loadCurrentUser(): Promise<void> {
+    try {
+      const user = await firstValueFrom(this.http.get<CurrentUser>(`${this.privateAuthUrl}/me`));
+      this._currentUser.set(user);
+    } catch (error) {
+      console.error('Error al cargar usuario:', error);
+      throw error;
+    }
+  }
+
+  async reloadCurrentUser(): Promise<void> {
+    if (this._isAuthenticated()) {
+      await this.loadCurrentUser();
+    }
+  }
+
+  private clearAuthState(): void {
+    this.clearTokens();
+    this._isAuthenticated.set(false);
+    this._currentUser.set(null);
+    this.cancelTokenRefresh();
+  }
+
+  private scheduleTokenRefresh(): void {
+    this.cancelTokenRefresh();
+
+    const accessToken = this.getAccessToken();
+    if (!accessToken) return;
+
+    const decoded = this.decodeToken(accessToken);
+    if (!decoded || !decoded.exp) return;
+
+    const expiresAt = decoded.exp * 1000;
+    const now = Date.now();
+    const refreshTime = expiresAt - now - 5 * 60 * 1000;
+
+    if (refreshTime <= 0) {
+      this.silentRefresh();
+      return;
+    }
+
+    this.tokenRefreshTimer = timer(refreshTime).subscribe(() => {
+      this.silentRefresh();
+    });
+  }
+
+  private cancelTokenRefresh(): void {
+    if (this.tokenRefreshTimer) {
+      this.tokenRefreshTimer.unsubscribe();
+      this.tokenRefreshTimer = null;
+    }
+  }
+
+  private async silentRefresh(): Promise<void> {
+    try {
+      const response = await firstValueFrom(this.refreshToken());
+      if (response) {
+        await this.loadCurrentUser();
+        this.scheduleTokenRefresh();
+      }
+    } catch (error) {
+      console.error('Error en renovación silenciosa:', error);
+      this.logout();
+    }
+  }
+
+  async checkSession(): Promise<boolean> {
+    const accessToken = this.getAccessToken();
+    const refreshToken = this.getRefreshToken();
+
+    if (!accessToken && !refreshToken) {
+      return false;
+    }
+
+    if (accessToken && !this.isTokenExpired(accessToken)) {
+      if (!this._currentUser()) {
+        try {
+          await this.loadCurrentUser();
+          this._isAuthenticated.set(true);
+        } catch (error) {
+          console.error(error);
+          return false;
+        }
+      }
+      return true;
+    }
+
+    if (refreshToken && !this.isTokenExpired(refreshToken)) {
+      try {
+        await firstValueFrom(this.refreshToken());
+        await this.loadCurrentUser();
+        this._isAuthenticated.set(true);
+        return true;
+      } catch (error) {
+        console.error(error);
+        return false;
       }
     }
+
+    return false;
   }
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
     this._isLoading.set(true);
 
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials).pipe(
-      tap((response) => {
-        this.handleLoginSuccess(response);
+    return this.http.post<LoginResponse>(`${this.publicAuthUrl}/login`, credentials).pipe(
+      tap(async (response) => {
+        await this.handleLoginSuccess(response);
       }),
       catchError((error: HttpErrorResponse) => {
         this._isLoading.set(false);
@@ -66,10 +189,11 @@ export class AuthService {
     );
   }
 
-  private handleLoginSuccess(response: LoginResponse): void {
+  private async handleLoginSuccess(response: LoginResponse): Promise<void> {
     this.saveTokens(response.accessToken, response.refreshToken);
+    await this.loadCurrentUser();
     this._isAuthenticated.set(true);
-    this._currentUser.set(this.decodeToken(response.accessToken));
+    this.scheduleTokenRefresh();
     this._isLoading.set(false);
   }
 
@@ -80,23 +204,27 @@ export class AuthService {
       return throwError(() => new Error('No refresh token available'));
     }
 
-    return this.http.post<RefreshTokenResponse>(`${this.apiUrl}/refresh`, { refreshToken }).pipe(
-      tap((response) => {
-        this.saveTokens(response.accessToken, response.refreshToken);
-        this._currentUser.set(this.decodeToken(response.accessToken));
-        this.refreshTokenSubject.next(response.accessToken);
-      }),
-      catchError((error) => {
-        this.logout();
-        return throwError(() => error);
-      }),
-    );
+    if (this.isTokenExpired(refreshToken)) {
+      this.logout();
+      return throwError(() => new Error('Refresh token expired'));
+    }
+
+    return this.http
+      .post<RefreshTokenResponse>(`${this.publicAuthUrl}/refresh`, { refreshToken })
+      .pipe(
+        tap((response) => {
+          this.saveTokens(response.accessToken, response.refreshToken);
+          this.refreshTokenSubject.next(response.accessToken);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          this.logout();
+          return throwError(() => error);
+        }),
+      );
   }
 
   logout(): void {
-    this.clearTokens();
-    this._isAuthenticated.set(false);
-    this._currentUser.set(null);
+    this.clearAuthState();
     this.router.navigate(['/login']);
   }
 
@@ -140,18 +268,9 @@ export class AuthService {
     if (!decoded || !decoded.exp) return true;
 
     const expirationDate = new Date(decoded.exp * 1000);
-    return expirationDate < new Date();
-  }
-
-  isTokenExpiringSoon(token: string): boolean {
-    const decoded = this.decodeToken(token);
-    if (!decoded || !decoded.exp) return true;
-
-    const expirationDate = new Date(decoded.exp * 1000);
     const now = new Date();
-    const fiveMinutes = 5 * 60 * 1000;
 
-    return expirationDate.getTime() - now.getTime() < fiveMinutes;
+    return expirationDate.getTime() <= now.getTime() + 1000;
   }
 
   get isRefreshingToken(): boolean {

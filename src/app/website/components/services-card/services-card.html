@@ -49,7 +49,9 @@
                     <span class="services__details--duration">
                       <mat-icon>schedule</mat-icon> {{ service.durationFormatted }}
                     </span>
-                    <span class="services__details--price">{{ service.priceFormatted }}</span>
+                    <span class="services__details--price">{{
+                      priceFormatter.format(service.price)
+                    }}</span>
                   </div>
                 </div>
               </mat-card>

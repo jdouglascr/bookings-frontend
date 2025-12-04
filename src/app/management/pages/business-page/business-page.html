@@ -1,0 +1,184 @@
+<div class="business-page">
+  <div class="page__header">
+    <div class="page__header-text">
+      <h1 class="page__title">Mi negocio</h1>
+      <p class="page__subtitle">Configura la información de tu negocio y horarios de atención</p>
+    </div>
+    <button
+      mat-flat-button
+      color="primary"
+      class="page__action"
+      (click)="saveBusiness()"
+      [disabled]="!canSave()"
+    >
+      @if (isSaving()) {
+        <ng-container>
+          <mat-spinner diameter="20"></mat-spinner>
+          <span>Guardando...</span>
+        </ng-container>
+      } @else {
+        <ng-container>
+          <mat-icon>save</mat-icon>
+          <span>Guardar cambios</span>
+        </ng-container>
+      }
+    </button>
+  </div>
+
+  @if (isLoading()) {
+    <div class="business-skeleton">
+      <div class="skeleton-tabs">
+        <div class="skeleton skeleton-tab-header"></div>
+        <div class="skeleton skeleton-tab-header"></div>
+        <div class="skeleton skeleton-tab-header"></div>
+      </div>
+
+      <div class="skeleton-content">
+        <div class="skeleton-form">
+          <div class="skeleton skeleton-input"></div>
+          <div class="skeleton skeleton-textarea"></div>
+          <div class="skeleton-row">
+            <div class="skeleton skeleton-input"></div>
+            <div class="skeleton skeleton-input"></div>
+          </div>
+          <div class="skeleton skeleton-input"></div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <mat-tab-group class="business-tabs">
+      <mat-tab label="Información general">
+        <div class="tab-content">
+          <form [formGroup]="businessForm" class="panel-content">
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Nombre del negocio</mat-label>
+                <input matInput formControlName="name" placeholder="Ej: Rulos Style" />
+                @if (businessForm.get('name')?.hasError('required')) {
+                  <mat-error>El nombre es obligatorio</mat-error>
+                }
+                @if (businessForm.get('name')?.hasError('minlength')) {
+                  <mat-error>El nombre debe tener al menos 2 caracteres</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Descripción</mat-label>
+                <textarea
+                  matInput
+                  formControlName="description"
+                  rows="4"
+                  placeholder="Describe tu negocio..."
+                ></textarea>
+                @if (businessForm.get('description')?.hasError('required')) {
+                  <mat-error>La descripción es obligatoria</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Dirección</mat-label>
+                <mat-icon matIconPrefix>location_on</mat-icon>
+                <input matInput formControlName="address" placeholder="Calle 123, Ciudad" />
+                @if (businessForm.get('address')?.hasError('required')) {
+                  <mat-error>La dirección es obligatoria</mat-error>
+                }
+              </mat-form-field>
+
+              <app-phone-input formControlName="phone" />
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Email</mat-label>
+                <mat-icon matIconPrefix>email</mat-icon>
+                <input
+                  matInput
+                  type="email"
+                  formControlName="email"
+                  placeholder="contacto@negocio.com"
+                />
+                @if (businessForm.get('email')?.hasError('required')) {
+                  <mat-error>El email es obligatorio</mat-error>
+                }
+                @if (businessForm.get('email')?.hasError('email')) {
+                  <mat-error>Email inválido</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="section-divider">
+              <span>Redes sociales (opcional)</span>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Facebook</mat-label>
+                <mat-icon matIconPrefix>link</mat-icon>
+                <input
+                  matInput
+                  formControlName="facebookUrl"
+                  placeholder="https://facebook.com/tunegocio"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Instagram</mat-label>
+                <mat-icon matIconPrefix>link</mat-icon>
+                <input
+                  matInput
+                  formControlName="instagramUrl"
+                  placeholder="https://instagram.com/tunegocio"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>TikTok</mat-label>
+                <mat-icon matIconPrefix>link</mat-icon>
+                <input
+                  matInput
+                  formControlName="tiktokUrl"
+                  placeholder="https://tiktok.com/@tunegocio"
+                />
+              </mat-form-field>
+            </div>
+          </form>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Imágenes del negocio">
+        <div class="tab-content">
+          <div class="images-grid">
+            <app-image-input
+              #logoInput
+              label="Logo"
+              imageType="logo"
+              (fileChange)="onLogoChange($event)"
+            />
+
+            <app-image-input
+              #bannerInput
+              label="Banner"
+              imageType="banner"
+              (fileChange)="onBannerChange($event)"
+            />
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Horarios de atención">
+        <div class="tab-content">
+          <app-available-times-selector
+            [schedules]="schedules()"
+            (schedulesChange)="onSchedulesChange($event)"
+          />
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  }
+</div>

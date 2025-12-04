@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://booking-backend-xmdn.onrender.com/api',
+  apiUrl: 'https://booking-backend-dx8u.onrender.com/api',
 };

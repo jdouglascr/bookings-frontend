@@ -21,6 +21,7 @@ import { PhoneInputComponent } from '../../../shared/components/phone-input/phon
     PhoneInputComponent,
   ],
   templateUrl: './customer-dialog.html',
+  styleUrl: './customer-dialog.scss',
 })
 export class CustomerDialog implements OnInit {
   private fb = inject(FormBuilder);

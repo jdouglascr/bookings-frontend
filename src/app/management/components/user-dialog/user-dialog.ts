@@ -27,6 +27,7 @@ import { PasswordInputComponent } from '../../../shared/components/password-inpu
     PasswordInputComponent,
   ],
   templateUrl: './user-dialog.html',
+  styleUrl: './user-dialog.scss',
 })
 export class UserDialog implements OnInit {
   private fb = inject(FormBuilder);

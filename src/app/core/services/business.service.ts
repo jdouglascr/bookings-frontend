@@ -83,6 +83,7 @@ export class BusinessService {
     return this.http.put<MessageResponse>(this.privateApiUrl, formData).pipe(
       tap(() => {
         this.isPrivateLoading.set(false);
+        this.loadBusinessInfo();
       }),
       catchError((error) => {
         this.isPrivateLoading.set(false);

@@ -222,11 +222,11 @@ export interface UpdateBookingStatusRequest {
 }
 
 export const BOOKING_STATUSES = [
-  'PENDIENTE',
-  'CONFIRMADA',
-  'PAGADA',
-  'COMPLETADA',
-  'CANCELADA',
+  'Pendiente',
+  'Confirmada',
+  'Pagada',
+  'Completada',
+  'Cancelada',
 ] as const;
 
 export type BookingStatus = (typeof BOOKING_STATUSES)[number];

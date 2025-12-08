@@ -70,6 +70,11 @@
       <div class="header__spacer"></div>
 
       <div class="header__actions">
+        <button mat-stroked-button class="header__website-btn" (click)="goToWebsite()">
+          <mat-icon>public</mat-icon>
+          <span class="header__website-text">Sitio público</span>
+        </button>
+
         <button mat-button class="header__user" [matMenuTriggerFor]="userMenu">
           <div class="header__user-info">
             <span class="header__user-name">{{ userName() }}</span>

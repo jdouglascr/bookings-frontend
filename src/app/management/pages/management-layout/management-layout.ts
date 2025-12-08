@@ -147,6 +147,10 @@ export class ManagementLayout {
     return this.router.url === route;
   }
 
+  goToWebsite() {
+    this.router.navigate(['/']);
+  }
+
   openProfileDialog() {
     this.dialog.open(ProfileDialog, {
       width: '600px',

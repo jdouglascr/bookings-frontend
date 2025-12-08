@@ -47,6 +47,8 @@ export class BusinessPage {
 
   logoFile = signal<File | null>(null);
   bannerFile = signal<File | null>(null);
+  private currentLogoUrl = signal<string | null>(null);
+  private currentBannerUrl = signal<string | null>(null);
 
   schedules = signal<DaySchedule[]>([]);
 
@@ -91,9 +93,11 @@ export class BusinessPage {
         setTimeout(() => {
           if (data.logoUrl) {
             this.logoInput()?.setPreview(data.logoUrl);
+            this.currentLogoUrl.set(data.logoUrl);
           }
           if (data.bannerUrl) {
             this.bannerInput()?.setPreview(data.bannerUrl);
+            this.currentBannerUrl.set(data.bannerUrl);
           }
         });
 
@@ -168,7 +172,22 @@ export class BusinessPage {
           this.notification.error(
             err.error?.message || 'Error al guardar la información del negocio',
           );
+
+          this.restoreImages();
+          this.logoFile.set(null);
+          this.bannerFile.set(null);
         },
       });
+  }
+
+  private restoreImages(): void {
+    setTimeout(() => {
+      if (this.currentLogoUrl()) {
+        this.logoInput()?.setPreview(this.currentLogoUrl()!);
+      }
+      if (this.currentBannerUrl()) {
+        this.bannerInput()?.setPreview(this.currentBannerUrl()!);
+      }
+    }, 100);
   }
 }

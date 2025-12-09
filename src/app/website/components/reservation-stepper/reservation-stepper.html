@@ -10,7 +10,7 @@
 
   <header class="stepper-header">
     <div class="steps-container">
-      @for (step of steps; track $index) {
+      @for (step of steps(); track $index) {
         <div class="step-wrapper">
           <div
             class="step-item"
@@ -32,7 +32,7 @@
             </div>
             <div class="step-label">{{ step.title }}</div>
           </div>
-          @if ($index < steps.length - 1) {
+          @if ($index < steps().length - 1) {
             <div class="step-connector" [class.completed]="$index < currentStepIndex()"></div>
           }
         </div>
@@ -43,39 +43,52 @@
   <main class="stepper-content">
     <div
       class="step-container"
-      [class.appointment-step]="currentStepIndex() === 0"
-      [class.datetime-step]="currentStepIndex() === 1"
-      [class.form-step]="currentStepIndex() === 2"
+      [class.appointment-step]="
+        currentStep().id === 'appointment' || currentStep().id === 'service'
+      "
+      [class.datetime-step]="currentStep().id === 'datetime'"
+      [class.form-step]="currentStep().id === 'contact'"
     >
       <div class="step-content">
         <h3>{{ currentStep().title }}</h3>
         <p>{{ currentStep().subtitle }}</p>
 
-        @switch (currentStepIndex()) {
-          @case (0) {
+        @switch (currentStep().id) {
+          @case ('service') {
+            <app-service-selection
+              [selectedService]="stepData().service || null"
+              [selectedResourceId]="stepData().resourceId || 0"
+              (serviceSelected)="onServiceSelected($event)"
+            />
+          }
+          @case ('appointment') {
             <app-appointment-selection
               [selectedAppointment]="stepData().appointment || null"
               [selectedServiceId]="stepData().serviceId || 0"
               (appointmentSelected)="onAppointmentSelected($event)"
             />
           }
-          @case (1) {
+          @case ('datetime') {
             <app-datetime-selection
               [selectedDate]="stepData().selectedDate || null"
               [selectedTimeSlot]="stepData().selectedTimeSlot || null"
-              [selectedAppointmentId]="stepData().appointment?.resourceServiceId || 0"
+              [selectedAppointmentId]="
+                mode() === 'admin'
+                  ? stepData().resourceServiceId || 0
+                  : stepData().appointment?.resourceServiceId || 0
+              "
               (datetimeSelected)="onDatetimeSelected($event)"
               (dateChanged)="onDateChanged($event)"
             />
           }
-          @case (2) {
+          @case ('contact') {
             <app-contact-form
               [selectedContactInfo]="stepData().contactInfo || null"
               (contactInfoChanged)="onContactInfoChanged($event)"
               (formValidityChanged)="onContactFormValidityChanged($event)"
             />
           }
-          @case (3) {
+          @case ('confirm') {
             <app-reservation-summary [stepData]="stepData()" />
           }
         }
@@ -97,7 +110,7 @@
       <div></div>
     }
 
-    @if (currentStepIndex() < steps.length - 1) {
+    @if (currentStepIndex() < steps().length - 1) {
       <button
         mat-raised-button
         color="primary"

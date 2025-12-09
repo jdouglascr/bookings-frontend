@@ -40,9 +40,19 @@ export interface ContactInfo {
 }
 
 // STEPPER MODELS
+export type StepperMode = 'public' | 'admin';
+
+export interface ReservationStepperData {
+  mode: StepperMode;
+  selectedService?: Service;
+  selectedResourceId?: number;
+}
+
 export interface StepData {
   service?: Service;
   serviceId?: number;
+  resourceId?: number;
+  resourceServiceId?: number;
   appointment?: Appointment;
   selectedDate?: string;
   selectedTimeSlot?: TimeSlot;

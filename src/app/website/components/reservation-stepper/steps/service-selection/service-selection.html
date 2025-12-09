@@ -1,0 +1,55 @@
+<div class="service-selection">
+  @if (isLoading()) {
+    <div class="services-grid">
+      @for (i of [1, 2, 3]; track i) {
+        <div class="service-card service-card--skeleton">
+          <div class="skeleton skeleton-image"></div>
+          <div class="service-info" style="flex: 1">
+            <div class="skeleton skeleton-title"></div>
+            <div class="skeleton skeleton-text"></div>
+            <div class="skeleton skeleton-duration"></div>
+          </div>
+          <div class="skeleton skeleton-price"></div>
+          <div class="skeleton skeleton-indicator"></div>
+        </div>
+      }
+    </div>
+  } @else if (availableServices().length > 0) {
+    <div class="services-grid">
+      @for (service of availableServices(); track service.id) {
+        <div
+          class="service-card"
+          role="button"
+          tabindex="0"
+          [class.selected]="selectedService()?.id === service.id"
+          (click)="selectService(service)"
+          (keyup.enter)="selectService(service)"
+          (keyup.space)="selectService(service)"
+        >
+          <div class="service-image">
+            <img [src]="service.logoUrl" [alt]="service.name" />
+          </div>
+          <div class="service-info">
+            <h4>{{ service.name }}</h4>
+            <p class="description">{{ service.description }}</p>
+            <span class="duration">
+              <mat-icon>schedule</mat-icon>
+              {{ formatDuration(service.durationMin) }}
+            </span>
+          </div>
+          <div class="service-price">
+            {{ priceFormatter.format(service.price) }}
+          </div>
+          <div class="selected-indicator">
+            <mat-icon>check_circle</mat-icon>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="empty-state">
+      <mat-icon>shopping_bag</mat-icon>
+      <p>No hay servicios disponibles para este recurso</p>
+    </div>
+  }
+</div>

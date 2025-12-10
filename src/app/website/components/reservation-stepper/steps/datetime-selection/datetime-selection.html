@@ -27,13 +27,15 @@
 
       <div class="calendar-days">
         @for (day of calendarDays(); track day.date) {
-          <div
+          <button
+            type="button"
             class="calendar-day"
             [class.today]="day.isToday"
             [class.selected]="day.isSelected"
             [class.available]="day.hasAvailability && !day.isUnavailable"
             [class.unavailable]="day.isUnavailable"
             [class.has-availability]="day.hasAvailability"
+            [disabled]="day.isUnavailable || !day.hasAvailability"
             (click)="selectDate(day)"
           >
             <span class="day-number">{{ day.dayNumber }}</span>
@@ -42,7 +44,7 @@
             } @else if (day.isUnavailable && day.isCurrentMonth) {
               <div class="unavailable-indicator"></div>
             }
-          </div>
+          </button>
         }
       </div>
     </div>

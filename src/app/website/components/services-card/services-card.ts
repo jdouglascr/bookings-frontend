@@ -24,19 +24,13 @@ export class ServicesCard implements OnInit {
   }
 
   onSelectService(service: PublicService) {
-    const dialogRef = this.dialog.open(ReservationStepper, {
+    this.dialog.open(ReservationStepper, {
       width: '800px',
       maxWidth: '90vw',
       maxHeight: '90vh',
       panelClass: ['reservation-dialog'],
       disableClose: false,
       data: { selectedService: service },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result?.confirmed) {
-        console.log('Reserva confirmada para:', service.name);
-      }
     });
   }
 }

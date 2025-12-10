@@ -60,20 +60,12 @@
       <h3 class="section-title">Seguridad</h3>
 
       <div class="password-section">
-        <mat-checkbox
-          [checked]="updatePassword()"
-          (change)="toggleUpdatePassword()"
-          color="primary"
-        >
+        <mat-checkbox [checked]="updatePassword()" (change)="toggleUpdatePassword()" color="primary">
           ¿Desea cambiar su contraseña?
         </mat-checkbox>
 
         @if (updatePassword()) {
-          <app-password-input
-            formControlName="password"
-            label="Nueva contraseña"
-            class="full-width password-field"
-          />
+          <app-password-input formControlName="password" label="Nueva contraseña" class="full-width password-field" />
         }
       </div>
     </div>
@@ -82,13 +74,7 @@
 
 <mat-dialog-actions class="dialog-actions">
   <button mat-button mat-dialog-close class="cancel-btn">Cancelar</button>
-  <button
-    mat-flat-button
-    color="primary"
-    class="submit-btn"
-    (click)="onSubmit()"
-    [disabled]="form.invalid || isSaving()"
-  >
+  <button mat-flat-button color="primary" class="submit-btn" (click)="onSubmit()" [disabled]="form.invalid || isSaving()">
     @if (isSaving()) {
       <mat-icon class="material-spinner">hourglass_empty</mat-icon>
     }

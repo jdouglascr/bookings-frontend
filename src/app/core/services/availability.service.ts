@@ -14,27 +14,22 @@ export class AvailabilityService {
   weekAvailability = signal<WeekAvailabilityResponse | null>(null);
   isLoading = signal(false);
 
-  getWeekAvailability(
-    resourceServiceId: number,
-    startDate: string,
-  ): Observable<WeekAvailabilityResponse> {
+  getWeekAvailability(resourceServiceId: number, startDate: string): Observable<WeekAvailabilityResponse> {
     this.isLoading.set(true);
 
     const params = new HttpParams().set('startDate', startDate);
 
-    return this.http
-      .get<WeekAvailabilityResponse>(`${this.apiUrl}/${resourceServiceId}/week`, { params })
-      .pipe(
-        tap({
-          next: (data) => {
-            this.weekAvailability.set(data);
-            this.isLoading.set(false);
-          },
-          error: () => {
-            this.isLoading.set(false);
-          },
-        }),
-      );
+    return this.http.get<WeekAvailabilityResponse>(`${this.apiUrl}/${resourceServiceId}/week`, { params }).pipe(
+      tap({
+        next: (data) => {
+          this.weekAvailability.set(data);
+          this.isLoading.set(false);
+        },
+        error: () => {
+          this.isLoading.set(false);
+        },
+      }),
+    );
   }
 
   clearAvailability(): void {

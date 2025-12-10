@@ -53,20 +53,14 @@ export class ServicesService {
   }
 
   createService(formData: FormData): Observable<MessageResponse> {
-    return this.http
-      .post<MessageResponse>(this.privateApiUrl, formData)
-      .pipe(tap(() => this.privateLoadServices().subscribe()));
+    return this.http.post<MessageResponse>(this.privateApiUrl, formData).pipe(tap(() => this.privateLoadServices().subscribe()));
   }
 
   updateService(id: number, formData: FormData): Observable<MessageResponse> {
-    return this.http
-      .put<MessageResponse>(`${this.privateApiUrl}/${id}`, formData)
-      .pipe(tap(() => this.privateLoadServices().subscribe()));
+    return this.http.put<MessageResponse>(`${this.privateApiUrl}/${id}`, formData).pipe(tap(() => this.privateLoadServices().subscribe()));
   }
 
   deleteService(id: number): Observable<MessageResponse> {
-    return this.http
-      .delete<MessageResponse>(`${this.privateApiUrl}/${id}`)
-      .pipe(tap(() => this.privateLoadServices().subscribe()));
+    return this.http.delete<MessageResponse>(`${this.privateApiUrl}/${id}`).pipe(tap(() => this.privateLoadServices().subscribe()));
   }
 }

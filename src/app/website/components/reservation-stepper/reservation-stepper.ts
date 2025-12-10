@@ -2,15 +2,7 @@ import { Component, computed, inject, signal, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  Appointment,
-  StepData,
-  TimeSlot,
-  ContactInfo,
-  StepConfig,
-  Service,
-  ReservationStepperData,
-} from '../../../models/frontend.models';
+import { Appointment, StepData, TimeSlot, ContactInfo, StepConfig, Service, ReservationStepperData } from '../../../models/frontend.models';
 import { AppointmentSelection } from './steps/appointment-selection/appointment-selection';
 import { ServiceSelection } from './steps/service-selection/service-selection';
 import { DatetimeSelection } from './steps/datetime-selection/datetime-selection';

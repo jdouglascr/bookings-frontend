@@ -13,21 +13,10 @@
     @if (showSearch()) {
       <mat-form-field appearance="outline" class="search-field">
         <mat-label>Buscar</mat-label>
-        <input
-          matInput
-          [value]="searchTerm()"
-          (input)="onSearchChange($any($event.target).value)"
-          placeholder="Buscar..."
-        />
+        <input matInput [value]="searchTerm()" (input)="onSearchChange($any($event.target).value)" placeholder="Buscar..." />
         <mat-icon matIconPrefix>search</mat-icon>
         @if (searchTerm()) {
-          <button
-            mat-icon-button
-            matIconSuffix
-            (click)="clearSearch()"
-            type="button"
-            class="clear-search-btn"
-          >
+          <button mat-icon-button matIconSuffix (click)="clearSearch()" type="button" class="clear-search-btn">
             <mat-icon>close</mat-icon>
           </button>
         }
@@ -38,11 +27,7 @@
   <!-- Table Card -->
   <mat-card class="table-card">
     <div class="table-wrapper">
-      <table
-        mat-table
-        [dataSource]="isLoading() ? skeletonRows() : paginatedData()"
-        class="data-table"
-      >
+      <table mat-table [dataSource]="isLoading() ? skeletonRows() : paginatedData()" class="data-table">
         <!-- Dynamic Columns -->
         @for (column of columns(); track trackByKey($index, column)) {
           <ng-container [matColumnDef]="column.key">
@@ -114,9 +99,7 @@
           <h3>{{ emptyMessage() }}</h3>
           @if (searchTerm()) {
             <p>No se encontraron resultados para "{{ searchTerm() }}"</p>
-            <button mat-flat-button color="primary" (click)="clearSearch()">
-              Limpiar búsqueda
-            </button>
+            <button mat-flat-button color="primary" (click)="clearSearch()">Limpiar búsqueda</button>
           }
         </div>
       }

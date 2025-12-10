@@ -16,15 +16,7 @@ import { ResourceDialog } from '../../components/resource-dialog/resource-dialog
 
 @Component({
   selector: 'app-resource-page',
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatCardModule,
-    MatMenuModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatTooltipModule,
-  ],
+  imports: [MatButtonModule, MatIconModule, MatCardModule, MatMenuModule, MatFormFieldModule, MatSelectModule, MatTooltipModule],
   templateUrl: './resource-page.html',
   styleUrl: './resource-page.scss',
 })

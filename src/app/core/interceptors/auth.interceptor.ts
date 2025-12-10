@@ -1,9 +1,4 @@
-import {
-  HttpInterceptorFn,
-  HttpErrorResponse,
-  HttpHandlerFn,
-  HttpRequest,
-} from '@angular/common/http';
+import { HttpInterceptorFn, HttpErrorResponse, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { catchError, switchMap, filter, take, throwError } from 'rxjs';
@@ -37,11 +32,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   );
 };
 
-function handleUnauthorizedError(
-  authService: AuthService,
-  req: HttpRequest<unknown>,
-  next: HttpHandlerFn,
-) {
+function handleUnauthorizedError(authService: AuthService, req: HttpRequest<unknown>, next: HttpHandlerFn) {
   if (authService.isRefreshingToken) {
     return authService.refreshTokenSubject$.pipe(
       filter((token) => token !== null),

@@ -3,10 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap, catchError, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { PublicBusinessInfo } from '../../models/public-api.models';
-import {
-  BusinessWithHoursResponse,
-  BusinessWithHoursUpdateRequest,
-} from '../../models/private-api.models';
+import { BusinessWithHoursResponse, BusinessWithHoursUpdateRequest } from '../../models/private-api.models';
 import { MessageResponse } from '../../models/shared-api.models';
 
 @Injectable({
@@ -63,11 +60,7 @@ export class BusinessService {
   /**
    * Actualiza negocio y horarios
    */
-  updateBusinessWithHours(
-    data: BusinessWithHoursUpdateRequest,
-    logo?: File,
-    banner?: File,
-  ): Observable<MessageResponse> {
+  updateBusinessWithHours(data: BusinessWithHoursUpdateRequest, logo?: File, banner?: File): Observable<MessageResponse> {
     this.isPrivateLoading.set(true);
 
     const formData = new FormData();

@@ -17,14 +17,7 @@ import { ReservationStepper } from '../../../website/components/reservation-step
 
 @Component({
   selector: 'app-calendar-page',
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatTabsModule,
-    DataTable,
-  ],
+  imports: [MatButtonModule, MatIconModule, MatFormFieldModule, MatSelectModule, MatTabsModule, DataTable],
   templateUrl: './calendar-page.html',
   styleUrl: './calendar-page.scss',
 })
@@ -46,8 +39,7 @@ export class CalendarPage implements OnInit {
     {
       key: 'time',
       label: 'Horario',
-      getValue: (booking) =>
-        `${this.formatTime(booking.startDatetime)} - ${this.formatTime(booking.endDatetime)}`,
+      getValue: (booking) => `${this.formatTime(booking.startDatetime)} - ${this.formatTime(booking.endDatetime)}`,
     },
     {
       key: 'service',
@@ -232,11 +224,7 @@ export class CalendarPage implements OnInit {
   }
 
   private isSameDay(date1: Date, date2: Date): boolean {
-    return (
-      date1.getFullYear() === date2.getFullYear() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getDate() === date2.getDate()
-    );
+    return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
   }
 
   private isToday(date: Date): boolean {

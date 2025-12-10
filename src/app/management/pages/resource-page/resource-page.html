@@ -9,12 +9,7 @@
 
   <!-- Filters Bar -->
   <div class="filters-bar">
-    <button
-      mat-flat-button
-      color="primary"
-      class="create-resource-btn"
-      (click)="openResourceDialog()"
-    >
+    <button mat-flat-button color="primary" class="create-resource-btn" (click)="openResourceDialog()">
       <mat-icon>add</mat-icon>
       Crear nuevo recurso
     </button>
@@ -116,10 +111,7 @@
               }
 
               <div class="resource-meta">
-                <span
-                  class="resource-type-badge"
-                  [class.professional]="resource.resourceType === 'Profesional'"
-                >
+                <span class="resource-type-badge" [class.professional]="resource.resourceType === 'Profesional'">
                   {{ resource.resourceType }}
                 </span>
                 <div class="resource-meta-item">

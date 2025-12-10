@@ -19,9 +19,7 @@
           class="appointment-card"
           role="button"
           tabindex="0"
-          [class.selected]="
-            selectedAppointment()?.resourceServiceId === appointment.resourceServiceId
-          "
+          [class.selected]="selectedAppointment()?.resourceServiceId === appointment.resourceServiceId"
           (click)="selectAppointment(appointment)"
           (keyup.enter)="selectAppointment(appointment)"
           (keyup.space)="selectAppointment(appointment)"

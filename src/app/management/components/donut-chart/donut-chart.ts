@@ -1,14 +1,7 @@
 import { Component, input, effect } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import {
-  ApexNonAxisChartSeries,
-  ApexChart,
-  ApexLegend,
-  ApexDataLabels,
-  ApexPlotOptions,
-  ApexResponsive,
-} from 'ng-apexcharts';
+import { ApexNonAxisChartSeries, ApexChart, ApexLegend, ApexDataLabels, ApexPlotOptions, ApexResponsive } from 'ng-apexcharts';
 import { DonutChartFormatterContext } from '../../../models/frontend.models';
 
 @Component({

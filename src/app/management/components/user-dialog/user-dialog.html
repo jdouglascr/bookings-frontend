@@ -111,11 +111,7 @@
 
         @if (isEdit()) {
           <div class="password-section">
-            <mat-checkbox
-              [checked]="updatePassword()"
-              (change)="toggleUpdatePassword()"
-              color="primary"
-            >
+            <mat-checkbox [checked]="updatePassword()" (change)="toggleUpdatePassword()" color="primary">
               ¿Desea actualizar la contraseña?
             </mat-checkbox>
 
@@ -129,11 +125,7 @@
             }
           </div>
         } @else {
-          <app-password-input
-            formControlName="password"
-            autocomplete="new-password"
-            class="full-width"
-          />
+          <app-password-input formControlName="password" autocomplete="new-password" class="full-width" />
         }
       </div>
     </form>

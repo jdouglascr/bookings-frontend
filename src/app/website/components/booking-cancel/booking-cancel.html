@@ -15,37 +15,19 @@
           <mat-icon>warning</mat-icon>
         </div>
         <h1 class="title">¿Cancelar reserva?</h1>
-        <p class="message">
-          Estás a punto de cancelar tu reserva. Esta acción no se puede deshacer.
-        </p>
+        <p class="message">Estás a punto de cancelar tu reserva. Esta acción no se puede deshacer.</p>
 
         <mat-form-field appearance="outline" class="reason-field">
           <mat-label>Motivo de cancelación (opcional)</mat-label>
-          <input
-            matInput
-            [(ngModel)]="cancellationReason"
-            placeholder="Cuéntanos por qué cancelas..."
-            maxlength="500"
-          />
+          <input matInput [(ngModel)]="cancellationReason" placeholder="Cuéntanos por qué cancelas..." maxlength="500" />
           <mat-hint align="end">{{ cancellationReason().length }}/500</mat-hint>
         </mat-form-field>
 
         <div class="button-group">
-          <button
-            mat-stroked-button
-            class="action-button secondary"
-            (click)="goToHome()"
-            [disabled]="isProcessing()"
-          >
+          <button mat-stroked-button class="action-button secondary" (click)="goToHome()" [disabled]="isProcessing()">
             Volver al inicio
           </button>
-          <button
-            mat-raised-button
-            color="warn"
-            class="action-button danger"
-            (click)="confirmCancellation()"
-            [disabled]="isProcessing()"
-          >
+          <button mat-raised-button color="warn" class="action-button danger" (click)="confirmCancellation()" [disabled]="isProcessing()">
             @if (isProcessing()) {
               <span class="loading-text">
                 <span class="spinner"></span>
@@ -68,15 +50,10 @@
         <div class="info-box">
           <mat-icon class="info-icon">info_outline</mat-icon>
           <div class="info-text">
-            <p>
-              Si cambias de opinión, puedes hacer una nueva reserva cuando lo desees. Esperamos
-              verte pronto.
-            </p>
+            <p>Si cambias de opinión, puedes hacer una nueva reserva cuando lo desees. Esperamos verte pronto.</p>
           </div>
         </div>
-        <button mat-raised-button color="primary" class="action-button" (click)="goToHome()">
-          Volver al inicio
-        </button>
+        <button mat-raised-button color="primary" class="action-button" (click)="goToHome()">Volver al inicio</button>
       </div>
     } @else if (errorMessage()) {
       <!-- Error State -->
@@ -87,18 +64,11 @@
         <h1 class="title">No se pudo cancelar</h1>
         <p class="message">{{ errorMessage() }}</p>
         <div class="error-details">
-          <p>
-            Si crees que esto es un error, por favor contáctanos directamente o intenta nuevamente
-            más tarde.
-          </p>
+          <p>Si crees que esto es un error, por favor contáctanos directamente o intenta nuevamente más tarde.</p>
         </div>
         <div class="button-group">
-          <button mat-stroked-button class="action-button secondary" (click)="goToHome()">
-            Volver al inicio
-          </button>
-          <button mat-stroked-button class="action-button secondary" (click)="retry()">
-            Intentar nuevamente
-          </button>
+          <button mat-stroked-button class="action-button secondary" (click)="goToHome()">Volver al inicio</button>
+          <button mat-stroked-button class="action-button secondary" (click)="retry()">Intentar nuevamente</button>
         </div>
       </div>
     }

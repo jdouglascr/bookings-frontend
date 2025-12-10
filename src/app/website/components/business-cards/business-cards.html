@@ -38,32 +38,17 @@
 
       <div class="business__social">
         @if (businessService.business()!.instagramUrl) {
-          <a
-            class="business__social--overlay"
-            [href]="businessService.business()!.instagramUrl!"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a class="business__social--overlay" [href]="businessService.business()!.instagramUrl!" target="_blank" rel="noopener noreferrer">
             <mat-icon class="business__social--icon" svgIcon="instagram" />
           </a>
         }
         @if (businessService.business()!.tiktokUrl) {
-          <a
-            class="business__social--overlay"
-            [href]="businessService.business()!.tiktokUrl!"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a class="business__social--overlay" [href]="businessService.business()!.tiktokUrl!" target="_blank" rel="noopener noreferrer">
             <mat-icon class="business__social--icon" svgIcon="tiktok" />
           </a>
         }
         @if (businessService.business()!.facebookUrl) {
-          <a
-            class="business__social--overlay"
-            [href]="businessService.business()!.facebookUrl!"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a class="business__social--overlay" [href]="businessService.business()!.facebookUrl!" target="_blank" rel="noopener noreferrer">
             <mat-icon class="business__social--icon" svgIcon="facebook" />
           </a>
         }

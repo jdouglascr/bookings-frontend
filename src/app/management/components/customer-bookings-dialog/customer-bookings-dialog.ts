@@ -5,11 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { BookingService } from '../../../core/services/booking.service';
 import { BookingResponse } from '../../../models/private-api.models';
 import { DataTable } from '../data-table/data-table';
-import {
-  TableColumn,
-  BookingTableRow,
-  CustomerBookingsDialogData,
-} from '../../../models/frontend.models';
+import { TableColumn, BookingTableRow, CustomerBookingsDialogData } from '../../../models/frontend.models';
 
 @Component({
   selector: 'app-customer-bookings-dialog',

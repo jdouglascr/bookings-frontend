@@ -5,10 +5,7 @@
         <mat-form-field appearance="outline">
           <mat-label>Nombre</mat-label>
           <input matInput formControlName="firstName" autocomplete="given-name" />
-          @if (
-            contactForm.get('firstName')?.invalid &&
-            (contactForm.get('firstName')?.dirty || contactForm.get('firstName')?.touched)
-          ) {
+          @if (contactForm.get('firstName')?.invalid && (contactForm.get('firstName')?.dirty || contactForm.get('firstName')?.touched)) {
             <mat-error>
               @if (contactForm.get('firstName')?.hasError('required')) {
                 El nombre es requerido
@@ -23,10 +20,7 @@
         <mat-form-field appearance="outline">
           <mat-label>Apellido</mat-label>
           <input matInput formControlName="lastName" autocomplete="family-name" />
-          @if (
-            contactForm.get('lastName')?.invalid &&
-            (contactForm.get('lastName')?.dirty || contactForm.get('lastName')?.touched)
-          ) {
+          @if (contactForm.get('lastName')?.invalid && (contactForm.get('lastName')?.dirty || contactForm.get('lastName')?.touched)) {
             <mat-error>
               @if (contactForm.get('lastName')?.hasError('required')) {
                 El apellido es requerido
@@ -43,10 +37,7 @@
         <mat-form-field appearance="outline">
           <mat-label>Correo electrónico</mat-label>
           <input matInput formControlName="email" type="email" autocomplete="email" />
-          @if (
-            contactForm.get('email')?.invalid &&
-            (contactForm.get('email')?.dirty || contactForm.get('email')?.touched)
-          ) {
+          @if (contactForm.get('email')?.invalid && (contactForm.get('email')?.dirty || contactForm.get('email')?.touched)) {
             <mat-error>
               @if (contactForm.get('email')?.hasError('required')) {
                 El correo es requerido

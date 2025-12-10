@@ -7,12 +7,7 @@
   </div>
 
   <div class="calendar-toolbar">
-    <button
-      mat-flat-button
-      class="create-booking-btn"
-      [disabled]="isInitialLoading()"
-      (click)="openCreateBookingDialog()"
-    >
+    <button mat-flat-button class="create-booking-btn" [disabled]="isInitialLoading()" (click)="openCreateBookingDialog()">
       <mat-icon>add</mat-icon>
       Crear reserva
     </button>
@@ -25,10 +20,7 @@
       } @else {
         <mat-form-field appearance="outline" class="filter-field resource-select">
           <mat-label>Recurso</mat-label>
-          <mat-select
-            [value]="selectedResourceId()"
-            (selectionChange)="onResourceChange($event.value)"
-          >
+          <mat-select [value]="selectedResourceId()" (selectionChange)="onResourceChange($event.value)">
             @for (resource of resources(); track resource.id) {
               <mat-option [value]="resource.id">{{ resource.name }}</mat-option>
             }
@@ -46,14 +38,7 @@
         </button>
       </div>
 
-      <button
-        mat-stroked-button
-        class="today-btn"
-        (click)="goToCurrentWeek()"
-        [disabled]="isInitialLoading()"
-      >
-        Hoy
-      </button>
+      <button mat-stroked-button class="today-btn" (click)="goToCurrentWeek()" [disabled]="isInitialLoading()">Hoy</button>
     </div>
   </div>
 

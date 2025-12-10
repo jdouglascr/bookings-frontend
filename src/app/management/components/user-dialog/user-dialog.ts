@@ -122,9 +122,7 @@ export class UserDialog implements OnInit {
       request.password = formValue.password;
     }
 
-    const operation = this.isEdit()
-      ? this.userService.updateUser(this.userId!, request)
-      : this.userService.createUser(request);
+    const operation = this.isEdit() ? this.userService.updateUser(this.userId!, request) : this.userService.createUser(request);
 
     operation.subscribe({
       next: () => {

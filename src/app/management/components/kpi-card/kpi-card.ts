@@ -15,11 +15,7 @@ import { KpiCardData } from '../../../models/frontend.models';
         <h3 class="kpi-card__title">{{ card().title }}</h3>
         <p class="kpi-card__value">{{ card().value }}</p>
         @if (card().trend) {
-          <div
-            class="kpi-card__trend"
-            [class.positive]="card().trend!.isPositive"
-            [class.negative]="!card().trend!.isPositive"
-          >
+          <div class="kpi-card__trend" [class.positive]="card().trend!.isPositive" [class.negative]="!card().trend!.isPositive">
             <mat-icon>{{ card().trend!.isPositive ? 'trending_up' : 'trending_down' }}</mat-icon>
             <span>{{ card().trend!.value > 0 ? '+' : '' }}{{ card().trend!.value }}%</span>
           </div>

@@ -36,12 +36,7 @@
     <div class="charts-grid">
       <!-- Daily Bookings Chart -->
       <div class="chart-large">
-        <app-area-chart
-          title="Flujo de reservas"
-          subtitle="Últimos 30 días"
-          [data]="dailyBookingsData()"
-          seriesName="Reservas"
-        />
+        <app-area-chart title="Flujo de reservas" subtitle="Últimos 30 días" [data]="dailyBookingsData()" seriesName="Reservas" />
       </div>
 
       <!-- Status Distribution -->
@@ -53,20 +48,10 @@
       />
 
       <!-- Top Resources -->
-      <app-horizontal-bar-chart
-        title="Top recursos"
-        subtitle="Más reservados del mes"
-        [data]="topResourcesData()"
-        seriesName="Reservas"
-      />
+      <app-horizontal-bar-chart title="Top recursos" subtitle="Más reservados del mes" [data]="topResourcesData()" seriesName="Reservas" />
 
       <!-- Top Services -->
-      <app-horizontal-bar-chart
-        title="Top servicios"
-        subtitle="Más solicitados del mes"
-        [data]="topServicesData()"
-        seriesName="Reservas"
-      />
+      <app-horizontal-bar-chart title="Top servicios" subtitle="Más solicitados del mes" [data]="topServicesData()" seriesName="Reservas" />
     </div>
   } @else {
     <div class="empty-state">

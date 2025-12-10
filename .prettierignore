@@ -1,0 +1,23 @@
+# Node
+node_modules
+package-lock.json
+
+# Build outputs
+dist
+.angular
+out-tsc
+coverage
+
+# Playwright
+.playwright
+playwright-report
+test-results
+blob-report
+.auth
+
+# Git
+.git
+.gitignore
+
+# Docs
+README.md

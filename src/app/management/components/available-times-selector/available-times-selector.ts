@@ -8,26 +8,14 @@ import { DaySchedule } from '../../../models/frontend.models';
 
 @Component({
   selector: 'app-available-times-selector',
-  imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-  ],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
   template: `
     <div class="schedule-list">
       @for (schedule of schedules(); track schedule.dayOfWeek; let i = $index) {
         <div class="schedule-item">
           <div class="schedule-day">
             <span class="day-name">{{ schedule.dayOfWeek }}</span>
-            <button
-              type="button"
-              mat-button
-              class="toggle-btn"
-              [class.closed]="schedule.isClosed"
-              (click)="toggleDay(i)"
-            >
+            <button type="button" mat-button class="toggle-btn" [class.closed]="schedule.isClosed" (click)="toggleDay(i)">
               {{ schedule.isClosed ? 'Cerrado' : 'Abierto' }}
             </button>
           </div>

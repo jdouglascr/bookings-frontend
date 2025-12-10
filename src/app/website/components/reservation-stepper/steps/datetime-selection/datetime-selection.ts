@@ -27,22 +27,10 @@ export class DatetimeSelection implements OnInit {
   // Datos directos del servicio
   readonly weekDays = computed(() => {
     const availability = this.availabilityService.weekAvailability();
-    return (
-      availability?.weekSchedule.map((day) => day.shortName) || [
-        'Lu',
-        'Ma',
-        'Mi',
-        'Ju',
-        'Vi',
-        'Sa',
-        'Do',
-      ]
-    );
+    return availability?.weekSchedule.map((day) => day.shortName) || ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa', 'Do'];
   });
 
-  readonly calendarHeader = computed(
-    () => this.availabilityService.weekAvailability()?.weekHeader || '',
-  );
+  readonly calendarHeader = computed(() => this.availabilityService.weekAvailability()?.weekHeader || '');
 
   readonly calendarDays = computed(() => {
     const availability = this.availabilityService.weekAvailability();
@@ -103,13 +91,9 @@ export class DatetimeSelection implements OnInit {
     return timeSlot ? `${formatted} a las ${timeSlot.time}` : formatted;
   });
 
-  readonly canGoToPreviousWeek = computed(
-    () => this.availabilityService.weekAvailability()?.navigation.canGoPrevious || false,
-  );
+  readonly canGoToPreviousWeek = computed(() => this.availabilityService.weekAvailability()?.navigation.canGoPrevious || false);
 
-  readonly canGoToNextWeek = computed(
-    () => this.availabilityService.weekAvailability()?.navigation.canGoNext ?? true,
-  );
+  readonly canGoToNextWeek = computed(() => this.availabilityService.weekAvailability()?.navigation.canGoNext ?? true);
 
   constructor() {
     // Auto-cargar disponibilidad cuando cambia appointmentId o semana

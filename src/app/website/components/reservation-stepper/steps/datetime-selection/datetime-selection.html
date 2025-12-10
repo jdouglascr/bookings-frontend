@@ -2,21 +2,11 @@
   <!-- Calendar Section -->
   <div class="calendar-section">
     <div class="calendar-header">
-      <button
-        mat-icon-button
-        (click)="previousWeek()"
-        class="nav-button"
-        [disabled]="!canGoToPreviousWeek()"
-      >
+      <button mat-icon-button (click)="previousWeek()" class="nav-button" [disabled]="!canGoToPreviousWeek()">
         <mat-icon>chevron_left</mat-icon>
       </button>
       <h4 class="calendar-title">{{ calendarHeader() }}</h4>
-      <button
-        mat-icon-button
-        (click)="nextWeek()"
-        class="nav-button"
-        [disabled]="!canGoToNextWeek()"
-      >
+      <button mat-icon-button (click)="nextWeek()" class="nav-button" [disabled]="!canGoToNextWeek()">
         <mat-icon>chevron_right</mat-icon>
       </button>
     </div>

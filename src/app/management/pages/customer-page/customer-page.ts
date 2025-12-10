@@ -127,8 +127,7 @@ export class CustomerPage {
       if (confirmed) {
         this.customerService.deleteCustomer(customerId).subscribe({
           next: () => this.notification.success('Cliente eliminado exitosamente'),
-          error: (err: { error?: { message?: string } }) =>
-            this.notification.error(err.error?.message || 'Error al eliminar cliente'),
+          error: (err: { error?: { message?: string } }) => this.notification.error(err.error?.message || 'Error al eliminar cliente'),
         });
       }
     });

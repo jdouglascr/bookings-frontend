@@ -1,10 +1,5 @@
 <div class="reservation-stepper">
-  <button
-    mat-icon-button
-    class="close-button"
-    (click)="closeDialog()"
-    [disabled]="isProcessingBooking()"
-  >
+  <button mat-icon-button class="close-button" (click)="closeDialog()" [disabled]="isProcessingBooking()">
     <mat-icon>close</mat-icon>
   </button>
 
@@ -43,9 +38,7 @@
   <main class="stepper-content">
     <div
       class="step-container"
-      [class.appointment-step]="
-        currentStep().id === 'appointment' || currentStep().id === 'service'
-      "
+      [class.appointment-step]="currentStep().id === 'appointment' || currentStep().id === 'service'"
       [class.datetime-step]="currentStep().id === 'datetime'"
       [class.form-step]="currentStep().id === 'contact'"
     >
@@ -73,9 +66,7 @@
               [selectedDate]="stepData().selectedDate || null"
               [selectedTimeSlot]="stepData().selectedTimeSlot || null"
               [selectedAppointmentId]="
-                mode() === 'admin'
-                  ? stepData().resourceServiceId || 0
-                  : stepData().appointment?.resourceServiceId || 0
+                mode() === 'admin' ? stepData().resourceServiceId || 0 : stepData().appointment?.resourceServiceId || 0
               "
               (datetimeSelected)="onDatetimeSelected($event)"
               (dateChanged)="onDateChanged($event)"
@@ -98,14 +89,7 @@
 
   <footer class="stepper-footer">
     @if (currentStepIndex() > 0) {
-      <button
-        mat-stroked-button
-        class="btn-back"
-        (click)="previousStep()"
-        [disabled]="isProcessingBooking()"
-      >
-        Atrás
-      </button>
+      <button mat-stroked-button class="btn-back" (click)="previousStep()" [disabled]="isProcessingBooking()">Atrás</button>
     } @else {
       <div></div>
     }
@@ -121,13 +105,7 @@
         Siguiente
       </button>
     } @else {
-      <button
-        mat-raised-button
-        color="primary"
-        class="btn-confirm"
-        [disabled]="isProcessingBooking()"
-        (click)="confirmBooking()"
-      >
+      <button mat-raised-button color="primary" class="btn-confirm" [disabled]="isProcessingBooking()" (click)="confirmBooking()">
         @if (isProcessingBooking()) {
           <span class="loading-text">
             <span class="spinner"></span>

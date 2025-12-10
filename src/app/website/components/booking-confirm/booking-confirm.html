@@ -15,22 +15,17 @@
           <mat-icon>check_circle</mat-icon>
         </div>
         <h1 class="title">¡Reserva Confirmada!</h1>
-        <p class="message">
-          Tu reserva ha sido confirmada exitosamente. Agradecemos tu confianza y te esperamos el día
-          de tu cita.
-        </p>
+        <p class="message">Tu reserva ha sido confirmada exitosamente. Agradecemos tu confianza y te esperamos el día de tu cita.</p>
         <div class="info-box">
           <mat-icon class="info-icon">info_outline</mat-icon>
           <div class="info-text">
             <p>
-              <strong>Recuerda:</strong> Llega 5 minutos antes de tu cita programada. Si necesitas
-              hacer algún cambio, contáctanos con anticipación.
+              <strong>Recuerda:</strong> Llega 5 minutos antes de tu cita programada. Si necesitas hacer algún cambio, contáctanos con
+              anticipación.
             </p>
           </div>
         </div>
-        <button mat-raised-button color="primary" class="action-button" (click)="goToHome()">
-          Volver al inicio
-        </button>
+        <button mat-raised-button color="primary" class="action-button" (click)="goToHome()">Volver al inicio</button>
       </div>
     } @else if (errorMessage()) {
       <!-- Error State -->
@@ -41,18 +36,11 @@
         <h1 class="title">No se pudo confirmar</h1>
         <p class="message">{{ errorMessage() }}</p>
         <div class="error-details">
-          <p>
-            Si crees que esto es un error, por favor contáctanos directamente o intenta nuevamente
-            más tarde.
-          </p>
+          <p>Si crees que esto es un error, por favor contáctanos directamente o intenta nuevamente más tarde.</p>
         </div>
         <div class="button-group">
-          <button mat-stroked-button class="action-button secondary" (click)="goToHome()">
-            Volver al inicio
-          </button>
-          <button mat-stroked-button class="action-button secondary" (click)="retry()">
-            Intentar nuevamente
-          </button>
+          <button mat-stroked-button class="action-button secondary" (click)="goToHome()">Volver al inicio</button>
+          <button mat-stroked-button class="action-button secondary" (click)="retry()">Intentar nuevamente</button>
         </div>
       </div>
     }

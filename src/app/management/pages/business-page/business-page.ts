@@ -111,8 +111,7 @@ export class BusinessPage {
 
         this.schedules.set(mappedSchedules);
       },
-      error: (err) =>
-        this.notification.error(err.error?.message || 'Error al cargar la información'),
+      error: (err) => this.notification.error(err.error?.message || 'Error al cargar la información'),
     });
   }
 
@@ -153,31 +152,23 @@ export class BusinessPage {
       })),
     };
 
-    this.businessService
-      .updateBusinessWithHours(
-        request,
-        this.logoFile() || undefined,
-        this.bannerFile() || undefined,
-      )
-      .subscribe({
-        next: () => {
-          this.isSaving.set(false);
-          this.notification.success('Información del negocio actualizada exitosamente');
-          this.logoFile.set(null);
-          this.bannerFile.set(null);
-          this.loadData();
-        },
-        error: (err) => {
-          this.isSaving.set(false);
-          this.notification.error(
-            err.error?.message || 'Error al guardar la información del negocio',
-          );
+    this.businessService.updateBusinessWithHours(request, this.logoFile() || undefined, this.bannerFile() || undefined).subscribe({
+      next: () => {
+        this.isSaving.set(false);
+        this.notification.success('Información del negocio actualizada exitosamente');
+        this.logoFile.set(null);
+        this.bannerFile.set(null);
+        this.loadData();
+      },
+      error: (err) => {
+        this.isSaving.set(false);
+        this.notification.error(err.error?.message || 'Error al guardar la información del negocio');
 
-          this.restoreImages();
-          this.logoFile.set(null);
-          this.bannerFile.set(null);
-        },
-      });
+        this.restoreImages();
+        this.logoFile.set(null);
+        this.bannerFile.set(null);
+      },
+    });
   }
 
   private restoreImages(): void {

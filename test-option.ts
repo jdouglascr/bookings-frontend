@@ -9,6 +9,7 @@ const authFile = join(__dirname, '.auth/workspace.json');
 
 export type TestOptions = {
   baseUrl: string;
+  apiUrl: string;
   authenticatedPage: Page;
 };
 
@@ -44,6 +45,7 @@ async function authenticate() {
 
 export const test = base.extend<TestOptions>({
   baseUrl: [process.env.BASE_URL!, { option: true }],
+  apiUrl: [process.env.API_URL!, { option: true }],
 
   authenticatedPage: async ({ browser }: { browser: Browser }, use: (page: Page) => Promise<void>) => {
     await authenticate();

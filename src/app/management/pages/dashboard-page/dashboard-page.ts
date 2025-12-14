@@ -141,7 +141,13 @@ export class DashboardPage implements OnInit {
   }
 
   private formatDate(dateStr: string): string {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('es-CL', { day: '2-digit', month: 'short' });
+    const [year, month, day] = dateStr.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+
+    return date.toLocaleDateString('es-CL', {
+      day: '2-digit',
+      month: 'short',
+      timeZone: 'America/Santiago',
+    });
   }
 }

@@ -40,3 +40,4 @@ node_modules/
 /playwright/.cache/
 /playwright/.auth/
 .env
+.auth

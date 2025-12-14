@@ -9,7 +9,7 @@ export class WebsitePage {
   }
 
   /**
-   * Este método permite seleccionar un servicio
+   * Este método permite seleccionar un servicio de la tarjeta con servicios
    * @param text - Nombre del servicio
    */
   async selectService(serviceName: string) {
@@ -17,7 +17,7 @@ export class WebsitePage {
   }
 
   /**
-   * Este método permite seleccionar un recurso
+   * Este método permite seleccionar un recurso de flujo reserva
    * @param text - Nombre del recurso
    */
   async selectResource(resourceName: string) {

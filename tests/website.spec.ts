@@ -3,7 +3,7 @@ import { expect } from '@playwright/test';
 import { WebsitePage } from './page-objects/websitePage';
 import { BookingCleanupHelper } from './helpers/booking-cleanup.helper';
 
-test.describe('Flujo Reserva: Paso 1', () => {
+test.describe('[Website] Flujo Reserva: Paso 1', () => {
   test('Validar bloqueo de botón "Siguiente" al no seleccionar recurso', { tag: ['@regression'] }, async ({ page, baseUrl }) => {
     const websitePage = new WebsitePage(page);
 
@@ -44,7 +44,7 @@ test.describe('Flujo Reserva: Paso 1', () => {
   });
 });
 
-test.describe('Flujo Reserva: Paso 2', () => {
+test.describe('[Website] Flujo Reserva: Paso 2', () => {
   test('Validar bloqueo de botón "Siguiente" al no seleccionar bloque horario', { tag: ['@regression'] }, async ({ page, baseUrl }) => {
     const websitePage = new WebsitePage(page);
 
@@ -90,7 +90,7 @@ test.describe('Flujo Reserva: Paso 2', () => {
   );
 });
 
-test.describe('Flujo Reserva: Paso 3', () => {
+test.describe('[Website] Flujo Reserva: Paso 3', () => {
   test(
     'Validar bloqueo de botón "Siguiente" al no ingresar datos de contacto',
     { tag: ['@regression'] },
@@ -147,7 +147,7 @@ test.describe('Flujo Reserva: Paso 3', () => {
   );
 });
 
-test.describe('Flujo Reserva: Paso 4', () => {
+test.describe('[Website] Flujo Reserva: Paso 4', () => {
   test(
     'Validar habilitación de botón "Reservar" al completar todos los pasos previos',
     { tag: ['@regression'] },

@@ -97,8 +97,8 @@ test.describe('[Panel Administración] Flujo Reserva: Paso 2', () => {
       await test.step('Se habilita botón "Siguiente" y permite avanzar a paso 3 del flujo reserva', async () => {
         await expect(authenticatedPage.getByRole('button', { name: 'Siguiente' })).toBeEnabled();
         await managementPage.clickNextButton();
-        await expect(authenticatedPage.getByRole('heading', { name: 'Tus datos' })).toBeVisible();
-        await expect(authenticatedPage.getByText('Información para contactarte')).toBeVisible();
+        await expect(authenticatedPage.getByRole('heading', { name: 'Cliente' })).toBeVisible();
+        await expect(authenticatedPage.getByText('Información del cliente')).toBeVisible();
       });
     },
   );
@@ -157,7 +157,7 @@ test.describe('[Panel Administración] Flujo Reserva: Paso 3', () => {
         await expect(authenticatedPage.getByRole('button', { name: 'Siguiente' })).toBeEnabled();
         await managementPage.clickNextButton();
         await expect(authenticatedPage.getByRole('heading', { name: 'Resumen' })).toBeVisible();
-        await expect(authenticatedPage.getByText('Revisa y confirma tu reserva')).toBeVisible();
+        await expect(authenticatedPage.getByText('Revisa y confirma la reserva')).toBeVisible();
       });
     },
   );
@@ -217,7 +217,7 @@ test.describe('[Panel Administración] Flujo Reserva: Paso 4', () => {
     });
 
     await test.step('Se genera nueva reserva de forma exitosa', async () => {
-      await expect(authenticatedPage.getByText('¡Reserva registrada')).toBeVisible();
+      await expect(authenticatedPage.getByText('Reserva creada exitosamente')).toBeVisible();
     });
 
     await test.step('Limpieza: Eliminar reserva creada', async () => {

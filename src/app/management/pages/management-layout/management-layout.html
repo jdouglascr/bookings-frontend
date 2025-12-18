@@ -28,12 +28,7 @@
       <p class="sidebar__nav-title">HERRAMIENTAS</p>
 
       @for (item of menuItems(); track item.id) {
-        <button
-          mat-button
-          class="sidebar__nav-item"
-          [class.active]="isActive(item.route)"
-          (click)="navigateTo(item.route)"
-        >
+        <button mat-button class="sidebar__nav-item" [class.active]="isActive(item.route)" (click)="navigateTo(item.route)">
           <mat-icon>{{ item.icon }}</mat-icon>
           <span>{{ item.label }}</span>
         </button>
@@ -43,12 +38,7 @@
         <p class="sidebar__nav-title">CONFIGURACIÓN</p>
 
         @for (item of accountItems(); track item.id) {
-          <button
-            mat-button
-            class="sidebar__nav-item"
-            [class.active]="isActive(item.route)"
-            (click)="navigateTo(item.route)"
-          >
+          <button mat-button class="sidebar__nav-item" [class.active]="isActive(item.route)" (click)="navigateTo(item.route)">
             <mat-icon>{{ item.icon }}</mat-icon>
             <span>{{ item.label }}</span>
           </button>
@@ -70,6 +60,11 @@
       <div class="header__spacer"></div>
 
       <div class="header__actions">
+        <button mat-stroked-button class="header__website-btn" (click)="goToWebsite()">
+          <mat-icon>public</mat-icon>
+          <span class="header__website-text">Sitio público</span>
+        </button>
+
         <button mat-button class="header__user" [matMenuTriggerFor]="userMenu">
           <div class="header__user-info">
             <span class="header__user-name">{{ userName() }}</span>

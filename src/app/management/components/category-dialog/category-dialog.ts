@@ -10,14 +10,7 @@ import { CategoryResponse } from '../../../models/private-api.models';
 
 @Component({
   selector: 'app-category-dialog',
-  imports: [
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-  ],
+  imports: [ReactiveFormsModule, MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatIconModule],
   template: `
     <div class="dialog-header">
       <h2 mat-dialog-title>{{ isEdit() ? 'Editar' : 'Crear' }} categoría</h2>
@@ -46,13 +39,7 @@ import { CategoryResponse } from '../../../models/private-api.models';
 
     <mat-dialog-actions class="dialog-actions">
       <button mat-button mat-dialog-close class="cancel-btn">Cancelar</button>
-      <button
-        mat-flat-button
-        color="primary"
-        class="submit-btn"
-        (click)="onSubmit()"
-        [disabled]="form.invalid || isSaving()"
-      >
+      <button mat-flat-button color="primary" class="submit-btn" (click)="onSubmit()" [disabled]="form.invalid || isSaving()">
         @if (isSaving()) {
           <mat-icon class="material-spinner">hourglass_empty</mat-icon>
         }
@@ -75,10 +62,7 @@ export class CategoryDialog {
 
   constructor() {
     this.form = this.fb.group({
-      name: [
-        this.data?.name || '',
-        [Validators.required, Validators.minLength(2), Validators.maxLength(255)],
-      ],
+      name: [this.data?.name || '', [Validators.required, Validators.minLength(2), Validators.maxLength(255)]],
     });
   }
 

@@ -4,12 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { PublicBookingCreateRequest, PublicBookingResponse } from '../../models/public-api.models';
 import { MessageResponse } from '../../models/shared-api.models';
-import {
-  BookingResponse,
-  BookingRequest,
-  BookingCalendarParams,
-  UpdateBookingStatusRequest,
-} from '../../models/private-api.models';
+import { BookingResponse, BookingRequest, BookingCalendarParams, UpdateBookingStatusRequest } from '../../models/private-api.models';
 
 @Injectable({
   providedIn: 'root',
@@ -65,41 +60,30 @@ export class BookingService {
       .set('startDate', params.startDate)
       .set('endDate', params.endDate);
 
-    return this.http
-      .get<BookingResponse[]>(`${this.privateApiUrl}/calendar`, { params: httpParams })
-      .pipe(
-        tap({
-          next: (data) => {
-            this.calendarBookings.set(data);
-            this.isLoading.set(false);
-          },
-          error: () => this.isLoading.set(false),
-        }),
-      );
+    return this.http.get<BookingResponse[]>(`${this.privateApiUrl}/calendar`, { params: httpParams }).pipe(
+      tap({
+        next: (data) => {
+          this.calendarBookings.set(data);
+          this.isLoading.set(false);
+        },
+        error: () => this.isLoading.set(false),
+      }),
+    );
   }
 
   createBooking(request: BookingRequest): Observable<MessageResponse> {
-    return this.http
-      .post<MessageResponse>(this.privateApiUrl, request)
-      .pipe(tap(() => this.loadBookings().subscribe()));
+    return this.http.post<MessageResponse>(this.privateApiUrl, request).pipe(tap(() => this.loadBookings().subscribe()));
   }
 
   updateBooking(id: number, request: BookingRequest): Observable<MessageResponse> {
-    return this.http
-      .put<MessageResponse>(`${this.privateApiUrl}/${id}`, request)
-      .pipe(tap(() => this.loadBookings().subscribe()));
+    return this.http.put<MessageResponse>(`${this.privateApiUrl}/${id}`, request).pipe(tap(() => this.loadBookings().subscribe()));
   }
 
-  updateBookingStatus(
-    id: number,
-    request: UpdateBookingStatusRequest,
-  ): Observable<MessageResponse> {
+  updateBookingStatus(id: number, request: UpdateBookingStatusRequest): Observable<MessageResponse> {
     return this.http.patch<MessageResponse>(`${this.privateApiUrl}/${id}/status`, request);
   }
 
   deleteBooking(id: number): Observable<MessageResponse> {
-    return this.http
-      .delete<MessageResponse>(`${this.privateApiUrl}/${id}`)
-      .pipe(tap(() => this.loadBookings().subscribe()));
+    return this.http.delete<MessageResponse>(`${this.privateApiUrl}/${id}`).pipe(tap(() => this.loadBookings().subscribe()));
   }
 }

@@ -4,12 +4,7 @@
       <h1 class="page__title">Categorías de servicios</h1>
       <p class="page__subtitle">Agrupa tus servicios dependiendo de sus características.</p>
     </div>
-    <button
-      mat-flat-button
-      class="page__action"
-      (click)="openCategoryDialog()"
-      [disabled]="isLoading()"
-    >
+    <button mat-flat-button class="page__action" (click)="openCategoryDialog()" [disabled]="isLoading()">
       <mat-icon>add</mat-icon>
       Crear nueva categoría
     </button>

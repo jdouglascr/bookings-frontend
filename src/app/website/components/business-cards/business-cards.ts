@@ -16,18 +16,9 @@ export class BusinessCards implements OnInit {
   businessService = inject(BusinessService);
 
   constructor() {
-    this.iconRegistry.addSvgIcon(
-      'instagram',
-      this.sanitizer.bypassSecurityTrustResourceUrl('instagram.svg'),
-    );
-    this.iconRegistry.addSvgIcon(
-      'tiktok',
-      this.sanitizer.bypassSecurityTrustResourceUrl('tiktok.svg'),
-    );
-    this.iconRegistry.addSvgIcon(
-      'facebook',
-      this.sanitizer.bypassSecurityTrustResourceUrl('facebook.svg'),
-    );
+    this.iconRegistry.addSvgIcon('instagram', this.sanitizer.bypassSecurityTrustResourceUrl('instagram.svg'));
+    this.iconRegistry.addSvgIcon('tiktok', this.sanitizer.bypassSecurityTrustResourceUrl('tiktok.svg'));
+    this.iconRegistry.addSvgIcon('facebook', this.sanitizer.bypassSecurityTrustResourceUrl('facebook.svg'));
   }
 
   ngOnInit() {

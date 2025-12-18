@@ -77,9 +77,7 @@ export class PhoneInputComponent implements OnInit {
   ngOnInit(): void {
     if (this.ngControl?.control) {
       this.internalControl.setValidators(this.ngControl.control.validator);
-      this.ngControl.control.statusChanges
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(() => this.syncErrors());
+      this.ngControl.control.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.syncErrors());
     }
   }
 

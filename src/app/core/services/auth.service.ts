@@ -5,13 +5,7 @@ import { Observable, throwError, BehaviorSubject, timer, Subscription, firstValu
 import { tap, catchError } from 'rxjs/operators';
 import { ErrorResponse } from '../../models/shared-api.models';
 import { environment } from '../../../environments/environment';
-import {
-  DecodedToken,
-  CurrentUser,
-  LoginRequest,
-  LoginResponse,
-  RefreshTokenResponse,
-} from '../../models/private-api.models';
+import { DecodedToken, CurrentUser, LoginRequest, LoginResponse, RefreshTokenResponse } from '../../models/private-api.models';
 
 @Injectable({
   providedIn: 'root',
@@ -209,18 +203,16 @@ export class AuthService {
       return throwError(() => new Error('Refresh token expired'));
     }
 
-    return this.http
-      .post<RefreshTokenResponse>(`${this.publicAuthUrl}/refresh`, { refreshToken })
-      .pipe(
-        tap((response) => {
-          this.saveTokens(response.accessToken, response.refreshToken);
-          this.refreshTokenSubject.next(response.accessToken);
-        }),
-        catchError((error: HttpErrorResponse) => {
-          this.logout();
-          return throwError(() => error);
-        }),
-      );
+    return this.http.post<RefreshTokenResponse>(`${this.publicAuthUrl}/refresh`, { refreshToken }).pipe(
+      tap((response) => {
+        this.saveTokens(response.accessToken, response.refreshToken);
+        this.refreshTokenSubject.next(response.accessToken);
+      }),
+      catchError((error: HttpErrorResponse) => {
+        this.logout();
+        return throwError(() => error);
+      }),
+    );
   }
 
   logout(): void {

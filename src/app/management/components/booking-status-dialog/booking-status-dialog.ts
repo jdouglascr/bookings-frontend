@@ -34,14 +34,7 @@ export interface BookingStatusDialogData {
 
     <mat-dialog-actions class="dialog-actions">
       <button mat-button mat-dialog-close>Cancelar</button>
-      <button
-        matButton="filled"
-        color="primary"
-        (click)="saveStatus()"
-        [disabled]="selectedStatus === data.booking.status"
-      >
-        Guardar
-      </button>
+      <button matButton="filled" color="primary" (click)="saveStatus()" [disabled]="selectedStatus === data.booking.status">Guardar</button>
     </mat-dialog-actions>
   `,
   styles: `

@@ -20,11 +20,7 @@
         <div class="form-with-image">
           <div class="image-wrapper">
             <span class="image-label">Imagen</span>
-            <app-image-input
-              #imageInput
-              imageType="resource"
-              (fileChange)="onImageChange($event)"
-            />
+            <app-image-input #imageInput imageType="resource" (fileChange)="onImageChange($event)" />
           </div>
 
           <div class="form-fields">
@@ -49,10 +45,7 @@
                   <mat-option value="Profesional">Profesional</mat-option>
                   <mat-option value="Infraestructura">Infraestructura</mat-option>
                 </mat-select>
-                @if (
-                  form.get('resourceType')?.hasError('required') &&
-                  form.get('resourceType')?.touched
-                ) {
+                @if (form.get('resourceType')?.hasError('required') && form.get('resourceType')?.touched) {
                   <mat-error>El tipo es obligatorio</mat-error>
                 }
               </mat-form-field>
@@ -61,9 +54,7 @@
                 <mat-label>Usuario asignado</mat-label>
                 <mat-select formControlName="userId">
                   @for (user of users(); track user.id) {
-                    <mat-option [value]="user.id">
-                      {{ user.firstName }} {{ user.lastName }}
-                    </mat-option>
+                    <mat-option [value]="user.id"> {{ user.firstName }} {{ user.lastName }} </mat-option>
                   }
                 </mat-select>
                 @if (form.get('userId')?.hasError('required') && form.get('userId')?.touched) {
@@ -102,12 +93,7 @@
               <div class="category-group">
                 <div class="category-header">
                   <span class="category-name">{{ category.categoryName }}</span>
-                  <button
-                    type="button"
-                    mat-flat-button
-                    class="select-all-btn"
-                    (click)="toggleCategoryServices(category)"
-                  >
+                  <button type="button" mat-flat-button class="select-all-btn" (click)="toggleCategoryServices(category)">
                     {{ isCategoryFullySelected(category) ? 'Deseleccionar' : 'Seleccionar' }} todos
                   </button>
                 </div>
@@ -115,11 +101,7 @@
                 <div class="services-list">
                   @for (service of category.services; track service.id) {
                     <label class="service-item" [class.selected]="isServiceSelected(service.id)">
-                      <input
-                        type="checkbox"
-                        [checked]="isServiceSelected(service.id)"
-                        (change)="toggleService(service.id)"
-                      />
+                      <input type="checkbox" [checked]="isServiceSelected(service.id)" (change)="toggleService(service.id)" />
                       <div class="service-content">
                         <span class="service-name">{{ service.name }}</span>
                         <span class="service-price">{{ formatPrice(service.price) }}</span>
@@ -148,9 +130,7 @@
     color="primary"
     class="submit-btn"
     (click)="onSubmit()"
-    [disabled]="
-      form.invalid || isSaving() || isLoadingResource() || (!selectedImage() && !isEdit())
-    "
+    [disabled]="form.invalid || isSaving() || isLoadingResource() || (!selectedImage() && !isEdit())"
   >
     @if (isSaving()) {
       <mat-icon class="material-spinner">hourglass_empty</mat-icon>

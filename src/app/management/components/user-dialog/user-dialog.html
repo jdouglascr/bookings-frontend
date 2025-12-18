@@ -7,9 +7,32 @@
 
 <mat-dialog-content class="dialog-content-wrapper">
   @if (isLoadingUser()) {
-    <div class="dialog-loading">
-      <mat-icon class="spinner">hourglass_empty</mat-icon>
-      <p>Cargando usuario...</p>
+    <!-- Skeleton Loading State -->
+    <div class="dialog-skeleton">
+      <div class="skeleton-section">
+        <div class="skeleton skeleton-section-title"></div>
+
+        <div class="skeleton-form-row">
+          <div class="skeleton skeleton-input"></div>
+          <div class="skeleton skeleton-input"></div>
+        </div>
+
+        <div class="skeleton-form-row">
+          <div class="skeleton skeleton-input"></div>
+          <div class="skeleton skeleton-input"></div>
+        </div>
+      </div>
+
+      <div class="skeleton-section">
+        <div class="skeleton skeleton-section-title"></div>
+
+        <div class="skeleton-form-row">
+          <div class="skeleton skeleton-input"></div>
+          <div class="skeleton skeleton-input"></div>
+        </div>
+
+        <div class="skeleton skeleton-input"></div>
+      </div>
     </div>
   } @else {
     <form [formGroup]="form" class="dialog-form">
@@ -88,11 +111,7 @@
 
         @if (isEdit()) {
           <div class="password-section">
-            <mat-checkbox
-              [checked]="updatePassword()"
-              (change)="toggleUpdatePassword()"
-              color="primary"
-            >
+            <mat-checkbox [checked]="updatePassword()" (change)="toggleUpdatePassword()" color="primary">
               ¿Desea actualizar la contraseña?
             </mat-checkbox>
 
@@ -106,11 +125,7 @@
             }
           </div>
         } @else {
-          <app-password-input
-            formControlName="password"
-            autocomplete="new-password"
-            class="full-width"
-          />
+          <app-password-input formControlName="password" autocomplete="new-password" class="full-width" />
         }
       </div>
     </form>

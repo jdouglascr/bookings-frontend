@@ -30,9 +30,7 @@ import { DecimalPipe } from '@angular/common';
       } @else if (internalControl.hasError('min')) {
         <mat-error>El precio debe ser mayor a 0</mat-error>
       } @else if (internalControl.hasError('max')) {
-        <mat-error
-          >El precio no puede exceder {{ maxValue() | number: '1.0-0' : 'es-CL' }}</mat-error
-        >
+        <mat-error>El precio no puede exceder {{ maxValue() | number: '1.0-0' : 'es-CL' }}</mat-error>
       }
       @if (showHint() && displayValue()) {
         <mat-hint>{{ priceFormatter.format(numericValue()) }}</mat-hint>
@@ -87,9 +85,7 @@ export class PriceInput implements OnInit {
   ngOnInit(): void {
     if (this.ngControl?.control) {
       this.internalControl.setValidators(this.ngControl.control.validator);
-      this.ngControl.control.statusChanges
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(() => this.syncErrors());
+      this.ngControl.control.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.syncErrors());
     }
   }
 

@@ -42,20 +42,14 @@ export class CustomerService {
   }
 
   createCustomer(request: CustomerRequest): Observable<MessageResponse> {
-    return this.http
-      .post<MessageResponse>(this.privateApiUrl, request)
-      .pipe(tap(() => this.loadCustomers().subscribe()));
+    return this.http.post<MessageResponse>(this.privateApiUrl, request).pipe(tap(() => this.loadCustomers().subscribe()));
   }
 
   updateCustomer(id: number, request: CustomerRequest): Observable<MessageResponse> {
-    return this.http
-      .put<MessageResponse>(`${this.privateApiUrl}/${id}`, request)
-      .pipe(tap(() => this.loadCustomers().subscribe()));
+    return this.http.put<MessageResponse>(`${this.privateApiUrl}/${id}`, request).pipe(tap(() => this.loadCustomers().subscribe()));
   }
 
   deleteCustomer(id: number): Observable<MessageResponse> {
-    return this.http
-      .delete<MessageResponse>(`${this.privateApiUrl}/${id}`)
-      .pipe(tap(() => this.loadCustomers().subscribe()));
+    return this.http.delete<MessageResponse>(`${this.privateApiUrl}/${id}`).pipe(tap(() => this.loadCustomers().subscribe()));
   }
 }

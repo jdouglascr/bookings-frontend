@@ -27,6 +27,7 @@ import { PasswordInputComponent } from '../../../shared/components/password-inpu
     PasswordInputComponent,
   ],
   templateUrl: './user-dialog.html',
+  styleUrl: './user-dialog.scss',
 })
 export class UserDialog implements OnInit {
   private fb = inject(FormBuilder);
@@ -121,9 +122,7 @@ export class UserDialog implements OnInit {
       request.password = formValue.password;
     }
 
-    const operation = this.isEdit()
-      ? this.userService.updateUser(this.userId!, request)
-      : this.userService.createUser(request);
+    const operation = this.isEdit() ? this.userService.updateUser(this.userId!, request) : this.userService.createUser(request);
 
     operation.subscribe({
       next: () => {

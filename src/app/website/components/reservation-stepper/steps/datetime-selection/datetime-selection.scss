@@ -120,6 +120,9 @@
   background: var(--color-primary-bg);
   border: 1px solid var(--gray-border);
   min-height: 60px;
+  padding: 0;
+  font-family: inherit;
+  text-align: center;
 
   .day-number {
     font-size: 14px;
@@ -149,7 +152,7 @@
   &.available {
     cursor: pointer;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background: var(--color-secondary);
       border-color: var(--color-secondary);
 
@@ -182,7 +185,8 @@
     }
   }
 
-  &.unavailable {
+  &.unavailable,
+  &:disabled {
     cursor: not-allowed;
     opacity: 0.4;
 

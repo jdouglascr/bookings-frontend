@@ -8,22 +8,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-password-input',
-  imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
-  ],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule],
   template: `
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>{{ label() }}</mat-label>
-      <input
-        matInput
-        [type]="showPassword() ? 'text' : 'password'"
-        [formControl]="internalControl"
-        [autocomplete]="autocomplete()"
-      />
+      <input matInput [type]="showPassword() ? 'text' : 'password'" [formControl]="internalControl" [autocomplete]="autocomplete()" />
       @if (showToggle()) {
         <button mat-icon-button matIconSuffix type="button" (click)="toggleVisibility()">
           <mat-icon>{{ showPassword() ? 'visibility' : 'visibility_off' }}</mat-icon>
@@ -70,12 +59,10 @@ export class PasswordInputComponent implements ControlValueAccessor, OnInit {
       this.ngControl.valueAccessor = this;
     }
 
-    this.internalControl.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((value) => {
-        this.hasValue.set((value?.length ?? 0) > 0);
-        this.onChange(value || '');
-      });
+    this.internalControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
+      this.hasValue.set((value?.length ?? 0) > 0);
+      this.onChange(value || '');
+    });
 
     this.internalControl.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       if (this.internalControl.touched) {
@@ -87,9 +74,7 @@ export class PasswordInputComponent implements ControlValueAccessor, OnInit {
   ngOnInit(): void {
     if (this.ngControl?.control) {
       this.internalControl.setValidators(this.ngControl.control.validator);
-      this.ngControl.control.statusChanges
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe(() => this.syncErrors());
+      this.ngControl.control.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.syncErrors());
     }
   }
 

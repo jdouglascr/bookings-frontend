@@ -7,9 +7,36 @@
 
 <mat-dialog-content class="dialog-content-wrapper">
   @if (isLoadingService()) {
-    <div class="dialog-loading">
-      <mat-icon class="spinner">hourglass_empty</mat-icon>
-      <p>Cargando servicio...</p>
+    <!-- Skeleton Loading State -->
+    <div class="dialog-skeleton">
+      <div class="skeleton-section">
+        <div class="skeleton skeleton-section-title"></div>
+
+        <div class="skeleton-form-with-image">
+          <div class="skeleton-image-wrapper">
+            <div class="skeleton skeleton-image-label"></div>
+            <div class="skeleton skeleton-image"></div>
+          </div>
+
+          <div class="skeleton-form-fields">
+            <div class="skeleton skeleton-input"></div>
+            <div class="skeleton skeleton-input"></div>
+          </div>
+        </div>
+
+        <div class="skeleton skeleton-textarea"></div>
+      </div>
+
+      <div class="skeleton-section">
+        <div class="skeleton skeleton-section-title"></div>
+
+        <div class="skeleton-form-row">
+          <div class="skeleton skeleton-input"></div>
+          <div class="skeleton skeleton-input"></div>
+        </div>
+
+        <div class="skeleton skeleton-input"></div>
+      </div>
     </div>
   } @else {
     <form [formGroup]="form" class="dialog-form">
@@ -19,11 +46,7 @@
         <div class="form-with-image">
           <div class="image-wrapper">
             <span class="image-label">Logo</span>
-            <app-image-input
-              #imageInput
-              imageType="resource"
-              (fileChange)="onImageChange($event)"
-            />
+            <app-image-input #imageInput imageType="resource" (fileChange)="onImageChange($event)" />
           </div>
 
           <div class="form-fields">
@@ -34,9 +57,7 @@
                   <mat-option [value]="category.id">{{ category.name }}</mat-option>
                 }
               </mat-select>
-              @if (
-                form.get('categoryId')?.hasError('required') && form.get('categoryId')?.touched
-              ) {
+              @if (form.get('categoryId')?.hasError('required') && form.get('categoryId')?.touched) {
                 <mat-error>La categoría es obligatoria</mat-error>
               }
             </mat-form-field>
@@ -76,9 +97,7 @@
               formControlName="durationMin"
               (input)="onNumericInput($event, 'durationMin', 9)"
             />
-            @if (
-              form.get('durationMin')?.hasError('required') && form.get('durationMin')?.touched
-            ) {
+            @if (form.get('durationMin')?.hasError('required') && form.get('durationMin')?.touched) {
               <mat-error>La duración es obligatoria</mat-error>
             }
             @if (form.get('durationMin')?.hasError('min')) {
@@ -99,12 +118,7 @@
           </mat-form-field>
         </div>
 
-        <app-price-input
-          formControlName="price"
-          label="Precio"
-          [maxValue]="999999999"
-          [showHint]="false"
-        />
+        <app-price-input formControlName="price" label="Precio" [maxValue]="999999999" [showHint]="false" />
       </div>
     </form>
   }

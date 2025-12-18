@@ -1,7 +1,5 @@
 <div class="header">
-  <button mat-stroked-button class="header__account-btn" routerLink="/login">
-    <mat-icon>admin_panel_settings</mat-icon> Área interna
-  </button>
+  <button mat-stroked-button class="header__account-btn" routerLink="/login"><mat-icon>admin_panel_settings</mat-icon> Área interna</button>
 </div>
 
 <div class="logo-floating">
@@ -9,12 +7,7 @@
     @if (businessService.isLoading()) {
       <div class="skeleton skeleton-logo"></div>
     } @else if (businessService.business()) {
-      <img
-        class="logo-floating__image"
-        [src]="businessService.business()!.logoUrl"
-        alt="logo barbería"
-        loading="lazy"
-      />
+      <img class="logo-floating__image" [src]="businessService.business()!.logoUrl" alt="logo barbería" loading="lazy" />
     }
   </div>
 </div>
@@ -23,12 +16,7 @@
   @if (businessService.isLoading()) {
     <div class="skeleton skeleton-banner"></div>
   } @else if (businessService.business()) {
-    <img
-      class="banner__image"
-      [src]="businessService.business()!.bannerUrl"
-      alt="banner barbería"
-      loading="lazy"
-    />
+    <img class="banner__image" [src]="businessService.business()!.bannerUrl" alt="banner barbería" loading="lazy" />
   }
 </div>
 

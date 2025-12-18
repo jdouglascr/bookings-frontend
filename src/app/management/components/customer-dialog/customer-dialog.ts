@@ -11,16 +11,9 @@ import { PhoneInputComponent } from '../../../shared/components/phone-input/phon
 
 @Component({
   selector: 'app-customer-dialog',
-  imports: [
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    PhoneInputComponent,
-  ],
+  imports: [ReactiveFormsModule, MatButtonModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatIconModule, PhoneInputComponent],
   templateUrl: './customer-dialog.html',
+  styleUrl: './customer-dialog.scss',
 })
 export class CustomerDialog implements OnInit {
   private fb = inject(FormBuilder);

@@ -35,23 +35,14 @@
             @for (service of category.services; track service.id) {
               <mat-card class="services__card" (click)="onSelectService(service)">
                 <div class="services__content">
-                  <img
-                    class="services__content--image"
-                    mat-card-image
-                    [src]="service.logoUrl"
-                    [alt]="'foto ' + service.name"
-                  />
+                  <img class="services__content--image" mat-card-image [src]="service.logoUrl" [alt]="'foto ' + service.name" />
                   <div class="services__info">
                     <h3 class="services__info--title">{{ service.name }}</h3>
                     <p class="services__info--description">{{ service.description }}</p>
                   </div>
                   <div class="services__details">
-                    <span class="services__details--duration">
-                      <mat-icon>schedule</mat-icon> {{ service.durationFormatted }}
-                    </span>
-                    <span class="services__details--price">{{
-                      priceFormatter.format(service.price)
-                    }}</span>
+                    <span class="services__details--duration"> <mat-icon>schedule</mat-icon> {{ service.durationFormatted }} </span>
+                    <span class="services__details--price">{{ priceFormatter.format(service.price) }}</span>
                   </div>
                 </div>
               </mat-card>

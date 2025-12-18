@@ -2,10 +2,7 @@
   @if (businessService.isLoading()) {
     <div class="skeleton-bg"></div>
   } @else if (businessService.business()?.bannerUrl) {
-    <div
-      class="bg-image"
-      [style.background-image]="'url(' + businessService.business()!.bannerUrl + ')'"
-    ></div>
+    <div class="bg-image" [style.background-image]="'url(' + businessService.business()!.bannerUrl + ')'"></div>
   } @else {
     <div class="bg-image bg-fallback"></div>
   }
@@ -19,28 +16,11 @@
 
     <h2>Panel de Administración</h2>
 
-    <form
-      [formGroup]="loginForm"
-      (ngSubmit)="onSubmit()"
-      name="loginForm"
-      method="post"
-      action="javascript:void(0)"
-    >
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" name="loginForm" method="post" action="javascript:void(0)">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Correo</mat-label>
-        <input
-          matInput
-          type="email"
-          formControlName="email"
-          name="email"
-          id="email"
-          autocomplete="username email"
-          required
-        />
-        @if (
-          loginForm.get('email')?.invalid &&
-          (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)
-        ) {
+        <input matInput type="email" formControlName="email" name="email" id="email" autocomplete="username email" required />
+        @if (loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)) {
           <mat-error>
             @if (loginForm.get('email')?.hasError('required')) {
               El correo es requerido
@@ -52,18 +32,9 @@
         }
       </mat-form-field>
 
-      <app-password-input
-        formControlName="password"
-        label="Contraseña"
-        autocomplete="current-password"
-      />
+      <app-password-input formControlName="password" label="Contraseña" autocomplete="current-password" />
 
-      <button
-        mat-flat-button
-        class="login-btn full-width"
-        type="submit"
-        [disabled]="isLoading() || loginForm.invalid"
-      >
+      <button mat-flat-button class="login-btn full-width" type="submit" [disabled]="isLoading() || loginForm.invalid">
         @if (isLoading()) {
           <mat-spinner diameter="20"></mat-spinner>
           <span>Iniciando sesión...</span>

@@ -8,13 +8,7 @@ import { PhoneInputComponent } from '../../../../../shared/components/phone-inpu
 
 @Component({
   selector: 'app-contact-form',
-  imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    PhoneInputComponent,
-  ],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, PhoneInputComponent],
   templateUrl: './contact-form.html',
   styleUrl: './contact-form.scss',
 })

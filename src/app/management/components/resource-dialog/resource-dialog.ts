@@ -1,12 +1,4 @@
-import {
-  Component,
-  inject,
-  signal,
-  OnInit,
-  viewChild,
-  computed,
-  AfterViewInit,
-} from '@angular/core';
+import { Component, inject, signal, OnInit, viewChild, computed, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -127,9 +119,7 @@ export class ResourceDialog implements OnInit, AfterViewInit {
     } else {
       this.resourcesService.getAllResources().subscribe({
         next: () => {
-          const foundResource = this.resourcesService
-            .privateResources()
-            .find((r) => r.id === this.resourceId);
+          const foundResource = this.resourcesService.privateResources().find((r) => r.id === this.resourceId);
           if (foundResource) {
             this.form.patchValue({
               name: foundResource.name,
@@ -161,9 +151,7 @@ export class ResourceDialog implements OnInit, AfterViewInit {
 
   toggleService(serviceId: number): void {
     const currentIds = this.form.get('serviceIds')?.value || [];
-    const newIds = currentIds.includes(serviceId)
-      ? currentIds.filter((id: number) => id !== serviceId)
-      : [...currentIds, serviceId];
+    const newIds = currentIds.includes(serviceId) ? currentIds.filter((id: number) => id !== serviceId) : [...currentIds, serviceId];
     this.form.patchValue({ serviceIds: newIds });
   }
 
@@ -208,11 +196,7 @@ export class ResourceDialog implements OnInit, AfterViewInit {
     };
 
     const operation = this.isEdit()
-      ? this.resourcesService.updateResource(
-          this.resourceId!,
-          request,
-          this.selectedImage() || undefined,
-        )
+      ? this.resourcesService.updateResource(this.resourceId!, request, this.selectedImage() || undefined)
       : this.resourcesService.createResource(request, this.selectedImage()!);
 
     operation.subscribe({

@@ -35,9 +35,7 @@ export class UserService {
   }
 
   createUser(request: UserRequest): Observable<MessageResponse> {
-    return this.http
-      .post<MessageResponse>(this.apiUrl, request)
-      .pipe(tap(() => this.loadUsers().subscribe()));
+    return this.http.post<MessageResponse>(this.apiUrl, request).pipe(tap(() => this.loadUsers().subscribe()));
   }
 
   updateUser(id: number, request: UserRequest): Observable<MessageResponse> {
@@ -53,8 +51,6 @@ export class UserService {
   }
 
   deleteUser(id: number): Observable<MessageResponse> {
-    return this.http
-      .delete<MessageResponse>(`${this.apiUrl}/${id}`)
-      .pipe(tap(() => this.loadUsers().subscribe()));
+    return this.http.delete<MessageResponse>(`${this.apiUrl}/${id}`).pipe(tap(() => this.loadUsers().subscribe()));
   }
 }

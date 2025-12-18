@@ -33,20 +33,14 @@ export class CategoriesService {
   }
 
   createCategory(request: CategoryRequest): Observable<MessageResponse> {
-    return this.http
-      .post<MessageResponse>(this.apiUrl, request)
-      .pipe(tap(() => this.loadCategories().subscribe()));
+    return this.http.post<MessageResponse>(this.apiUrl, request).pipe(tap(() => this.loadCategories().subscribe()));
   }
 
   updateCategory(id: number, request: CategoryRequest): Observable<MessageResponse> {
-    return this.http
-      .put<MessageResponse>(`${this.apiUrl}/${id}`, request)
-      .pipe(tap(() => this.loadCategories().subscribe()));
+    return this.http.put<MessageResponse>(`${this.apiUrl}/${id}`, request).pipe(tap(() => this.loadCategories().subscribe()));
   }
 
   deleteCategory(id: number): Observable<MessageResponse> {
-    return this.http
-      .delete<MessageResponse>(`${this.apiUrl}/${id}`)
-      .pipe(tap(() => this.loadCategories().subscribe()));
+    return this.http.delete<MessageResponse>(`${this.apiUrl}/${id}`).pipe(tap(() => this.loadCategories().subscribe()));
   }
 }

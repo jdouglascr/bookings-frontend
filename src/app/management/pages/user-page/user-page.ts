@@ -126,8 +126,7 @@ export class UserPage {
       if (confirmed) {
         this.userService.deleteUser(userId).subscribe({
           next: () => this.notification.success('Usuario eliminado exitosamente'),
-          error: (err: { error?: { message?: string } }) =>
-            this.notification.error(err.error?.message || 'Error al eliminar usuario'),
+          error: (err: { error?: { message?: string } }) => this.notification.error(err.error?.message || 'Error al eliminar usuario'),
         });
       }
     });

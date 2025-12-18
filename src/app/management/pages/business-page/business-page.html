@@ -4,13 +4,7 @@
       <h1 class="page__title">Mi negocio</h1>
       <p class="page__subtitle">Configura la información de tu negocio y horarios de atención</p>
     </div>
-    <button
-      mat-flat-button
-      color="primary"
-      class="page__action"
-      (click)="saveBusiness()"
-      [disabled]="!canSave()"
-    >
+    <button mat-flat-button color="primary" class="page__action" (click)="saveBusiness()" [disabled]="!canSave()">
       @if (isSaving()) {
         <ng-container>
           <mat-spinner diameter="20"></mat-spinner>
@@ -66,12 +60,7 @@
             <div class="form-row">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Descripción</mat-label>
-                <textarea
-                  matInput
-                  formControlName="description"
-                  rows="4"
-                  placeholder="Describe tu negocio..."
-                ></textarea>
+                <textarea matInput formControlName="description" rows="4" placeholder="Describe tu negocio..."></textarea>
                 @if (businessForm.get('description')?.hasError('required')) {
                   <mat-error>La descripción es obligatoria</mat-error>
                 }
@@ -95,12 +84,7 @@
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Email</mat-label>
                 <mat-icon matIconPrefix>email</mat-icon>
-                <input
-                  matInput
-                  type="email"
-                  formControlName="email"
-                  placeholder="contacto@negocio.com"
-                />
+                <input matInput type="email" formControlName="email" placeholder="contacto@negocio.com" />
                 @if (businessForm.get('email')?.hasError('required')) {
                   <mat-error>El email es obligatorio</mat-error>
                 }
@@ -118,21 +102,13 @@
               <mat-form-field appearance="outline">
                 <mat-label>Facebook</mat-label>
                 <mat-icon matIconPrefix>link</mat-icon>
-                <input
-                  matInput
-                  formControlName="facebookUrl"
-                  placeholder="https://facebook.com/tunegocio"
-                />
+                <input matInput formControlName="facebookUrl" placeholder="https://facebook.com/tunegocio" />
               </mat-form-field>
 
               <mat-form-field appearance="outline">
                 <mat-label>Instagram</mat-label>
                 <mat-icon matIconPrefix>link</mat-icon>
-                <input
-                  matInput
-                  formControlName="instagramUrl"
-                  placeholder="https://instagram.com/tunegocio"
-                />
+                <input matInput formControlName="instagramUrl" placeholder="https://instagram.com/tunegocio" />
               </mat-form-field>
             </div>
 
@@ -140,11 +116,7 @@
               <mat-form-field appearance="outline">
                 <mat-label>TikTok</mat-label>
                 <mat-icon matIconPrefix>link</mat-icon>
-                <input
-                  matInput
-                  formControlName="tiktokUrl"
-                  placeholder="https://tiktok.com/@tunegocio"
-                />
+                <input matInput formControlName="tiktokUrl" placeholder="https://tiktok.com/@tunegocio" />
               </mat-form-field>
             </div>
           </form>
@@ -154,29 +126,16 @@
       <mat-tab label="Imágenes del negocio">
         <div class="tab-content">
           <div class="images-grid">
-            <app-image-input
-              #logoInput
-              label="Logo"
-              imageType="logo"
-              (fileChange)="onLogoChange($event)"
-            />
+            <app-image-input #logoInput label="Logo" imageType="logo" (fileChange)="onLogoChange($event)" />
 
-            <app-image-input
-              #bannerInput
-              label="Banner"
-              imageType="banner"
-              (fileChange)="onBannerChange($event)"
-            />
+            <app-image-input #bannerInput label="Banner" imageType="banner" (fileChange)="onBannerChange($event)" />
           </div>
         </div>
       </mat-tab>
 
       <mat-tab label="Horarios de atención">
         <div class="tab-content">
-          <app-available-times-selector
-            [schedules]="schedules()"
-            (schedulesChange)="onSchedulesChange($event)"
-          />
+          <app-available-times-selector [schedules]="schedules()" (schedulesChange)="onSchedulesChange($event)" />
         </div>
       </mat-tab>
     </mat-tab-group>

@@ -102,14 +102,15 @@ export class WebsitePage {
     }
 
     const dayNumber = parseInt(firstAvailableDay.date.split('-')[2], 10);
-    const hourPrefix = firstAvailableDay.timeSlots[0].substring(0, 2);
+    const firstTimeSlot = firstAvailableDay.timeSlots[0];
 
     await this.page.getByRole('button', { name: `${dayNumber}` }).click();
-    await this.page.getByRole('button', { name: `${hourPrefix}:` }).click();
+
+    await this.page.getByRole('button', { name: firstTimeSlot, exact: true }).click();
 
     return {
       date: firstAvailableDay.date,
-      time: firstAvailableDay.timeSlots[0],
+      time: firstTimeSlot,
     };
   }
 }

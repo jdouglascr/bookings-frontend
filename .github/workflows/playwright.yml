@@ -63,9 +63,11 @@ jobs:
       - name: Run Playwright tests
         env:
           BASE_URL: ${{ github.event.client_payload.url }}
+          API_URL: ${{ secrets.API_URL }}
           ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
-          API_URL: ${{ secrets.API_URL }}
+          STAFF_EMAIL: ${{ secrets.STAFF_EMAIL }}
+          STAFF_PASSWORD: ${{ secrets.STAFF_PASSWORD }}
         run: npx playwright test
 
       - name: Comment results

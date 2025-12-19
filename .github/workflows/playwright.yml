@@ -4,6 +4,7 @@ on:
   repository_dispatch:
     types:
       - 'vercel.deployment.success'
+  workflow_dispatch: # ← NUEVO: Permite ejecución manual
 
 permissions:
   contents: read
@@ -12,14 +13,14 @@ permissions:
 
 jobs:
   test:
-    if: github.event_name == 'repository_dispatch'
+    if: github.event_name == 'repository_dispatch' || github.event_name == 'workflow_dispatch'
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: ${{ github.event.client_payload.git.sha }}
+          ref: ${{ github.event.client_payload.git.sha || github.sha }}
 
       - uses: actions/setup-node@v5
         with:
@@ -62,7 +63,7 @@ jobs:
 
       - name: Run Playwright tests
         env:
-          BASE_URL: ${{ github.event.client_payload.url }}
+          BASE_URL: ${{ github.event.client_payload.url || 'https://bookings-two-dun.vercel.app' }}
           API_URL: ${{ secrets.API_URL }}
           ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
